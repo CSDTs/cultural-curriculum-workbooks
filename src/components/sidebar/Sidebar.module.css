@@ -1,0 +1,93 @@
+#lessonHeader {
+  color: #e8e8e9;
+  padding: 1.2rem;
+}
+
+p.text-lesson {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  color: #0092ed;
+  font-size: 1rem;
+  line-height: 0.85rem;
+}
+
+.progress {
+  height: 0.5rem;
+}
+
+.response_div {
+  border-top: 1px solid #353440;
+  border-bottom: 1px solid #353440;
+  background-color: #30333c;
+  margin: 1rem;
+  padding: 0.75rem;
+}
+
+.response_div label {
+  font-size: 90%;
+  color: #6c757d;
+}
+
+.response_div h5 {
+  color: #fff;
+}
+
+.active {
+  font-weight: 800;
+  color: #1f89dd;
+}
+
+.finished {
+  text-decoration: line-through;
+}
+
+.sectionProgress {
+  width: 3.25rem;
+  margin-right: 1rem;
+}
+
+.CircularProgressbar-text {
+  font-size: 120px;
+}
+
+.dataContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #2a2b36;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+}
+
+.dataContainer .lessonHeader {
+  color: #e8e8e9;
+  padding: 1.2rem;
+}
+
+.dataContainer .lessonGroupContainer {
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+
+.dataContainer .lessonGroupContainer h2 button {
+  font-weight: 700;
+  background-color: #2a2b36;
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1rem;
+}
+
+.dataContainer .lessonGroupContainer h2 button:after {
+  -webkit-filter: invert(20%) sepia(9%) saturate(979%) hue-rotate(198deg) brightness(92%) contrast(85%);
+          filter: invert(20%) sepia(9%) saturate(979%) hue-rotate(198deg) brightness(92%) contrast(85%);
+}
+
+.dataContainer .lessonGroupContainer div.accordionItem {
+  background-color: #3b3c48;
+  border: 0;
+}
+/*# sourceMappingURL=Sidebar.module.css.map */
