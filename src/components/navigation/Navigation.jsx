@@ -1,29 +1,23 @@
 import React from "react";
 import { Navbar, NavDropdown, Container, Nav } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser as SolidUser } from "@fortawesome/free-solid-svg-icons";
-import { faUser as RegUser, faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
-import NSF from "./nsf.gif";
-import logo from "./logo.svg";
 
-import "./Navigation.module.css";
+import { FaUser, FaQuestionCircle, FaRegUser } from "react-icons/fa";
+import "./Navigation.module.scss";
 
-export function Navigation() {
-	let dropdown;
-	// if (props.user) {
-	const user = JSON.parse(localStorage.getItem("currentUser"));
-	const loginStatus = user.username || false;
+export default function Navigation(props) {
+	let dropdown, status;
 
-	if (loginStatus) {
-		let status = (
+	if (props.user.username) {
+		status = (
 			<React.Fragment>
-				<FontAwesomeIcon icon={SolidUser} className="pe-2 ps-1" /> <span>{user.username}</span>
+				<FaUser />
+				<span> {props.user.username}</span>
 			</React.Fragment>
 		);
 		dropdown = (
 			<NavDropdown title={status} id="collapsible-nav-dropdown" className="w-auto mx-0 px-0">
-				<NavDropdown.Item href={"/users/" + user.id}>My Projects</NavDropdown.Item>
-				<NavDropdown.Item href={"/users/" + user.id + "/classes"}>My Classrooms</NavDropdown.Item>
+				<NavDropdown.Item href={"/users/" + props.user.userID}>My Projects</NavDropdown.Item>
+				<NavDropdown.Item href={"/users/" + props.user.userID + "/classes"}>My Classrooms</NavDropdown.Item>
 				<NavDropdown.Divider />
 				<NavDropdown.Item href="/accounts/logout">Not You? (LOGOUT)</NavDropdown.Item>
 			</NavDropdown>
@@ -33,7 +27,7 @@ export function Navigation() {
 			<React.Fragment>
 				<Nav.Link href="/accounts/signup/">Sign Up</Nav.Link>
 				<Nav.Link href="/accounts/login/">
-					<FontAwesomeIcon icon={RegUser} className="pe-2 ps-1" />
+					<FaRegUser className="me-2 ms-1" />
 					Login
 				</Nav.Link>
 			</React.Fragment>
@@ -44,9 +38,9 @@ export function Navigation() {
 		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
 			<Container>
 				<Navbar.Brand href="/">
-					<img src={NSF} width="40" height="40" alt="" />
+					<img src="img/nsf.gif" width="40" height="40" alt="" />
 
-					<img src={logo} width="100" height="40" alt="" />
+					<img src="img/logo.svg" width="100" height="40" alt="" />
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -64,7 +58,7 @@ export function Navigation() {
 							|
 						</Nav.Link>
 						<Nav.Link href="/culture/help/index.html">
-							<FontAwesomeIcon icon={faCircleQuestion} className="pe-2 ps-1" />
+							<FaQuestionCircle className="me-2 ms-1" />
 						</Nav.Link>
 					</Nav>
 				</Navbar.Collapse>

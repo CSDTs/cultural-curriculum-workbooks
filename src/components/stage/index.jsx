@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
 import VerifyUser from "./VerifyUser";
 import Homepage from "./Homepage";
 
-import SaveButtons from "./SaveButtons";
+import SaveButtons from "./SaveButtons/SaveButtons";
 
 import styles from "./Stage.module.css";
 
@@ -55,7 +55,9 @@ export default function Stage() {
 	};
 
 	React.useEffect(() => {
-		loadProjectXML();
+		if (lesson?.tags?.includes("csnap")) {
+			loadProjectXML();
+		}
 	});
 
 	return (
@@ -76,9 +78,7 @@ export default function Stage() {
 			/>
 
 			{lesson?.tags?.includes("csnap") && (
-				<iframe
-					className={`w-100 shadow ${styles.csnapFrame}`}
-					src="../../../dist/static/csnap_pro/csdt/snap.html"></iframe>
+				<iframe className={`w-100 shadow ${styles.csnapFrame}`} src="/static/csnap_pro/csdt/snap.html"></iframe>
 			)}
 
 			{lesson?.tags?.includes("login") && <VerifyUser />}

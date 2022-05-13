@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACC,UADS,CACT,MAAM,CAAC;EACN,gBAAgB,EAAE,OAAO;EACzB,YAAY,EAAE,OAAO;CAKrB;;AARF,AAIE,UAJQ,CACT,MAAM,AAGJ,aAAa,CAAC;EACd,UAAU,EAAE,OAAO;EACnB,YAAY,EAAE,OAAO;CACrB",
+    "sources": [
+        "SaveButtons.module.scss"
+    ],
+    "names": [],
+    "file": "SaveButtons.module.css"
+}

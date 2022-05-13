@@ -1,0 +1,15 @@
+div.lesson {
+	p {
+		margin-bottom: 0.75rem;
+		margin-top: 0.75rem;
+	}
+	.active {
+		font-weight: 800;
+		color: #1f89dd;
+	}
+	.inactive {
+		s {
+			color: #7fc6ff;
+		}
+	}
+}

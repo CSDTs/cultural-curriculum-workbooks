@@ -1,0 +1,10 @@
+.saveGroup button {
+  background-color: #333333;
+  border-color: #6e9dee;
+}
+
+.saveGroup button:last-of-type {
+  background: #6e9dee;
+  border-color: #6e9dee;
+}
+/*# sourceMappingURL=SaveButtons.module.css.map */

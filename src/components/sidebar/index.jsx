@@ -1,24 +1,23 @@
 import React from "react";
-import ProgressBar from "./ProgressBar";
-import ProgressHeader from "./ProgressHeader";
-import Lesson from "./Lesson";
+
+import ProgressHeader from "./ProgressHeader/ProgressHeader";
+import Lesson from "./Lesson/Lesson";
 import { useSelector, useDispatch } from "react-redux";
 import { Accordion } from "react-bootstrap";
-import LessonNav from "./LessonNav";
-import Response from "./Response";
-import LessonGroupProgress from "./LessonGroupProgress";
-import styles from "./Sidebar.module.css";
-function Sidebar() {
+import LessonNav from "./LessonNav/LessonNav";
+import Response from "./Response/Response";
+import LessonGroupProgress from "./LessonGroupProgress/LessonGroupProgress";
+import styles from "./Sidebar.module.scss";
+
+export default function Sidebar() {
 	const props = {
 		title: useSelector((state) => state.counter.title),
 		workbook: useSelector((state) => state.counter.workbook),
 		lessons: useSelector((state) => state.counter.lessons),
 	};
-	const CURRENT_LESSON = useSelector((state) => state.counter.value);
-	const ALL_LESSONS = useSelector((state) => state.counter.all_lessons);
+	const currentLessonIndex = useSelector((state) => state.counter.value);
 
-	let current = ALL_LESSONS[CURRENT_LESSON];
-
+	let currentLesson = useSelector((state) => state.counter.all_lessons)[currentLessonIndex];
 	let lessonCount = 0;
 
 	return (
@@ -43,7 +42,7 @@ function Sidebar() {
 						))}
 					</Accordion>
 
-					{current?.tags?.includes("response") && <Response />}
+					{currentLesson?.tags?.includes("response") && <Response />}
 
 					<LessonNav />
 				</React.Fragment>
@@ -51,4 +50,3 @@ function Sidebar() {
 		</nav>
 	);
 }
-export default Sidebar;
