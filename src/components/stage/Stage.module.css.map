@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,WAAW,CAAC;EACX,MAAM,EAAE,KAAK;EACb,MAAM,EAAE,CAAC;CACT;;AAED,AAAA,IAAI,CAAC;EACJ,KAAK,EAAE,OAAO;CACd;;AAED,AAAA,EAAE,AAAA,aAAa,CAAC;EACf,KAAK,EAAE,GAAG;EACV,UAAU,EAAE,IAAI;EAChB,YAAY,EAAE,+CAA+C,CAAC,CAAC;EAC/D,YAAY,EAAE,KAAK;EACnB,YAAY,EAAE,GAAG;EACjB,OAAO,EAAE,CAAC;CACV",
-    "sources": [
-        "Stage.module.scss"
-    ],
-    "names": [],
-    "file": "Stage.module.css"
-}

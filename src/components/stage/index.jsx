@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import DOMPurify from "dompurify";
 
 //Views for workbooks
-import VerifyUser from "./VerifyUser";
-import Homepage from "./Homepage";
+import VerifyUser from "./VerifyUser/VerifyUser";
+import Homepage from "./Homepage/Homepage";
 
 import SaveButtons from "./SaveButtons/SaveButtons";
 
-import styles from "./Stage.module.css";
+import styles from "./Stage.module.scss";
 
 //This is for any workbooks that have specialized functionality
 function loadSlides(name) {
-	const Component = React.lazy(() => import(`../../data/aikr_compare/Slides`));
+	const Component = React.lazy(() => import(`./Slides/${name}/index.jsx`));
 	return Component;
 }
 

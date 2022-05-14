@@ -9,6 +9,7 @@ const initialState = {
 	all_lessons: [],
 	responses: [],
 	slug: "",
+	available_workbooks: [],
 };
 
 export const counterSlice = createSlice({
@@ -65,6 +66,10 @@ export const counterSlice = createSlice({
 		updateResponse: (state, action) => {
 			state.responses[state.value] = action.payload;
 		},
+
+		setAvailableWorkbooks: (state, action) => {
+			state.available_workbooks = action.payload;
+		},
 	},
 });
 
@@ -78,6 +83,7 @@ export const {
 	setWorkbook,
 	incrementByAmount,
 	updateResponse,
+	setAvailableWorkbooks,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

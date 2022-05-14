@@ -5,8 +5,8 @@ import AVAILABLE_WORKBOOKS from "./data/";
 // import logo from "./logo.svg";
 
 import Navigation from "./components/Navigation/Navigation";
-import Stage from "./components/stage/";
-import Sidebar from "./components/sidebar/";
+import Stage from "./components/Stage";
+import Sidebar from "./components/Sidebar";
 import WorkbookSelection from "./components/WorkbookSelection/WorkbookSelection";
 import { useSelector, useDispatch } from "react-redux";
 import { setWorkbook } from "./components/counter/counterSlice";
@@ -30,16 +30,16 @@ async function getUser() {
 
 function App() {
 	const dispatch = useDispatch();
+	const user = useSelector((state) => state.currentUser);
 	const notifications = useSelector((state) => state.notifications);
 	const [searchParams, setSearchParams] = useSearchParams();
-	let current = searchParams.get("wb") || "cc_math";
 
-	let defaultState = [{ title: "CSDT Workbooks", data: [] }];
+	let currentUser = JSON.parse(localStorage.getItem("currentUser")) || "";
+	let currentWorkbook = searchParams.get("wb");
+	let isValidWorkbook = currentWorkbook in AVAILABLE_WORKBOOKS;
 
-	let currentUser = JSON.parse(localStorage.getItem("currentUsers")) || "";
-	const user = useSelector((state) => state.currentUser);
 	React.useEffect(() => {
-		dispatch(setWorkbook(AVAILABLE_WORKBOOKS[current] || defaultState));
+		if (currentWorkbook && isValidWorkbook) dispatch(setWorkbook(AVAILABLE_WORKBOOKS[currentWorkbook]));
 
 		dispatch(setUser(currentUser || {}));
 		getUser().then((onlineUser) => {
@@ -65,12 +65,13 @@ function App() {
 
 	return (
 		<React.Fragment>
-			<main className={`justify-content-between d-inline-flex h-100`}>
-				<Sidebar />
-				<section className={`appContainer col-9`}>
+			<main className={`justify-content-between d-inline-flex h-100 w-100`}>
+				{(isValidWorkbook || currentWorkbook) && <Sidebar />}
+
+				<section className={`appContainer ${!isValidWorkbook || !currentWorkbook ? "col-12" : "col-9"}`}>
 					<Navigation user={user} />
-					<WorkbookSelection />
-					<Stage />
+
+					{!isValidWorkbook || !currentWorkbook ? <WorkbookSelection /> : <Stage />}
 				</section>
 			</main>
 

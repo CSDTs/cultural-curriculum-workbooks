@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-const STATIC_URL = "./src/data/aikr_compare/img/";
+const STATIC_URL = "./img/aikr_compare/";
 
 function SlideOne() {
 	return (
@@ -84,7 +84,6 @@ function SlideThree() {
 }
 
 export default function Slides(props) {
-	console.log(props);
 	const CONCEPT_CHECK_ANSWER = "";
 	const SLIDE_ARRAY = [SlideOne, SlideTwo, SlideThree];
 	let content = SLIDE_ARRAY[props.slideID]();

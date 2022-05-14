@@ -1,5 +1,3 @@
-import SlideOne from "./aikr_compare/Slides";
-
 const SECTION_1_AIKR = [
 	{
 		title: "How Does AI Work to Classify Things?",

@@ -26,7 +26,7 @@ export default function Sidebar() {
 
 			{props.workbook != [] && props.workbook != undefined && (
 				<React.Fragment>
-					<Accordion className={`p-2 ${styles.lessonGroupContainer}`}>
+					<Accordion className={`p-2 ${styles.lessonGroupContainer}`} defaultActiveKey={`section-0`}>
 						{props.workbook.map((lesson, index) => (
 							<Accordion.Item eventKey={`section-${index}`} key={`section-${index}`} className={styles.accordionItem}>
 								<Accordion.Header>
