@@ -1,9 +1,37 @@
 import React from "react";
-import { Form } from "react-bootstrap";
-
+import { Form, Button } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { updateResponse } from "../../../counter/counterSlice";
 const STATIC_URL = "./img/aikr_compare/";
 
 function SlideOne() {
+	const dispatch = useDispatch();
+
+	const allResponses = useSelector((state) => state.counter.responses);
+	const currentLessonIndex = useSelector((state) => state.counter.value);
+	const currentLesson = useSelector((state) => state.counter.all_lessons)[currentLessonIndex];
+
+	let currentResponse = allResponses[currentLessonIndex] || "";
+
+	let slideOneResponses = {
+		textResponse: "",
+		conceptAnswers: null,
+	};
+
+	const checkConcepts = (event) => {
+		event.preventDefault();
+		//TODO Add some sort of indicator to let user know that they are correct (or close to)
+		updateResponses();
+	};
+
+	const updateResponses = () => {
+		slideOneResponses.textResponse = document.querySelector("textarea").value;
+		slideOneResponses.conceptAnswers = Array.from(document.querySelectorAll("form input")).map((item) => {
+			return item.checked;
+		});
+		dispatch(updateResponse(slideOneResponses));
+	};
+
 	return (
 		<React.Fragment>
 			<p>
@@ -41,21 +69,28 @@ function SlideOne() {
 					</ul>
 
 					<h4 className="mt-5">What is a problem where visual difference is important?</h4>
-					<textarea placeholder="*optional" className="form-control"></textarea>
+					<textarea
+						placeholder="*optional"
+						className="form-control"
+						onChange={updateResponses}
+						value={currentResponse.textResponse}></textarea>
 				</div>
 				<div className="col-md-4">
 					<h4>Concept Check</h4>
 					<p>Which kinds of problems can be treated as classification problems?</p>
-					<Form>
+					<Form onSubmit={checkConcepts}>
 						{[
 							{ type: "energy", label: "Excessive energy use" },
 							{ type: "weight", label: "The range of baby weights" },
 							{ type: "noise", label: "Noisy neighbors" },
 						].map((opt) => (
 							<div key={`${opt.type}-checkbox`} className="mb-3">
-								<Form.Check type="checkbox" id={`${opt.type}-checkbox`} label={`${opt.label}`} />
+								<Form.Check type="checkbox" id={`${opt.type}-checkbox`} label={`${opt.label}`} value={opt.type} />
 							</div>
 						))}
+						<Button variant="primary" type="submit">
+							Submit
+						</Button>
 					</Form>
 				</div>
 			</section>
