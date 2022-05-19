@@ -1,0 +1,14 @@
+.lessonHeader {
+	color: #e8e8e9;
+	padding: 1.2rem;
+	p {
+		margin-bottom: 0;
+	}
+
+	div.completed {
+		width: 100%;
+		display: inline-flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}

@@ -3,18 +3,20 @@ import React, { Suspense } from "react";
 import { Card, Button } from "react-bootstrap";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setAvailableWorkbooks } from "../counter/counterSlice.js";
 
+import { setAvailableWorkbooksData } from "../../slices/workbookSlice";
 import styles from "./WorkbookSelection.module.scss";
 
 export default function WorkbookSelection() {
 	const dispatch = useDispatch();
-	const availableWorkbooks = useSelector((state) => state.counter.available_workbooks);
+	const availableWorkbooks = useSelector((state) => state.workbookState.workbook.available_workbooks);
 
 	React.useEffect(() => {
 		fetch("http://127.0.0.1:8000/api/workbooks/")
 			.then((response) => response.json())
-			.then((data) => dispatch(setAvailableWorkbooks(data)));
+			.then((data) => {
+				dispatch(setAvailableWorkbooksData(data));
+			});
 	}, []);
 
 	return (

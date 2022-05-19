@@ -1,58 +1,91 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
-
-import AVAILABLE_WORKBOOKS from "./data/";
-// import logo from "./logo.svg";
+import { useSelector, useDispatch } from "react-redux";
+import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications, notify } from "reapop";
 
 import Navigation from "./components/Navigation/Navigation";
 import Stage from "./components/Stage";
 import Sidebar from "./components/Sidebar";
 import WorkbookSelection from "./components/WorkbookSelection/WorkbookSelection";
-import { useSelector, useDispatch } from "react-redux";
-import { setWorkbook } from "./components/counter/counterSlice";
 
-import { setUser } from "./slices/userSlice";
+import { getClassrooms, getUser } from "./utils/apiRequests";
 
-import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications, notify } from "reapop";
+import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "./slices/workbookSlice";
+
+import { commonProps } from "./utils/notificationProps";
+
 import "./App.css";
 
-async function getUser() {
-	const response = await fetch("/api/users/c");
+import AVAILABLE_WORKBOOKS from "./data/";
 
-	if (!response.ok) {
-		const message = `An error has occured: ${response.status}`;
-		throw new Error(message);
-	}
+const checkForWorkbookType = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
+	let urlParam = searchParams.get("wb");
+	if (urlParam != null) return urlParam;
 
-	const user = await response.json();
-	return user;
-}
+	if (typeof config !== "undefined") return config.slug;
+
+	return "";
+};
+
+const checkForCurrentSave = (dispatch) => {
+	if (typeof config === "undefined") return {};
+
+	dispatch(loadConfigSave(JSON.parse(config.data)));
+};
+
+const throwConnectionError = (error, dispatch) => {
+	dispatch(
+		notify(`There seems to be an error connecting to the server. Please try again later`, "warning", commonProps)
+	);
+	console.log(error);
+};
 
 function App() {
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.currentUser);
-	const notifications = useSelector((state) => state.notifications);
-	const [searchParams, setSearchParams] = useSearchParams();
 
-	let currentUser = JSON.parse(localStorage.getItem("currentUser")) || "";
-	let currentWorkbook = searchParams.get("wb");
-	let isValidWorkbook = currentWorkbook in AVAILABLE_WORKBOOKS;
+	const user = useSelector((state) => state.workbookState.user);
+	const notifications = useSelector((state) => state.notifications);
+	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson);
+	let localStorageUser = JSON.parse(localStorage.getItem("currentUser")) || "";
+	let onlineUser = "";
+
+	const currentWorkbook = checkForWorkbookType();
+	const isValidWorkbook = currentWorkbook in AVAILABLE_WORKBOOKS;
 
 	React.useEffect(() => {
-		if (currentWorkbook && isValidWorkbook) dispatch(setWorkbook(AVAILABLE_WORKBOOKS[currentWorkbook]));
+		if (currentWorkbook && isValidWorkbook) {
+			dispatch(setWorkbookData(AVAILABLE_WORKBOOKS[currentWorkbook]));
+		}
 
-		dispatch(setUser(currentUser || {}));
-		getUser().then((onlineUser) => {
-			if (onlineUser?.username && currentUser?.username != onlineUser?.username) {
-				dispatch(setUser(onlineUser || {}));
-				dispatch(notify(`Welcome ${onlineUser.username || "new user"} (Fetch)!`, "info"));
-			} else {
-				console.info("Local storage matches API current user");
-			}
-		});
+		if (localStorageUser) {
+			dispatch(setCurrentUser(localStorageUser));
 
-		if (currentUser) dispatch(notify(`Welcome ${currentUser.username || "new user"}!`, "info"));
-	}, [""]);
+			getClassrooms(localStorageUser.id).then((res) => {
+				dispatch(setUserClassrooms(res.data));
+			});
+		}
+
+		getUser()
+			.then((res) => {
+				onlineUser = res.data;
+
+				dispatch(notify(`Welcome back ${onlineUser.username}`, "info", commonProps));
+
+				if (localStorageUser?.username == onlineUser?.username) return;
+
+				dispatch(setCurrentUser(onlineUser));
+
+				getClassrooms(onlineUser.id)
+					.then((res) => {
+						dispatch(setUserClassrooms(res.data));
+					})
+					.catch((error) => throwConnectionError(error, dispatch));
+			})
+			.catch((error) => throwConnectionError(error, dispatch));
+
+		checkForCurrentSave(dispatch);
+	}, []);
 
 	setUpNotifications({
 		defaultProps: {
@@ -71,16 +104,15 @@ function App() {
 				<section className={`appContainer ${!isValidWorkbook || !currentWorkbook ? "col-12" : "col-9"}`}>
 					<Navigation user={user} />
 
-					{!isValidWorkbook || !currentWorkbook ? <WorkbookSelection /> : <Stage />}
+					<Suspense fallback={<h5>Loading ... </h5>}>
+						{!isValidWorkbook || !currentWorkbook ? <WorkbookSelection /> : <Stage />}
+					</Suspense>
 				</section>
 			</main>
 
 			<NotificationsSystem
-				// 2. Pass the notifications you want Reapop to display.
 				notifications={notifications}
-				// 3. Pass the function used to dismiss a notification.
 				dismissNotification={(id) => dispatch(dismissNotification(id))}
-				// 4. Pass a builtIn theme or a custom theme.
 				theme={atalhoTheme}
 			/>
 		</React.Fragment>

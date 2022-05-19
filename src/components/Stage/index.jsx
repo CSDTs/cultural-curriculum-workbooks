@@ -17,9 +17,9 @@ function loadSlides(name) {
 }
 
 export default function Stage() {
-	const currentLesson = useSelector((state) => state.counter.value);
-	const lesson = useSelector((state) => state.counter.lesson);
-	const slug = useSelector((state) => state.counter.slug);
+	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson_id);
+	const lesson = useSelector((state) => state.workbookState.workbook.current_lesson);
+	const slug = useSelector((state) => state.workbookState.workbook.slug);
 	let SlideComponent;
 	if (lesson?.tags?.includes("slide")) SlideComponent = loadSlides(slug);
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Navbar, NavDropdown, Container, Nav } from "react-bootstrap";
-
 import { FaUser, FaQuestionCircle, FaRegUser } from "react-icons/fa";
 import "./Navigation.module.scss";
 
@@ -16,8 +15,9 @@ export default function Navigation(props) {
 		);
 		dropdown = (
 			<NavDropdown title={status} id="collapsible-nav-dropdown" className="w-auto mx-0 px-0">
-				<NavDropdown.Item href={"/users/" + props.user.userID}>My Projects</NavDropdown.Item>
-				<NavDropdown.Item href={"/users/" + props.user.userID + "/classes"}>My Classrooms</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${props.user.userID}`}>My Projects</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${props.user.userID}/classes`}>My Classrooms</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${props.user.userID}/workbooks`}>My Workbooks</NavDropdown.Item>
 				<NavDropdown.Divider />
 				<NavDropdown.Item href="/accounts/logout">Not You? (LOGOUT)</NavDropdown.Item>
 			</NavDropdown>
@@ -39,7 +39,6 @@ export default function Navigation(props) {
 			<Container>
 				<Navbar.Brand href="/">
 					<img src="img/nsf.gif" width="40" height="40" alt="" />
-
 					<img src="img/logo.svg" width="100" height="40" alt="" />
 				</Navbar.Brand>
 

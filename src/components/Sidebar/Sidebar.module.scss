@@ -25,8 +25,6 @@ p.text-lesson {
 	}
 
 	.lessonGroupContainer {
-		max-height: 40vh;
-		overflow-y: scroll;
 		h2 {
 			button {
 				font-weight: 700;
@@ -45,5 +43,10 @@ p.text-lesson {
 			background-color: #3b3c48;
 			border: 0;
 		}
+	}
+
+	.responseIncluded {
+		max-height: 40vh;
+		overflow-y: scroll;
 	}
 }

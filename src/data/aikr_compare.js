@@ -1,21 +1,42 @@
+const validateSlide = (data) => {
+	console.log(data);
+};
+
 const SECTION_1_AIKR = [
 	{
-		title: "How Does AI Work to Classify Things?",
-		details: "",
-		project: "",
+		title: "Deciding on a Problem",
 		tags: "slide",
+		points: 3,
 	},
 	{
-		title: "How Does AI Work to Classify Things?",
-		details: "",
-		project: "",
+		title: "Finding Examples for Both Categories",
 		tags: "slide",
+		points: 3,
 	},
 	{
-		title: "How Does AI Work to Classify Things?",
-		details: "",
-		project: "",
+		title: "Validating your Model",
 		tags: "slide",
+		points: 3,
+	},
+	{
+		title: "Concept Check",
+		tags: "slide",
+		points: 9,
+	},
+	{
+		title: "Joe's Lunch Setup",
+		tags: "slide",
+		points: 0,
+	},
+	{
+		title: "Joe's Lunch",
+		tags: "slide",
+		points: 0,
+	},
+	{
+		title: "TBD",
+		tags: "slide",
+		points: 0,
 	},
 ];
 

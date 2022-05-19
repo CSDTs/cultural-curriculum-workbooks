@@ -1,15 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateResponse } from "../../counter/counterSlice.js";
-
+import { updateResponse } from "../../../slices/workbookSlice.js";
 import styles from "./Response.module.scss";
 
 export default function Response() {
 	const dispatch = useDispatch();
-	const allResponses = useSelector((state) => state.counter.responses);
-	const currentLessonIndex = useSelector((state) => state.counter.value);
-	const currentLesson = useSelector((state) => state.counter.all_lessons)[currentLessonIndex];
+
+	const allResponses = useSelector((state) => state.workbookState.data.responses);
+
+	const currentLessonIndex = useSelector((state) => state.workbookState.workbook.current_lesson_id);
+	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson);
 
 	let currentResponse = allResponses[currentLessonIndex] || "";
 
@@ -31,7 +32,9 @@ export default function Response() {
 					rows="3"
 					placeholder="With this step, I did..."
 					value={currentResponse}
-					onChange={(e) => dispatch(updateResponse(e.target.value))}
+					onChange={(e) => {
+						dispatch(updateResponse(e.target.value));
+					}}
 				/>
 			</div>
 		</form>

@@ -1,32 +1,47 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentLesson } from "../../counter/counterSlice.js";
+
 import { ProgressBar } from "react-bootstrap";
 import styles from "./ProgressHeader.module.scss";
 
 import { FaTrophy } from "react-icons/fa";
 
+import PointsProgress from "../PointsProgress/PointsProgress";
+
 export default function ProgressHeader(props) {
 	let finished = document.querySelectorAll(`s`).length;
 
-	let total = useSelector((state) => state.counter.lessons);
+	const allLessons = useSelector((state) => state.workbookState.workbook.available_lessons);
+	let total = allLessons.length;
+
+	const saveObjectClassroom = useSelector((state) => state.workbookState.data.classroom);
+
+	const checkForPoints = allLessons.reduce((acc, obj) => {
+		return acc + (obj.points || 0);
+	}, 0);
 
 	return (
 		<section className={styles.lessonHeader}>
-			<h5 className="mb-3">{props.title}</h5>
+			<h5>{props.title}</h5>
+			<h6 className="mb-3">{saveObjectClassroom.name || "Personal"}</h6>
+			{checkForPoints == 0 && (
+				<>
+					<div className={`mb-1 ${styles.completed}`}>
+						<p>
+							<strong>
+								{finished} /{props.lessons}{" "}
+							</strong>
+							COMPLETED
+						</p>
+						<i>
+							<FaTrophy />
+						</i>
+					</div>
+					<ProgressBar now={(finished / total) * 100} />
+				</>
+			)}
 
-			<div className="mb-1">
-				<p>
-					<strong>
-						{finished} /{props.lessons}{" "}
-					</strong>
-					COMPLETED
-				</p>
-				<i>
-					<FaTrophy />
-				</i>
-			</div>
-			<ProgressBar now={(finished / total) * 100} />
+			{checkForPoints != 0 && <PointsProgress points={checkForPoints} />}
 		</section>
 	);
 }

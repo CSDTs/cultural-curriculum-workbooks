@@ -2,57 +2,88 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { ButtonGroup, Button } from "react-bootstrap";
-import { notify } from "reapop";
+import { notify, dismissNotification } from "reapop";
 
-import styles from "./SaveButtons.module.css";
+import { workbookRequest, getClassroomInfo } from "../../../utils/apiRequests";
+import { status, fetchedProps, loadProps } from "../../../utils/notificationProps";
+
+import { loadConfigSave } from "../../../slices/workbookSlice";
+import NewSavePrompt from "../NewSavePrompt/NewSavePrompt";
+
+import styles from "./SaveButtons.module.scss";
 
 export default function SaveButtons() {
-	const RESPONSES = useSelector((state) => state.counter.responses);
-	const CURRENT_USER = useSelector((state) => state.currentUser.username);
+	const RESPONSES = useSelector((state) => state.workbookState.data.responses);
+	const saveObject = useSelector((state) => state.workbookState.data);
+	const CURRENT_USER = useSelector((state) => state.workbookState.user.username);
+	const currentUser = useSelector((state) => state.workbookState.user);
 	const dispatch = useDispatch();
 
-	let exportAsJSON = () => {
-		download("workbook.json", JSON.stringify(serializeResponses(RESPONSES)));
-	};
-
-	let serializeResponses = (responses) => {
+	let serializeResponses = () => {
 		return {
-			responses: responses,
-			timestamp: new Date().getTime(),
+			owner: currentUser.userID,
+			classroom: saveObject.classroom.id || null,
+			workbook: 1,
+			data: JSON.stringify({
+				responses: saveObject.responses,
+				optional: saveObject.optional,
+				current_lesson: saveObject.current_lesson,
+				points_earned: saveObject.points_earned,
+				timestamp: new Date().getTime(),
+			}),
 		};
 	};
 
-	let download = (filename, text) => {
-		let element = document.createElement("a");
-		element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-		element.setAttribute("download", filename);
-		element.style.display = "none";
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
-	};
+	const updateSaveObject = (data) => {};
 
-	let uploadToCSDT = () => {
-		dispatch(
-			notify(`Progress is being uploaded...`, "loading", {
-				dismissible: false,
-				showDismissButton: false,
-				dismissAfter: false,
-			})
-		);
+	// const setClassroom = (id) => {
+	// 	getClassroomInfo(id).then((res) => {
+	// 		console.log(res.data);
+	// 	});
+	// };
+	const fetchWorkbook = (fetchMode) => {
+		let project = {};
+		dispatch(notify(status[fetchMode].msg, status[fetchMode].state, loadProps));
+
+		if (fetchMode === "POST" || fetchMode === "PATCH") project = serializeResponses();
+		if (fetchMode === "GET") project = serializeResponses();
+
+		workbookRequest(project, fetchMode).then((res) => {
+			let resState = res.status == 200 || res.status == 201 ? "SUCCESS" : "ERROR";
+
+			if (fetchMode == "GET") resState = res.status == 200 || res.status == 201 ? "SUCCESS_GET" : "ERROR_GET";
+
+			dispatch(loadConfigSave(res.data[0]));
+
+			// setClassroom(282);
+			dispatch(dismissNotification(loadProps.id));
+			dispatch(notify(`${status[resState].msg}`, status[resState].state, fetchedProps));
+		});
 	};
 
 	return (
 		<div className={`col-auto ${styles.saveGroup}`}>
 			<ButtonGroup aria-label="Basic example">
-				{CURRENT_USER != "" && <Button variant="secondary">Save and Exit</Button>}
 				{CURRENT_USER != "" && (
-					<Button variant="secondary" onClick={exportAsJSON}>
-						Save and Continue
+					<Button variant="secondary" onClick={() => fetchWorkbook("GET")}>
+						Update Current
 					</Button>
 				)}
+				{CURRENT_USER != "" && (
+					<>
+						<Button variant="secondary" onClick={() => fetchWorkbook("GET")}>
+							Upload to CSDT
+						</Button>
+
+						<Button variant="secondary" onClick={() => fetchWorkbook("GET")}>
+							Get Project
+						</Button>
+
+						<NewSavePrompt />
+					</>
+				)}
 				{CURRENT_USER == "" && (
-					<Button variant="secondary" onClick={uploadToCSDT}>
+					<Button variant="secondary" onClick={() => fetchWorkbook("GET")}>
 						Login to Save
 					</Button>
 				)}

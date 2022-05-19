@@ -1,27 +1,27 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Accordion } from "react-bootstrap";
 
 import ProgressHeader from "./ProgressHeader/ProgressHeader";
+import LessonGroupProgress from "./LessonGroupProgress/LessonGroupProgress";
 import Lesson from "./Lesson/Lesson";
-import { useSelector, useDispatch } from "react-redux";
-import { Accordion } from "react-bootstrap";
 import LessonNav from "./LessonNav/LessonNav";
 import Response from "./Response/Response";
-import LessonGroupProgress from "./LessonGroupProgress/LessonGroupProgress";
+
 import styles from "./Sidebar.module.scss";
 
 export default function Sidebar() {
 	const props = {
-		title: useSelector((state) => state.counter.title),
-		workbook: useSelector((state) => state.counter.workbook),
-		lessons: useSelector((state) => state.counter.lessons),
+		title: useSelector((state) => state.workbookState.workbook.title),
+		workbook: useSelector((state) => state.workbookState.workbook.available_sections),
+		lessons: useSelector((state) => state.workbookState.workbook.available_lessons).length,
 	};
-	const currentLessonIndex = useSelector((state) => state.counter.value);
 
-	let currentLesson = useSelector((state) => state.counter.all_lessons)[currentLessonIndex];
+	let currentLesson = useSelector((state) => state.workbookState.current_lesson);
 	let lessonCount = 0;
 
 	return (
-		<nav className={`${styles.dataContainer} col-3`}>
+		<nav className={`${styles.dataContainer} col-3 ${currentLesson?.tags?.includes("response") && "responseIncluded"}`}>
 			<ProgressHeader {...props} />
 
 			{props.workbook != [] && props.workbook != undefined && (
