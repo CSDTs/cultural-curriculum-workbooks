@@ -16,10 +16,38 @@ function loadSlides(name) {
 	return Component;
 }
 
+function LoadSaveState() {
+	const saveStatus = useSelector((state) => state.workbookState.save_status);
+	const isUserLoggedIn = useSelector((state) => state.workbookState.user.id) == null;
+	const lastSaved = useSelector((state) => state.workbookState.data.last_saved);
+	return (
+		<>
+			{isUserLoggedIn ? (
+				<strong key="test">
+					<p className="mb-0 figure-caption">Login to save your work.</p>
+				</strong>
+			) : (
+				<>
+					{saveStatus ? (
+						<p className="mb-0 figure-caption" key="test">
+							{lastSaved}
+						</p>
+					) : (
+						<strong key="test">
+							<p className="mb-0 figure-caption">You have unsaved changes</p>
+						</strong>
+					)}
+				</>
+			)}
+		</>
+	);
+}
+
 export default function Stage() {
 	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson_id);
 	const lesson = useSelector((state) => state.workbookState.workbook.current_lesson);
 	const slug = useSelector((state) => state.workbookState.workbook.slug);
+
 	let SlideComponent;
 	if (lesson?.tags?.includes("slide")) SlideComponent = loadSlides(slug);
 
@@ -58,13 +86,14 @@ export default function Stage() {
 		if (lesson?.tags?.includes("csnap")) {
 			loadProjectXML();
 		}
-	});
+	}, []);
 
 	return (
 		<section className="px-3 mt-3">
 			<div className="row justify-content-between align-items-center">
 				<div className="col-auto">
 					<h4>{lesson.title}</h4>
+					<LoadSaveState />
 				</div>
 
 				<SaveButtons />

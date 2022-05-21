@@ -1,58 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateResponse, updateOptionalResponse, updateEarnedPoints } from "../../../../slices/workbookSlice.js";
-import { Form, Button, Popover, OverlayTrigger } from "react-bootstrap";
-import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
+import {
+	updateResponse,
+	updateOptionalResponse,
+	updateEarnedPoints,
+	updateSaveStatus,
+} from "/src/slices/workbookSlice.js";
+
+import { STATIC_URL, createMoreInfo, CreateConceptCheck } from "./index";
 
 import styles from "./Slides.module.scss";
 
-const STATIC_URL = "./img/aikr_compare/";
-
-const explainerText = {
-	malaria: {
-		title: "Counterfeit malaria medicine",
-		body: "Insert explanation here",
-	},
-	game: {
-		title: "Stealing in video games as form of “griefing”",
-		body: "Insert explanation here",
-	},
-	lunch: {
-		title: "Lunches that are homemade or factory made",
-		body: "Insert explanation here",
-	},
-};
-
-const conceptHints = {
-	energy: "Energy could be considered.",
-	weight: "Weight could be considered.",
-	noise: "Noise could be considered.",
-};
-
-const correctAnswers = [true, true, true];
-
-const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-
-const createPopover = (key) => {
-	let data = explainerText[key];
-	return (
-		<Popover id={`popover-${key}`}>
-			<Popover.Header as="h3">{data.title}</Popover.Header>
-			<Popover.Body>{data.body}</Popover.Body>
-		</Popover>
-	);
-};
-
-const createLabel = (text, a, b) => {
-	return (
-		<>
-			<span>{text} </span>
-			{a && b && <FaCheck className={styles.correct} />}
-			{a && !b && <FaExclamation className={styles.incorrect} />}
-		</>
-	);
-};
 export default function SlideOne() {
 	const dispatch = useDispatch();
 
@@ -62,18 +21,56 @@ export default function SlideOne() {
 	let currentResponse = data.responses[index] || "";
 	let currentOptional = data.optional[index] || "";
 
+	const explainerText = {
+		malaria: {
+			title: "Counterfeit malaria medicine",
+			body: "Insert explanation here",
+			slug: "malaria",
+		},
+		game: {
+			title: "Stealing in video games as form of “griefing”",
+			body: "Insert explanation here",
+			slug: "game",
+		},
+		lunch: {
+			title: "Lunches that are homemade or factory made",
+			body: "Insert explanation here",
+			slug: "lunch",
+		},
+	};
+
+	const conceptQuestions = {
+		energy: {
+			label: "Excessive energy use",
+			isCorrect: true,
+			hint: "Energy could be.",
+		},
+		weight: {
+			label: "The range of baby weights",
+			isCorrect: true,
+			hint: "Weight could be.",
+		},
+		noise: {
+			label: "Noisy neighbors",
+			isCorrect: true,
+			hint: "Noise could be.",
+		},
+	};
+
 	const checkConcepts = (event) => {
 		event.preventDefault();
-
-		dispatch(
-			updateResponse(
-				Array.from(document.querySelectorAll("form input")).map((item) => {
-					return item.checked;
-				})
-			)
-		);
-
+		let userResponses = Array.from(document.querySelectorAll("form input")).map((item) => {
+			return item.checked;
+		});
+		dispatch(updateResponse(userResponses));
 		dispatch(updateEarnedPoints());
+		dispatch(updateSaveStatus(false));
+	};
+
+	const checkOptional = (event) => {
+		event.preventDefault();
+		dispatch(updateOptionalResponse(event.target.value));
+		dispatch(updateSaveStatus(false));
 	};
 
 	React.useEffect(() => {
@@ -113,77 +110,23 @@ export default function SlideOne() {
 					<h4>Some examples</h4>
 
 					<ul>
-						<li>
-							<OverlayTrigger trigger="click" rootClose placement="right" overlay={createPopover("malaria")}>
-								<span>
-									Counterfeit Malaria Medicine
-									<FaQuestionCircle className="mx-2 mb-2" />
-								</span>
-							</OverlayTrigger>
-						</li>
-						<li>
-							<OverlayTrigger trigger="click" rootClose placement="right" overlay={createPopover("game")}>
-								<span>
-									Stealing in Video Games <FaQuestionCircle className="mx-2 mb-2" />
-								</span>
-							</OverlayTrigger>
-						</li>
-						<li>
-							<OverlayTrigger trigger="click" rootClose placement="right" overlay={createPopover("lunch")}>
-								<span>
-									Lunches that are Homemade or Factory Made <FaQuestionCircle className="mx-2 mb-2" />
-								</span>
-							</OverlayTrigger>
-						</li>
+						<li>{createMoreInfo(explainerText["malaria"], "basic")}</li>
+						<li>{createMoreInfo(explainerText["game"], "basic")}</li>
+						<li>{createMoreInfo(explainerText["lunch"], "basic")}</li>
 					</ul>
 
 					<h4 className="mt-5">What is a problem where visual difference is important?</h4>
 					<textarea
 						placeholder="*optional"
 						className="form-control"
-						onChange={(e) => {
-							dispatch(updateOptionalResponse(e.target.value));
-						}}
+						onChange={(e) => checkOptional(e)}
 						value={currentOptional}
 					/>
 				</div>
 				<div className="col-md-4">
 					<h4>Concept Check</h4>
 					<p>Which kinds of problems can be treated as classification problems?</p>
-					<Form onSubmit={checkConcepts}>
-						{[
-							{ type: "energy", label: "Excessive energy use" },
-							{ type: "weight", label: "The range of baby weights" },
-							{ type: "noise", label: "Noisy neighbors" },
-						].map((opt, index) => (
-							<div key={`${opt.type}-checkbox`} className="mb-3">
-								<Form.Check
-									type="checkbox"
-									id={`${opt.type}-checkbox`}
-									label={createLabel(opt.label, currentResponse, currentResponse[index])}
-									value={opt.type}
-									className="d-inline-block"
-								/>{" "}
-							</div>
-						))}
-						<Button variant="primary" type="submit" className=" w-100">
-							{currentResponse ? "Try Again" : "Check Answers"}
-						</Button>
-
-						{currentResponse && (
-							<div className={`mt-3 p-3 ${styles.conceptFeedback}`}>
-								<p>
-									{Object.keys(conceptHints).map((item, index) => (
-										<strong key={`${index}-hint`}>{!currentResponse[index] && conceptHints[item]} </strong>
-									))}
-									{!isEqual(correctAnswers, currentResponse) && <strong>Try again?</strong>}
-									{isEqual(correctAnswers, currentResponse) && (
-										<strong>Congrats! Now you can move on to the next section!</strong>
-									)}
-								</p>
-							</div>
-						)}
-					</Form>
+					<CreateConceptCheck data={conceptQuestions} currentAnswers={currentResponse} callback={checkConcepts} />
 				</div>
 			</section>
 		</React.Fragment>

@@ -5,20 +5,25 @@ import { ProgressBar } from "react-bootstrap";
 import styles from "./ProgressHeader.module.scss";
 
 import { FaTrophy } from "react-icons/fa";
-
+import { setAvailablePoints } from "/src/slices/workbookSlice";
 import PointsProgress from "../PointsProgress/PointsProgress";
 
 export default function ProgressHeader(props) {
 	let finished = document.querySelectorAll(`s`).length;
-
+	const dispatch = useDispatch();
 	const allLessons = useSelector((state) => state.workbookState.workbook.available_lessons);
+	const availablePoints = useSelector((state) => state.workbookState.workbook.available_points);
 	let total = allLessons.length;
 
-	const saveObjectClassroom = useSelector((state) => state.workbookState.data.classroom);
+	const saveObjectClassroom = useSelector((state) => state.workbookState.user.selected_classroom);
 
 	const checkForPoints = allLessons.reduce((acc, obj) => {
 		return acc + (obj.points || 0);
 	}, 0);
+
+	React.useEffect(() => {
+		dispatch(setAvailablePoints(checkForPoints));
+	}, [checkForPoints]);
 
 	return (
 		<section className={styles.lessonHeader}>

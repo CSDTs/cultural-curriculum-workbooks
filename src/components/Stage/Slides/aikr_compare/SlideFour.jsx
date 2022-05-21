@@ -1,45 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateResponse, updateOptionalResponse, updateEarnedPoints } from "../../../../slices/workbookSlice.js";
+import {
+	updateResponse,
+	updateOptionalResponse,
+	updateEarnedPoints,
+	updateSaveStatus,
+} from "/src/slices/workbookSlice.js";
+
 import { Form, Button, Popover, OverlayTrigger } from "react-bootstrap";
 import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
-
+import { STATIC_URL, createMoreInfo, CreateConceptCheck, createLabel, isEqual, CreateConceptForm } from "./index";
 import styles from "./Slides.module.scss";
-
-const correctAnswers = {
-	problem: [false, true, false],
-	category: [true, false, false],
-	validation: [true, false, false],
-};
-
-const allCorrectAnswers = new Array().concat(
-	correctAnswers.problem,
-	correctAnswers.category,
-	correctAnswers.validation
-);
-
-const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-
-const createPopover = (key) => {
-	let data = explainerText[key];
-	return (
-		<Popover id={`popover-${key}`}>
-			<Popover.Header as="h3">{data.title}</Popover.Header>
-			<Popover.Body>{data.body}</Popover.Body>
-		</Popover>
-	);
-};
-
-const createLabel = (text, responsesExist, response, correctAnswer) => {
-	return (
-		<>
-			<span>{`${text}`}</span>
-			{responsesExist && response && correctAnswer && <FaCheck className={styles.correct} />}
-			{responsesExist && !(response && correctAnswer) && <FaExclamation className={styles.incorrect} />}
-		</>
-	);
-};
 
 export default function SlideFour() {
 	const dispatch = useDispatch();
@@ -50,18 +22,81 @@ export default function SlideFour() {
 	let currentResponse = data.responses[index] || "";
 	let currentOptional = data.optional[index] || "";
 
+	const conceptQuestionsA = {
+		energy: {
+			label: "Excessive energy use",
+			isCorrect: true,
+			hint: "Energy could be.",
+		},
+		weight: {
+			label: "The range of baby weights",
+			isCorrect: true,
+			hint: "Weight could be.",
+		},
+		noise: {
+			label: "Noisy neighbors",
+			isCorrect: true,
+			hint: "Noise could be.",
+		},
+	};
+
+	const conceptQuestionsB = {
+		apple: {
+			label: "Apples are divided into Honeycrisp, Golden and NY.",
+			isCorrect: true,
+			hint: "Apples could be.",
+		},
+		money: {
+			label: "Dollar bills that are real and counterfeit",
+			isCorrect: true,
+			hint: "money could be.",
+		},
+		silverware: {
+			label: "Forks, spoons and knives.",
+			isCorrect: true,
+			hint: "silverware could be.",
+		},
+	};
+
+	const conceptQuestionsC = {
+		bias: {
+			label: "Classifying silverware as spoons or forks when only photos of the spoons have shadows in them.",
+			isCorrect: true,
+			hint: "bias could be.",
+		},
+		small: {
+			label: "We only had 1 example of each category?",
+			isCorrect: true,
+			hint: "small could be.",
+		},
+		examples: {
+			label: "We had all possible examples of each category?",
+			isCorrect: true,
+			hint: "examples could be.",
+		},
+	};
+
+	const allCorrectAnswers = new Array().concat(
+		Object.keys(conceptQuestionsA).map((opt) => {
+			return conceptQuestionsA[opt].isCorrect;
+		}),
+		Object.keys(conceptQuestionsB).map((opt) => {
+			return conceptQuestionsB[opt].isCorrect;
+		}),
+		Object.keys(conceptQuestionsC).map((opt) => {
+			return conceptQuestionsC[opt].isCorrect;
+		})
+	);
+
 	const checkConcepts = (event) => {
 		event.preventDefault();
 
-		dispatch(
-			updateResponse(
-				Array.from(document.querySelectorAll("form input")).map((item, index) => {
-					return item.checked && allCorrectAnswers[index];
-				})
-			)
-		);
-
+		let userResponses = Array.from(document.querySelectorAll("form input")).map((item) => {
+			return item.checked;
+		});
+		dispatch(updateResponse(userResponses));
 		dispatch(updateEarnedPoints());
+		dispatch(updateSaveStatus(false));
 	};
 
 	React.useEffect(() => {
@@ -81,79 +116,21 @@ export default function SlideFour() {
 				<div className="col-md-4">
 					<h4>Problem Concept Check</h4>
 					<p>Which kinds of problems can be treated as classification problems?</p>
-					<Form>
-						{[
-							{ type: "energy", label: "Excessive energy use" },
-							{ type: "weight", label: "The range of baby weights" },
-							{ type: "noise", label: "Noisy neighbors" },
-						].map((opt, index) => (
-							<div key={`${opt.type}-checkbox`} className="mb-3">
-								<Form.Check
-									type="checkbox"
-									id={`${opt.type}-checkbox`}
-									label={createLabel(opt.label, currentResponse, currentResponse[index], correctAnswers.problem[index])}
-									value={opt.type}
-									className="d-inline-block"
-								/>
-							</div>
-						))}
-					</Form>
+					<CreateConceptForm data={conceptQuestionsA} currentAnswers={currentResponse} offset={0} />
 				</div>
 				<div className="col-md-4">
 					<h4>2 Category Concept Check</h4>
 					<p>Which are examples of binary classification problems?</p>
-					<Form>
-						{[
-							{ type: "apple", label: "What kind of apple?" },
-							{ type: "money", label: "Real or fake money?" },
-							{ type: "silverware", label: "What is this piece of silverware?" },
-						].map((opt, index) => (
-							<div key={`${opt.type}-checkbox`} className="mb-3">
-								<Form.Check
-									type="checkbox"
-									id={`${opt.type}-checkbox`}
-									label={createLabel(
-										opt.label,
-										currentResponse,
-										currentResponse[index + 3],
-										correctAnswers.category[index]
-									)}
-									value={opt.type}
-									className="d-inline-block"
-								/>
-							</div>
-						))}
-					</Form>
+					<CreateConceptForm data={conceptQuestionsB} currentAnswers={currentResponse} offset={3} />
 				</div>
 				<div className="col-md-4">
 					<h4>Validation Concept Check</h4>
 					<p>Which kinds of problems can be treated as classification problems?</p>
-					<Form>
-						{[
-							{ type: "bias", label: "Only photos of the spoons have shadows in them." },
-							{ type: "small", label: "Only 1 example of each category." },
-							{ type: "examples", label: "All possible examples of each category." },
-						].map((opt, index) => (
-							<div key={`${opt.type}-checkbox`} className="mb-3">
-								<Form.Check
-									type="checkbox"
-									id={`${opt.type}-checkbox`}
-									label={createLabel(
-										opt.label,
-										currentResponse,
-										currentResponse[index + 6],
-										correctAnswers.validation[index]
-									)}
-									value={opt.type}
-									className="d-inline-block"
-								/>
-							</div>
-						))}
-					</Form>
+					<CreateConceptForm data={conceptQuestionsC} currentAnswers={currentResponse} offset={6} />
 				</div>
 			</section>
 
-			<div className="row justify-content-center mt-5">
+			<div className="row justify-content-center mt-4">
 				<div className="col-md-4 ">
 					<Button
 						variant="primary"

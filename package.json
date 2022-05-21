@@ -5,9 +5,11 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build && sh adjust.sh",
+		"test": "vite build --base=/static/workbooks/",
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@chakra-ui/react": "^2.0.2",
 		"@fortawesome/fontawesome-svg-core": "^6.1.1",
 		"@fortawesome/free-regular-svg-icons": "^6.1.1",
 		"@fortawesome/free-solid-svg-icons": "^6.1.1",
@@ -24,6 +26,7 @@
 		"react-router-dom": "^6.3.0",
 		"reapop": "^4.0.5",
 		"rollup-plugin-cjs": "^1.0.0",
+		"rollup-plugin-includepaths": "^0.2.4",
 		"sass": "^1.51.0"
 	},
 	"devDependencies": {

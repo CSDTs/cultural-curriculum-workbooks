@@ -2,9 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	user: {
-		id: -1,
+		id: null,
 		username: "",
 		classroom_list: null,
+		save_id: null,
+		selected_classroom: {
+			id: null,
+			name: "",
+		},
 	},
 	workbook: {
 		id: -1,
@@ -15,22 +20,19 @@ const initialState = {
 		available_workbooks: [],
 		available_lessons: [],
 		available_sections: [],
+		available_points: 0,
+		is_finished: false,
 	},
 	data: {
-		id: -1,
 		responses: [],
 		optional: [],
 		misc: {},
-		save_status: "Unsaved",
-		classroom: {
-			id: -1,
-			name: "",
-		},
+		last_saved: "",
 		points_earned: 0,
 		lessons_completed: 0,
 		completion: 0,
-		last_saved: "",
 	},
+	save_status: true,
 };
 
 export const workbookSlice = createSlice({
@@ -85,6 +87,13 @@ export const workbookSlice = createSlice({
 		updateResponse: (state, action) => {
 			state.data.responses[state.workbook.current_lesson_id] = action.payload;
 		},
+
+		updateObjectResponse: (state, action) => {
+			if (!state.data.responses[state.workbook.current_lesson_id])
+				state.data.responses[state.workbook.current_lesson_id] = action.payload;
+			else Object.assign(state.data.responses[state.workbook.current_lesson_id], action.payload);
+		},
+
 		updateOptionalResponse: (state, action) => {
 			state.data.optional[state.workbook.current_lesson_id] = action.payload;
 		},
@@ -93,30 +102,54 @@ export const workbookSlice = createSlice({
 			Object.assign(state.data.misc, action.payload);
 		},
 		setWorkbookClassroom: (state, action) => {
-			state.classroom = action.payload;
+			// state.data.classroom = action.payload;
+			state.user.selected_classroom = action.payload;
+		},
+
+		setSaveDataId: (state, action) => {
+			// state.data.id = action.payload;
+			state.user.save_id = action.payload;
 		},
 		loadConfigSave: (state, action) => {
-			let data = action.payload;
+			state.user.save_id = action.payload?.workbook_save_id || null;
+			Object.assign(state.data, action.payload.data);
+			Object.assign(state.user.selected_classroom, action.payload.meta.classroom);
+		},
 
-			state.data.optional = data.optional;
-			state.data.misc = data.misc;
-			state.data.responses = data.responses;
-			state.data.points_earned = data.points_earned;
-			state.workbook.current_lesson = state.workbook.available_lessons[data.current_lesson];
+		setAvailablePoints: (state, action) => {
+			state.workbook.available_points = action.payload;
+		},
+		updateSaveStatus: (state, action) => {
+			state.save_status = action.payload;
+		},
+		updateWorkbookFinished: (state, action) => {
+			state.workbook.is_finished = action.payload;
 		},
 		updateEarnedPoints: (state) => {
-			state.data.points_earned = state.data.responses.reduce((total, response) => {
+			state.data.points_earned = state.data.responses.reduce((total, response, index) => {
 				let current = 0;
-				current += Array.isArray(response)
-					? response.reduce((acc, obj) => {
-							return acc + obj;
-					  }, 0)
-					: response != ""
-					? 1
-					: 0;
+
+				if (state.workbook.available_lessons[index].points && state.workbook.available_lessons[index].points > 0) {
+					if (typeof response == "object") {
+						if (Array.isArray(response)) {
+							current += response.reduce((acc, obj) => {
+								return acc + obj;
+							}, 0);
+						} else if (Object.keys(response).length > 0) {
+							current += Object.keys(response).reduce((acc, obj) => {
+								return acc + response[obj]?.verified || 0;
+							}, false);
+						}
+					} else if (typeof response == "string") {
+						current += response != "" ? 1 : 0;
+						return total + current;
+					}
+				}
 
 				return total + current;
 			}, 0);
+
+			state.data.completion = parseInt((state.data.points_earned / state.workbook.available_points) * 100);
 		},
 	},
 });
@@ -134,7 +167,12 @@ export const {
 	setWorkbookClassroom,
 	loadConfigSave,
 	updateEarnedPoints,
+	setSaveDataId,
 	updateMiscResponse,
+	updateSaveStatus,
+	setAvailablePoints,
+	updateWorkbookFinished,
+	updateObjectResponse,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

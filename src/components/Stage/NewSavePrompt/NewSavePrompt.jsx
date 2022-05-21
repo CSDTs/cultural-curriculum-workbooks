@@ -2,39 +2,37 @@ import * as React from "react";
 
 import { Modal as BootstrapModal, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-
+import { workbookRequest, getClassroomInfo } from "../../../utils/apiRequests";
 import { setWorkbookClassroom } from "../../../slices/workbookSlice.js";
 import style from "./NewSavePrompt.module.scss";
 
-export default function Modal() {
+export default function Modal(props) {
 	const [show, setShow] = React.useState(false);
+	const [isSaving, setIsSaving] = React.useState(false);
 	const dispatch = useDispatch();
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleShow = () => {
+		setShow(true);
+	};
 
 	const userClassrooms = useSelector((state) => state.workbookState.user.classroom_list);
-	const saveObjectClassroom = useSelector((state) => state.workbookState.data.classroom);
-	const saveObject = useSelector((state) => state.workbookState.data);
+	const saveObjectClassroom = useSelector((state) => state.workbookState.user.selected_classroom);
 
-	const saveWithClassNumber = () => {
-		// Just as a precaution. Was unable to set current class number on select init.
-		let classroomSelected = JSON.parse(document.querySelector("#disabledSelect").value);
+	const saveWorkbook = props.handleClassNum.bind(this);
 
-		dispatch(setWorkbookClassroom(classroomSelected));
-		//TODO: Add save functionality
-
-		handleClose();
-	};
-
-	const saveWithoutClassNumber = () => {
-		dispatch(setWorkbookClassroom({ id: -1, name: "" }));
-		handleClose();
-	};
+	React.useEffect(() => {
+		if (isSaving) {
+			saveWorkbook();
+		}
+	}, [saveObjectClassroom, isSaving]);
 
 	return (
 		<>
 			<Button variant="primary" onClick={handleShow}>
-				Save and Continue (First Time)
+				Save and Exit (New)
+			</Button>
+			<Button variant="primary" onClick={handleShow}>
+				Save and Continue (New)
 			</Button>
 
 			<BootstrapModal show={show} onHide={handleClose} centered className={style.prompt}>
@@ -43,10 +41,9 @@ export default function Modal() {
 				</BootstrapModal.Header>
 				<BootstrapModal.Body>
 					Since this is your first time saving, please select a classroom number to save it to (or press continue
-					without class number to save it to your profile). {saveObjectClassroom.id}
-					<br />
-					{userClassrooms && (
-						<Form>
+					without class number to save it to your profile).
+					{userClassrooms && userClassrooms.length > 0 && (
+						<Form className="mt-4">
 							<fieldset>
 								<Form.Group className="mb-3">
 									<Form.Label htmlFor="disabledSelect">All your classrooms</Form.Label>
@@ -65,23 +62,27 @@ export default function Modal() {
 										))}
 									</Form.Select>
 								</Form.Group>
-
-								{/* <Button type="submit">Submit</Button> */}
 							</fieldset>
 						</Form>
 					)}
-					Save Stats: <br />
-					{JSON.stringify(saveObject.classroom)} <br />
-					{JSON.stringify(saveObject.responses)} <br />
-					{JSON.stringify(saveObject.optional)} <br />
-					{JSON.stringify(saveObject.current_lesson)} <br />
-					{JSON.stringify(saveObject.points_earned)} <br />
 				</BootstrapModal.Body>
 				<BootstrapModal.Footer>
-					<Button variant="success" onClick={saveWithClassNumber}>
+					<Button
+						variant="success"
+						onClick={() => {
+							handleClose();
+							dispatch(setWorkbookClassroom(JSON.parse(document.querySelector("#disabledSelect").value)));
+							setIsSaving(true);
+						}}>
 						Save
 					</Button>
-					<Button variant="success" onClick={saveWithoutClassNumber}>
+					<Button
+						variant="success"
+						onClick={() => {
+							handleClose();
+							dispatch(setWorkbookClassroom({ id: null, name: "" }));
+							setIsSaving(true);
+						}}>
 						Save without Class Number
 					</Button>
 				</BootstrapModal.Footer>

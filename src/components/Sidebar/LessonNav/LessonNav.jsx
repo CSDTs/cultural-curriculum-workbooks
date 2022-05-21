@@ -8,6 +8,7 @@ export default function LessonNav() {
 	const dispatch = useDispatch();
 	const numOfLessons = useSelector((state) => state.workbookState.workbook.available_lessons).length;
 	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson_id);
+	const data = useSelector((state) => state.workbookState.data);
 
 	let endOfWorkbook = currentLesson == numOfLessons - 1;
 	let startOfWorkbook = currentLesson == 0;
@@ -25,6 +26,7 @@ export default function LessonNav() {
 					disabled={startOfWorkbook}
 					onClick={() => {
 						dispatch(goToPreviousLesson());
+						console.log(data);
 					}}
 					className="mx-2">
 					Prev
@@ -34,6 +36,7 @@ export default function LessonNav() {
 					disabled={endOfWorkbook}
 					onClick={() => {
 						dispatch(goToNextLesson());
+						console.log(data);
 					}}>
 					Next
 				</Button>

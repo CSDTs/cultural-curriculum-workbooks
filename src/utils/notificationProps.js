@@ -7,7 +7,7 @@ const status = {
 		msg: "Saving your workbook save for the first time. Please wait...",
 		state: "loading",
 	},
-	PATCH: {
+	PUT: {
 		msg: "Saving your progress. Please wait...",
 		state: "loading",
 	},

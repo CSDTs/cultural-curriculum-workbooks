@@ -11,7 +11,6 @@ import WorkbookSelection from "./components/WorkbookSelection/WorkbookSelection"
 import { getClassrooms, getUser } from "./utils/apiRequests";
 
 import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "./slices/workbookSlice";
-
 import { commonProps } from "./utils/notificationProps";
 
 import "./App.css";
@@ -30,14 +29,15 @@ const checkForWorkbookType = () => {
 
 const checkForCurrentSave = (dispatch) => {
 	if (typeof config === "undefined") return {};
+	console.log(config);
 
-	dispatch(loadConfigSave(JSON.parse(config.data)));
+	dispatch(loadConfigSave(config));
 };
 
 const throwConnectionError = (error, dispatch) => {
-	dispatch(
-		notify(`There seems to be an error connecting to the server. Please try again later`, "warning", commonProps)
-	);
+	// dispatch(
+	// 	notify(`There seems to be an error connecting to the server. Please try again later`, "warning", commonProps)
+	// );
 	console.log(error);
 };
 
@@ -70,7 +70,7 @@ function App() {
 			.then((res) => {
 				onlineUser = res.data;
 
-				dispatch(notify(`Welcome back ${onlineUser.username}`, "info", commonProps));
+				// dispatch(notify(`Welcome back ${onlineUser.username}`, "info", commonProps));
 
 				if (localStorageUser?.username == onlineUser?.username) return;
 

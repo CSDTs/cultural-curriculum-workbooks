@@ -171,3 +171,23 @@ div.conceptFeedback {
 	transform: translateY(-5px);
 	box-shadow: 0 10px 20px -10px rgba(24, 90, 219, 0.6);
 }
+
+.disabled {
+	a {
+		color: #99989b;
+		text-decoration: none;
+		font-weight: 500;
+		cursor: default;
+	}
+}
+
+.active {
+	a {
+		color: #6e9dee;
+		text-decoration: none;
+		font-weight: 500;
+		&:hover {
+			color: #99b8ed;
+		}
+	}
+}

@@ -8,7 +8,6 @@ import { FaTrophy } from "react-icons/fa";
 
 export default function PointsProgress(props) {
 	const earnedPoints = useSelector((state) => state.workbookState.data.points_earned);
-
 	return (
 		<>
 			<div className={`mb-1 ${styles.completed}`}>

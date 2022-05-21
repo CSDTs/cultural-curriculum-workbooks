@@ -1,10 +1,16 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateMiscResponse, goToNextLesson } from "../../../../slices/workbookSlice.js";
+import {
+	updateResponse,
+	updateOptionalResponse,
+	updateEarnedPoints,
+	updateSaveStatus,
+	updateMiscResponse,
+	goToNextLesson,
+} from "/src/slices/workbookSlice.js";
 import { Form, Button } from "react-bootstrap";
-import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
-
+import { CreateLunchOptions } from "./index";
 import styles from "./Slides.module.scss";
 
 export default function SlideFive() {
@@ -12,13 +18,15 @@ export default function SlideFive() {
 
 	const currentMisc = useSelector((state) => state.workbookState.data.misc);
 
-	// let currentMisc = data.misc || "";
-
-	const updateLunchParams = (value, key, checkbox = false) => {
+	const updateLunchParams = (value, key) => {
 		let temp = {
 			[key]: value,
 		};
+
 		dispatch(updateMiscResponse(temp));
+		dispatch(updateResponse("Params set in misc"));
+		dispatch(updateEarnedPoints());
+		dispatch(updateSaveStatus(false));
 	};
 
 	React.useEffect(() => {
@@ -29,6 +37,17 @@ export default function SlideFive() {
 		if (currentMisc.classBCount) document.querySelector(`#classACount-input`).value = currentMisc.classBCount;
 	}, []);
 
+	const homeParams = [
+		{ type: "homeHome", label: "Home" },
+		{ type: "homeOutside", label: "Outside" },
+		{ type: "homeCafeteria", label: "Cafeteria" },
+	];
+
+	const factoryParams = [
+		{ type: "factoryHome", label: "Home" },
+		{ type: "factoryOutside", label: "Outside" },
+		{ type: "factoryCafeteria", label: "Cafeteria" },
+	];
 	return (
 		<React.Fragment>
 			<p>
@@ -55,36 +74,11 @@ export default function SlideFive() {
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>How many home made?</Form.Label>
-							<Form.Control
-								type="number"
-								defaultValue="0"
-								className="w-25"
-								max="10"
-								min="0"
-								id={`classACount-input`}
-								onChange={(e) => {
-									updateLunchParams(e.target.value, "classACount");
-								}}
-							/>
+							<CreateLunchOptions data={""} callback={updateLunchParams} type={"classACount"} />
 						</Form.Group>
 						<Form.Group className="mb-3 ">
 							<Form.Label>Where to take these images from?</Form.Label>
-							{[
-								{ type: "homeHome", label: "Home" },
-								{ type: "homeOutside", label: "Outside" },
-								{ type: "homeCafeteria", label: "Cafeteria" },
-							].map((opt, index) => (
-								<div key={`${opt.type}-checkbox`} className="mb-3 d-inline">
-									<Form.Check
-										inline
-										type="checkbox"
-										id={`${opt.type}-checkbox`}
-										label={opt.label}
-										value={opt.type}
-										onClick={(e) => updateLunchParams(e.target.value, "classASet")}
-									/>
-								</div>
-							))}
+							<CreateLunchOptions data={homeParams} callback={updateLunchParams} type={"classASet"} />
 						</Form.Group>
 					</Form>
 				</div>
@@ -92,36 +86,11 @@ export default function SlideFive() {
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>How many factory made?</Form.Label>
-							<Form.Control
-								type="number"
-								defaultValue="0"
-								className="w-25"
-								max="10"
-								min="0"
-								id={`classBCount-input`}
-								onChange={(e) => {
-									updateLunchParams(e.target.value, "classBCount");
-								}}
-							/>
+							<CreateLunchOptions data={""} callback={updateLunchParams} type={"classBCount"} />
 						</Form.Group>
 						<Form.Group className="mb-3 ">
 							<Form.Label>Where to take these images from?</Form.Label>
-							{[
-								{ type: "factoryHome", label: "Home" },
-								{ type: "factoryOutside", label: "Outside" },
-								{ type: "factoryCafeteria", label: "Cafeteria" },
-							].map((opt, index) => (
-								<div key={`${opt.type}-checkbox`} className="mb-3 d-inline">
-									<Form.Check
-										inline
-										type="checkbox"
-										id={`${opt.type}-checkbox`}
-										label={opt.label}
-										value={opt.type}
-										onClick={(e) => updateLunchParams(e.target.value, "classBSet")}
-									/>
-								</div>
-							))}
+							<CreateLunchOptions data={factoryParams} callback={updateLunchParams} type={"classBSet"} />
 						</Form.Group>
 					</Form>
 				</div>

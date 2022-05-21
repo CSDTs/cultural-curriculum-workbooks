@@ -1,3 +1,53 @@
 .welcomeHeader {
 	color: #fff;
 }
+
+.emailLink {
+	color: #b8b7ba;
+	text-decoration: none;
+	&:hover {
+		color: #d1d0d3;
+	}
+}
+
+.card {
+	text-decoration: none;
+
+	.cardTags {
+		justify-content: space-around;
+	}
+	.cardBody {
+		border-radius: 1rem;
+	}
+	.header {
+		border: 0;
+		background-color: #fff;
+		border-radius: 1rem;
+		color: #212529;
+	}
+	.content {
+		color: #637381;
+	}
+
+	span {
+		background-color: #1f89dd;
+		color: #fff;
+		font-weight: 600;
+	}
+	&:hover {
+		.cardBody,
+		.header {
+			background-color: #1f89dd;
+		}
+
+		.header,
+		.content {
+			color: #fff;
+		}
+		span {
+			background-color: #fff;
+			color: #212529;
+			font-weight: 600;
+		}
+	}
+}

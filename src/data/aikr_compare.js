@@ -34,9 +34,9 @@ const SECTION_1_AIKR = [
 		points: 0,
 	},
 	{
-		title: "TBD",
+		title: "Writing Prompt",
 		tags: "slide",
-		points: 0,
+		points: 4,
 	},
 ];
 

@@ -1,7 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateMiscResponse } from "../../../../slices/workbookSlice.js";
+import {
+	updateResponse,
+	updateOptionalResponse,
+	updateEarnedPoints,
+	updateMiscResponse,
+	updateSaveStatus,
+} from "/src/slices/workbookSlice.js";
 
 import styles from "./Slides.module.scss";
 
@@ -32,6 +38,11 @@ export default function SlideSix() {
 			(currentMisc?.classBCount || 0);
 
 		myIframe.src = paramsURL;
+		// dispatch(updateResponse(paramsURL));
+
+		dispatch(updateResponse(paramsURL));
+		dispatch(updateEarnedPoints());
+		dispatch(updateSaveStatus(false));
 	};
 
 	React.useEffect(() => {

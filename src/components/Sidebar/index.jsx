@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Accordion } from "react-bootstrap";
 
 import ProgressHeader from "./ProgressHeader/ProgressHeader";

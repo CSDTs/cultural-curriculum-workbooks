@@ -1,23 +1,28 @@
 import React from "react";
 import { Navbar, NavDropdown, Container, Nav } from "react-bootstrap";
 import { FaUser, FaQuestionCircle, FaRegUser } from "react-icons/fa";
+
+import { useSelector } from "react-redux";
+
 import "./Navigation.module.scss";
 
 export default function Navigation(props) {
 	let dropdown, status;
 
-	if (props.user.username) {
+	const currentUser = useSelector((state) => state.workbookState.user);
+
+	if (currentUser.username) {
 		status = (
 			<React.Fragment>
 				<FaUser />
-				<span> {props.user.username}</span>
+				<span> {currentUser.username}</span>
 			</React.Fragment>
 		);
 		dropdown = (
 			<NavDropdown title={status} id="collapsible-nav-dropdown" className="w-auto mx-0 px-0">
-				<NavDropdown.Item href={`/users/${props.user.userID}`}>My Projects</NavDropdown.Item>
-				<NavDropdown.Item href={`/users/${props.user.userID}/classes`}>My Classrooms</NavDropdown.Item>
-				<NavDropdown.Item href={`/users/${props.user.userID}/workbooks`}>My Workbooks</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${currentUser.id}`}>My Projects</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${currentUser.id}/classes`}>My Classrooms</NavDropdown.Item>
+				<NavDropdown.Item href={`/users/${currentUser.id}/workbooks`}>My Workbooks</NavDropdown.Item>
 				<NavDropdown.Divider />
 				<NavDropdown.Item href="/accounts/logout">Not You? (LOGOUT)</NavDropdown.Item>
 			</NavDropdown>

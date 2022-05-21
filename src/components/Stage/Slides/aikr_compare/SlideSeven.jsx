@@ -1,20 +1,39 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateMiscResponse, goToNextLesson } from "../../../../slices/workbookSlice.js";
-import { Form, Button } from "react-bootstrap";
+import {
+	updateMiscResponse,
+	goToNextLesson,
+	updateResponse,
+	updateEarnedPoints,
+	updateWorkbookFinished,
+	updateSaveStatus,
+	updateObjectResponse,
+} from "../../../../slices/workbookSlice.js";
+
+import { Form, Button, Breadcrumb } from "react-bootstrap";
 import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
 import TextWriteUp from "./TextWriteUp";
 import styles from "./Slides.module.scss";
 import { notify, dismissNotification } from "reapop";
-import { status, fetchedProps, loadProps } from "../../../../utils/notificationProps";
+import { status, fetchedProps, commonProps } from "/src/utils/notificationProps";
 
+import { STATIC_URL, createMoreInfo, CreateConceptCheck, CreateWriteUp } from "./index";
 export default function SlideSeven() {
 	const dispatch = useDispatch();
+	const currentIndex = useSelector((state) => state.workbookState.workbook.current_lesson_id);
+	const currentMisc = useSelector((state) => state.workbookState.data.responses)[currentIndex];
+	const responses = useSelector((state) => state.workbookState.data.responses);
+	const gData = useSelector((state) => state.workbookState.data);
+	const isWorkbookFinished = useSelector((state) => state.workbookState.workbook.is_finished);
+	// const currentIndex = useSelector((state) => state.workbookState.workbook.current_lesson_id);
 
-	const currentMisc = useSelector((state) => state.workbookState.data.misc);
+	let currentResponse = responses[currentIndex];
+	// console.log(useSelector((state) => state.workbookState.workbook.current_lesson));
+	// dispatch(updateResponse([{}]));
 
 	let [num, setNum] = useState(0);
+	const [fireOnce, setFireOnce] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 	let statementRevision = {
 		slug: "statementRevision",
@@ -24,8 +43,8 @@ export default function SlideSeven() {
 		lengthGoal: 20,
 		lessWords: true,
 		keywords: ["West Africans", "malaria", "drugs"],
-		verified: currentMisc.statementRevision?.verified || false,
-		response: currentMisc.statementRevision?.response || "",
+		verified: currentMisc?.statementRevision?.verified || false,
+		response: currentMisc?.statementRevision?.response || "",
 	};
 
 	let categoryARevision = {
@@ -35,8 +54,8 @@ export default function SlideSeven() {
 		lengthGoal: 20,
 		lessWords: false,
 		keywords: ["real", "malaria", "drugs"],
-		verified: currentMisc.categoryARevision?.verified || false,
-		response: currentMisc.categoryARevision?.response || "",
+		verified: currentMisc?.categoryARevision?.verified || false,
+		response: currentMisc?.categoryARevision?.response || "",
 	};
 
 	let categoryBRevision = {
@@ -46,8 +65,8 @@ export default function SlideSeven() {
 		lengthGoal: 20,
 		lessWords: false,
 		keywords: ["fake", "malaria", "drugs"],
-		verified: currentMisc.categoryBRevision?.verified || false,
-		response: currentMisc.categoryBRevision?.response || "",
+		verified: currentMisc?.categoryBRevision?.verified || false,
+		response: currentMisc?.categoryBRevision?.response || "",
 	};
 	let rationaleRevision = {
 		slug: "rationaleRevision",
@@ -56,8 +75,8 @@ export default function SlideSeven() {
 		lengthGoal: 20,
 		lessWords: false,
 		keywords: ["fake", "malaria", "drugs", "environment"],
-		verified: currentMisc.rationaleRevision?.verified || false,
-		response: currentMisc.rationaleRevision?.response || "",
+		verified: currentMisc?.rationaleRevision?.verified || false,
+		response: currentMisc?.rationaleRevision?.response || "",
 	};
 
 	const spinCheck = (a, revisionSet) => {
@@ -71,15 +90,17 @@ export default function SlideSeven() {
 			return result && a.includes(current);
 		}, true);
 
-		console.log(revisionSet);
-		dispatch(
-			updateMiscResponse({
-				[revisionSet.slug]: {
-					response: a,
-					verified: sameCheck && lengthCheck && keywordCheck,
-				},
-			})
-		);
+		let currentSpin = {
+			[revisionSet.slug]: {
+				response: a,
+				verified: sameCheck && lengthCheck && keywordCheck,
+			},
+		};
+
+		// Object.assign(temp, currentSpin);
+		dispatch(updateObjectResponse(currentSpin));
+		dispatch(updateEarnedPoints());
+		dispatch(updateSaveStatus(false));
 	};
 
 	let incNum = () => {
@@ -97,7 +118,7 @@ export default function SlideSeven() {
 	};
 
 	const RevisionGoals = (props) => {
-		console.log(props.set.keywords);
+		// console.log(props.set.keywords);
 
 		return (
 			<div className="col-md-3 align-self-center">
@@ -118,12 +139,59 @@ export default function SlideSeven() {
 		);
 	};
 
+	const checkForWriteUpComplete = (key) => {
+		if (key == "all")
+			return (
+				(currentMisc?.statementRevision?.verified || false) &&
+				(currentMisc?.categoryARevision?.verified || false) &&
+				(currentMisc?.categoryBRevision?.verified || false) &&
+				(currentMisc?.rationaleRevision?.verified || false)
+			);
+
+		return currentMisc?.[key]?.verified || false;
+	};
+
+	const goToWriteUp = (num, key) => {
+		if (checkForWriteUpComplete(key)) setNum(num);
+	};
+
+	const checkInitState = () => {
+		if (!checkForWriteUpComplete("statementRevision")) {
+			setNum(0);
+			return "statementRevision";
+		}
+		if (!checkForWriteUpComplete("categoryARevision")) {
+			setNum(1);
+			return "categoryARevision";
+		}
+		if (!checkForWriteUpComplete("categoryBRevision")) {
+			setNum(2);
+			return "categoryBRevision";
+		}
+		if (!checkForWriteUpComplete("rationaleRevision")) {
+			setNum(3);
+			return "rationaleRevision";
+		}
+
+		setNum(4);
+		return "all";
+	};
+
+	// React.useEffect(() => {
+	// 	// console.log(gData);
+	// 	if (!currentMisc) dispatch(updateResponse({}));
+	// }, [currentMisc]);
+
 	React.useEffect(() => {
-		// document.querySelector("textarea").value =
-		// 	currentMisc.problemResponse && currentMisc.problemResponse != ""
-		// 		? currentMisc.problemResponse
-		// 		: statementRevision.statement;
+		checkInitState();
 	}, []);
+
+	React.useEffect(() => {
+		if (!isWorkbookFinished && num == 4) {
+			dispatch(notify(`Congrats! You completed the workbook`, "success", commonProps));
+			dispatch(updateWorkbookFinished(true));
+		}
+	}, [num]);
 
 	return (
 		<React.Fragment>
@@ -136,39 +204,48 @@ export default function SlideSeven() {
 				Then you'll get a chance to write your own!
 			</p>
 
-			{/* <button className={styles.primaryBtn} onClick={() => setIsOpen(true)}>
-				Open Modal
-			</button>
-			{isOpen && <TextWriteUp setIsOpen={setIsOpen} />} */}
+			<div className="d-inline-flex w-100">
+				<Breadcrumb className="mx-auto">
+					<Breadcrumb.Item
+						className={num >= 0 || isWorkbookFinished ? styles.active : styles.disabled}
+						onClick={() => goToWriteUp(0, "statementRevision")}>
+						Problem
+					</Breadcrumb.Item>
+					<Breadcrumb.Item
+						className={num >= 1 || isWorkbookFinished ? styles.active : styles.disabled}
+						onClick={() => goToWriteUp(1, "categoryARevision")}>
+						Category A
+					</Breadcrumb.Item>
+					<Breadcrumb.Item
+						className={num >= 2 || isWorkbookFinished ? styles.active : styles.disabled}
+						onClick={() => goToWriteUp(2, "categoryBRevision")}>
+						Category B
+					</Breadcrumb.Item>
+					<Breadcrumb.Item
+						className={num >= 3 || isWorkbookFinished ? styles.active : styles.disabled}
+						onClick={() => goToWriteUp(3, "rationaleRevision")}>
+						Rationale
+					</Breadcrumb.Item>
+					<Breadcrumb.Item
+						className={num >= 4 || isWorkbookFinished ? styles.active : styles.disabled}
+						onClick={() => goToWriteUp(4, "all")}>
+						Summary
+					</Breadcrumb.Item>
+				</Breadcrumb>
+			</div>
 
 			<section className="row mt-3 justify-content-center">
 				{(show.first || show.all) && (
 					<>
-						<div className="col-md-3 align-self-center">
-							<p>
-								<strong>Problem Statement</strong>
-							</p>
-							<textarea
-								className="form-control"
-								rows="8"
-								onChange={(e) => {
-									spinCheck(e.target.value, statementRevision);
-								}}
-								defaultValue={statementRevision.statement}
-								placeholder={statementRevision.statement}
-							/>
-							{!show.all && (
-								<Button
-									variant="primary"
-									type="submit"
-									className="mt-3 w-100"
-									onClick={() => incNum()}
-									disabled={!statementRevision.verified}>
-									Advance
-								</Button>
-							)}
-							<p>Does it pass the vibe check? {`${statementRevision.verified}`}</p>
-						</div>
+						<CreateWriteUp
+							title={"Problem Statement"}
+							callback={spinCheck}
+							next={incNum}
+							data={statementRevision}
+							current={currentMisc?.statementRevision?.response}
+							show={show}
+							rows={8}
+						/>
 
 						{!show.all && <RevisionGoals set={statementRevision} />}
 					</>
@@ -176,94 +253,41 @@ export default function SlideSeven() {
 
 				{(show.second || show.all) && (
 					<>
-						<div className="col-md-3 align-self-center">
-							<p>
-								<strong>Train AI on samples of this for first category</strong>
-							</p>
-							<textarea
-								className="form-control"
-								rows="4"
-								onChange={(e) => {
-									spinCheck(e.target.value, categoryARevision);
-								}}
-								defaultValue={categoryARevision.statement}
-								placeholder={categoryARevision.statement}
-							/>
-							{!show.all && (
-								<Button
-									variant="primary"
-									type="submit"
-									className="mt-3 w-100"
-									onClick={() => incNum()}
-									disabled={!categoryARevision.verified}>
-									Advance
-								</Button>
-							)}
-							<p>Does it pass the vibe check? {`${categoryARevision.verified}`}</p>
-						</div>
+						<CreateWriteUp
+							title={"Train AI on samples of this for first category"}
+							callback={spinCheck}
+							next={incNum}
+							data={categoryARevision}
+							show={show}
+							rows={8}
+						/>
+
 						{!show.all && <RevisionGoals set={categoryARevision} />}
 					</>
 				)}
 				{(show.third || show.all) && (
 					<>
-						<div className="col-md-3">
-							<p>
-								<strong>Train AI on samples of this for second category</strong>
-							</p>
-							<textarea
-								className="form-control"
-								rows="7"
-								onChange={(e) => {
-									spinCheck(e.target.value, categoryBRevision);
-								}}
-								defaultValue={categoryBRevision.statement}
-								placeholder={categoryBRevision.statement}
-							/>
-							{!show.all && (
-								<Button
-									variant="primary"
-									type="submit"
-									className="mt-3 w-100"
-									onClick={() => incNum()}
-									disabled={!categoryBRevision.verified}>
-									Advance
-								</Button>
-							)}
-							<p>Does it pass the vibe check? {`${categoryBRevision.verified}`}</p>
-						</div>
+						<CreateWriteUp
+							title={"Train AI on samples of this for second category"}
+							callback={spinCheck}
+							next={incNum}
+							data={categoryBRevision}
+							show={show}
+							rows={8}
+						/>
 						{!show.all && <RevisionGoals set={categoryBRevision} />}
 					</>
 				)}
 				{(show.fourth || show.all) && (
 					<>
-						<div className="col-md-3 align-self-center">
-							<p>
-								<strong>Rationale</strong>
-							</p>
-							<textarea
-								className="form-control"
-								rows="7"
-								onChange={(e) => {
-									spinCheck(e.target.value, rationaleRevision);
-								}}
-								defaultValue={rationaleRevision.statement}
-								placeholder={rationaleRevision.statement}
-							/>
-							{!show.all && (
-								<Button
-									variant="primary"
-									type="submit"
-									className="mt-3 w-100"
-									onClick={() => {
-										incNum();
-										dispatch(notify(`Congrats! You have completed the workbook`, "success", fetchedProps));
-									}}
-									disabled={!rationaleRevision.verified}>
-									Advance
-								</Button>
-							)}
-							<p>Does it pass the vibe check? {`${rationaleRevision.verified}`}</p>
-						</div>
+						<CreateWriteUp
+							title={"Rationale"}
+							callback={spinCheck}
+							next={incNum}
+							data={rationaleRevision}
+							show={show}
+							rows={8}
+						/>
 
 						{!show.all && <RevisionGoals set={rationaleRevision} />}
 					</>
