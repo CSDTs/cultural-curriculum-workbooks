@@ -1,1018 +1,296 @@
 [
 	{
-		"id": 57,
-		"name": "blank",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/blank.PNG",
-		"tags": []
-	},
-	{
-		"id": 53,
-		"name": "Circular Yarn",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/crochet.png",
-		"tags": []
+		"id": 10,
+		"name": "Adinkra",
+		"slug": "adinkra",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/adinkra.jpg",
+		"tags": ["African", "Continuous Paths", "Logarithmic Spirals"],
+		"applications": ["Adinkra Animations Pro", "Adinkra Stamping Pro", "Adinkra Carving Pro", "Adinkra Grapher"]
 	},
 	{
 		"id": 15,
-		"name": "Nautilus",
-		"url": "/applications/15/run",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/nautilus.JPG",
-		"tags": []
-	},
-	{
-		"id": 59,
-		"name": "Darwin Game 1",
-		"url": "https://community.csdt.rpi.edu/cms/application-contexts/darwin-game-1/?edit&language=en-us",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/charles_darwin.png",
-		"tags": []
-	},
-	{
-		"id": 31,
-		"name": "SoundJS",
-		"url": "https://community.csdt.rpi.edu/applications/31/run",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/soundjs-logo-vertical-gray-darker.png",
-		"tags": []
-	},
-	{
-		"id": 32,
-		"name": "CreateJS",
-		"url": "https://community.csdt.rpi.edu/applications/32/run",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/createjs1.jpg",
-		"tags": []
-	},
-	{
-		"id": 55,
-		"name": "bball",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/bb_NoYWk5Q.png",
-		"tags": []
-	},
-	{
-		"id": 35,
-		"name": "Tutorial",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/1419618-unicorn2.jpg",
-		"tags": []
-	},
-	{
-		"id": 37,
-		"name": "Tutorial Without Left Column",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Flag.JPG",
-		"tags": []
-	},
-	{
-		"id": 44,
-		"name": "Test",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/170422_dancing_banana.gif",
-		"tags": []
-	},
-	{
-		"id": 58,
-		"name": "Basketball",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Basketball.PNG",
-		"tags": []
-	},
-	{
-		"id": 51,
-		"name": "African Fractals Projects",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture_sWd01EP.PNG",
-		"tags": []
-	},
-	{
-		"id": 48,
-		"name": "Bailey2",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture_vbn3zf9.PNG",
-		"tags": []
-	},
-	{
-		"id": 46,
-		"name": "Nontsi2",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture_3fECKTU.PNG",
-		"tags": []
-	},
-	{
-		"id": 45,
-		"name": "Saya",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture.PNG",
-		"tags": []
-	},
-	{
-		"id": 43,
-		"name": "Skateboarding",
-		"url": "/cms/application-contexts/skateboarding/?edit&language=en-us",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/skateboarder.jpg",
-		"tags": []
-	},
-	{
-		"id": 27,
-		"name": "Navajo Rug Weaver",
-		"url": "/culture/navajorugweaver/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/navajo.jpg",
-		"tags": []
-	},
-	{
-		"id": 50,
-		"name": "Mixer",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Mixer_2.png",
-		"tags": []
-	},
-	{
-		"id": 29,
-		"name": "Mangbetu",
-		"url": "/culture/mangbetu/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/mangbetu_k2m67ix.jpg",
-		"tags": []
+		"name": "African Fractals",
+		"slug": "africanfractals",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/africanFractals.png",
+		"tags": ["African", "Recursion", "Fractals"],
+		"applications": ["African Fractals"]
 	},
 	{
 		"id": 30,
-		"name": "Environmental Sensing",
-		"url": "/culture/environmentalsensing/index.html",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/IMG_0539.png",
-		"tags": []
+		"name": "Afrofuturism",
+		"slug": "afrofuturism",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/afroFuturism.jpg",
+		"tags": ["African American", "Transformational Geometry"],
+		"applications": ["Afrofuturism"]
+	},
+	{
+		"id": 27,
+		"name": "AI: Keepin' it Real",
+		"slug": "aikr",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/aikr.png",
+		"tags": ["Sound, Games, and Animations", "AI"],
+		"applications": [
+			"AI for African Art - Advanced",
+			"AI for African Art - Beginner",
+			"AI for African Art - Intermediate"
+		]
+	},
+	{
+		"id": 12,
+		"name": "Anishinaabe Arcs",
+		"slug": "anishinaabearcs",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/anishinaabeArcs.png",
+		"tags": ["Native American", "3D"],
+		"applications": ["Anishinaabe Arcs", "Anishinaabe Arcs AR"]
+	},
+	{
+		"id": 11,
+		"name": "Barbershop Computing",
+		"slug": "barbershop",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/barbershop.png",
+		"tags": ["African American", "Continuous Paths"],
+		"applications": ["Barbershop Computing"]
+	},
+	{
+		"id": 4,
+		"name": "Bead Loom",
+		"slug": "beadloom",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/beadLoom.jpg",
+		"tags": ["Discrete Iteration", "Native American", "Cartesian Coordinates"],
+		"applications": ["Bead Loom JS", "Bead Loom Pro"]
+	},
+	{
+		"id": 31,
+		"name": "Benjamin Banneker",
+		"slug": "banneker",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/banneker.jpeg",
+		"tags": ["African American"],
+		"applications": ["Quincunx"]
+	},
+	{
+		"id": 35,
+		"name": "Cell Growth",
+		"slug": "cellgrowth",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/cellGrowth.jpg",
+		"tags": ["Biology"],
+		"applications": ["Cell Growth Pro"]
 	},
 	{
 		"id": 19,
-		"name": "Yarn Arts",
-		"url": "/culture/yarnarts/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/knitting.jpg",
-		"tags": []
+		"name": "Composting",
+		"slug": "composting",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/composting.jpg",
+		"tags": ["Across Cultures", "Biology", "Hardware", "Sustainability"],
+		"applications": ["Composting"]
 	},
 	{
-		"id": 49,
-		"name": "Pre-Columbian Pyramids",
-		"url": "/culture/precolumbianpyramids/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pyramid.png",
-		"tags": []
-	},
-	{
-		"id": 21,
-		"name": "Graffiti",
-		"url": "/culture/graffiti/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/gusto_VymqpwJ.jpg",
-		"tags": []
-	},
-	{
-		"id": 47,
-		"name": "Bigger2",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture_IoKKmLe.PNG",
-		"tags": []
-	},
-	{
-		"id": 34,
-		"name": "Collage",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/3725cb31b39c80d1daa842f3c34134b2.jpg",
-		"tags": []
-	},
-	{
-		"id": 33,
-		"name": "New 2D Application",
-		"url": "/applications/33/run",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/plain_52s1mNX.JPG",
-		"tags": []
-	},
-	{
-		"id": 14,
-		"name": "Afrofuturism",
-		"url": "/culture/afrofuturism/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/bailey2_ltlMwtW.png",
-		"tags": []
-	},
-	{
-		"id": 23,
-		"name": "New 3D Application",
-		"url": "",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/line_SlI6GtG.png",
-		"tags": []
-	},
-	{
-		"id": 16,
-		"name": "Saya People",
-		"url": "/cms/application-contexts/afrofuturism/?edit_off",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya_people.JPG",
-		"tags": []
-	},
-	{
-		"id": 52,
-		"name": "DIY Sports Science",
-		"url": "/culture/diysportsscience/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/black_family_tech_day.png",
-		"tags": []
-	},
-	{
-		"id": 17,
-		"name": "Adinkra",
-		"url": "/culture/adinkra/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Adinkra.jpg",
-		"tags": []
-	},
-	{
-		"id": 38,
-		"name": "Anishinaabe Arcs",
-		"url": "/culture/anishinaabearcs/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/arcs.png",
-		"tags": []
-	},
-	{
-		"id": 36,
-		"name": "Darwin Game 2",
-		"url": "/cms/application-contexts/darwin-game/?edit_off",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Darwin_RKctuF3.png",
-		"tags": []
-	},
-	{
-		"id": 62,
-		"name": "Sustainable Dyes",
-		"url": "/culture/sustainabledyes/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/IMG_0061.JPG",
-		"tags": []
-	},
-	{
-		"id": 60,
-		"name": "Performance Arts",
-		"url": "/culture/performingarts/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pal.png",
-		"tags": []
-	},
-	{
-		"id": 65,
-		"name": "SciFi",
-		"url": "/culture/scifi/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya.jpg",
-		"tags": []
-	},
-	{
-		"id": 66,
-		"name": "IntroCSVanilla",
-		"url": "/applications/66/run",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screenshot_from_2017-10-13_16-25-23.png",
-		"tags": []
-	},
-	{
-		"id": 63,
-		"name": "Sensing",
-		"url": "/applications/63/run",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/ph_sensor.jpg",
-		"tags": []
+		"id": 2,
+		"name": "Cornrow Curves",
+		"slug": "cornrowcurves",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/cornrowCurves.jpg",
+		"tags": ["Discrete Iteration", "African", "African American", "Transformational Geometry"],
+		"applications": ["Cornrow Curves Mathematics", "Cornrow Curves Pro", "Cornrow Curves Elementary"]
 	},
 	{
 		"id": 26,
-		"name": "Kente Computing",
-		"url": "/culture/kentecomputing/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Capture.jpg",
-		"tags": []
-	},
-	{
-		"id": 61,
-		"name": "Composting",
-		"url": "/culture/composting/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/composting_V6r2SnW.jpg",
-		"tags": []
-	},
-	{
-		"id": 28,
-		"name": "Northwest Basket Weaver",
-		"url": "/culture/northwestbasketweaver/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Northwest_Basket_Weaver.jpg",
-		"tags": []
-	},
-	{
-		"id": 64,
-		"name": "Legacy CSDTs",
-		"url": "/culture/legacy/index2.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/legacycsdt.PNG",
-		"tags": []
-	},
-	{
-		"id": 81,
-		"name": "Quilting CS",
-		"url": "/culture/quilting_cs/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/quilting_i4dJivP.jpg",
-		"tags": []
-	},
-	{
-		"id": 83,
-		"name": "Tooled Leather CS",
-		"url": "/culture/tooledleather_cs/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/stamps_AkEaImc.jpg",
-		"tags": []
-	},
-	{
-		"id": 70,
-		"name": "Skateboarder",
-		"url": "/culture/skateboarding/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screenshot_from_2018-03-16_11-29-31.png",
-		"tags": []
-	},
-	{
-		"id": 82,
-		"name": "Cornrow Curves CS",
-		"url": "/culture/cornrowcurves_cs/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cornrow_content_page_1_33BG3eo_BVzuXJ9.png",
-		"tags": []
-	},
-	{
-		"id": 69,
-		"name": "FractalSimulator",
-		"url": null,
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/color.png",
-		"tags": []
-	},
-	{
-		"id": 86,
-		"name": "Appalachian",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/app_basic.png",
-		"tags": []
-	},
-	{
-		"id": 13,
-		"name": "Bead Loom",
-		"url": "/culture/beadloom/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/beadwork3_LC8NLYZ.jpg",
-		"tags": []
-	},
-	{
-		"id": 88,
-		"name": "GeesBend",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/gees.png",
-		"tags": []
-	},
-	{
-		"id": 77,
-		"name": "Tooled Leather",
-		"url": "/culture/tooledleather/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/stamps.jpg",
-		"tags": []
-	},
-	{
-		"id": 89,
-		"name": "Four Directions",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/four_directions_2.png",
-		"tags": []
-	},
-	{
-		"id": 93,
-		"name": "Curriculum",
-		"url": "/culture/curriculum/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2020-05-08_at_9.41.21_AM.png",
-		"tags": []
-	},
-	{
-		"id": 94,
-		"name": "Anishinaabe Arcs AR",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2020-05-08_at_9.44.17_AM.png",
-		"tags": []
-	},
-	{
-		"id": 95,
-		"name": "Adinkra Stamping",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/stamping-software.png",
-		"tags": []
-	},
-	{
-		"id": 85,
-		"name": "Anishinaabe",
-		"url": "/culture/quilting/anishinaabe.html",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/anishinaabe.png",
-		"tags": []
-	},
-	{
-		"id": 40,
-		"name": "African Fractals",
-		"url": "/culture/africanfractals/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cross.png",
-		"tags": []
-	},
-	{
-		"id": 84,
 		"name": "Darwin Game",
-		"url": "/culture/darwingame/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/gamescreen.png",
-		"tags": []
+		"slug": "darwingame",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/darwin.png",
+		"tags": ["Biology", "Sound, Games, and Animations"],
+		"applications": ["Darwin Game 1", "Darwin Game 2", "Darwin Game"]
 	},
 	{
-		"id": 92,
-		"name": "beetleblocks",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/unnamed_3.png",
-		"tags": []
+		"id": 16,
+		"name": "DIY Sports Science",
+		"slug": "diysportsscience",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/diySportsScience.png",
+		"tags": ["Across Cultures", "Biology", "Hardware"],
+		"applications": ["DIY Sports Science Pro"]
 	},
 	{
-		"id": 90,
-		"name": "RhythmWheelsSimulator",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2019-11-25_at_3.41.46_PM.png",
-		"tags": []
-	},
-	{
-		"id": 96,
-		"name": "African Fractals (Middle)",
-		"url": "/culture/africanfractalsdemo/index.html",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cross_1.png",
-		"tags": []
-	},
-	{
-		"id": 99,
-		"name": "Cornrow Curves JS",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/math.png",
-		"tags": []
-	},
-	{
-		"id": 100,
-		"name": "Bead Loom JS",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/math_X3RwFFU.png",
-		"tags": []
-	},
-	{
-		"id": 101,
-		"name": "Northwest Basket Weaver JS",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/math_EnmnzOL.png",
-		"tags": []
-	},
-	{
-		"id": 102,
-		"name": "Navajo Rug Weaver JS",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/math_r1phFqZ.png",
-		"tags": []
-	},
-	{
-		"id": 97,
-		"name": "csnap_pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/simulate.png",
-		"tags": []
-	},
-	{
-		"id": 71,
-		"name": "pH Empowered",
-		"url": "/culture/phempowered/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/phfrontgraphic-icon.png",
-		"tags": []
-	},
-	{
-		"id": 39,
-		"name": "Rhythm Wheels",
-		"url": "/culture/rhythmwheels/index.html",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Son_rumba_clave_3OMFkAv.png",
-		"tags": []
-	},
-	{
-		"id": 73,
-		"name": "Systems Science",
-		"url": "/culture/systemsscience/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2018-05-30_at_9.33.43_AM.png",
-		"tags": []
-	},
-	{
-		"id": 74,
+		"id": 21,
 		"name": "Engineered Ecosystems",
-		"url": "/culture/engineeredecosystems/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/image5.png",
-		"tags": []
+		"slug": "engineeredecosystems",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/engineeredecosystems.png",
+		"tags": ["Native American", "Biology", "Hardware"],
+		"applications": ["Engineered Ecosystems"]
 	},
 	{
-		"id": 75,
+		"id": 22,
 		"name": "E-Waste 2 Makerspace",
-		"url": "/culture/ewaste2makerspace/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/3designs.PNG",
-		"tags": []
-	},
-	{
-		"id": 76,
-		"name": "Oral Histories",
-		"url": "/oralhistory/",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2018-06-26_at_11.21.35_AM.png",
-		"tags": []
-	},
-	{
-		"id": 72,
-		"name": "Benjamin Banneker",
-		"url": "/culture/banneker/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/benjamin_banneker_IKw2Kmj.jpg",
-		"tags": []
-	},
-	{
-		"id": 67,
-		"name": "Woven Heaven, Tangled Earth",
-		"url": "/culture/whte/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/wovenheaventangledearth.png",
-		"tags": []
-	},
-	{
-		"id": 18,
-		"name": "Cell Growth",
-		"url": "/culture/cellgrowth/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cell.png",
-		"tags": []
-	},
-	{
-		"id": 98,
-		"name": "African Hexastrips",
-		"url": "/culture/hexastripweaving/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Screen_Shot_2020-08-24_at_12.22.31_AM.png",
-		"tags": []
-	},
-	{
-		"id": 105,
-		"name": "Adinkra Animations Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_p251jfN.png",
-		"tags": []
-	},
-	{
-		"id": 104,
-		"name": "Adinkra Stamping Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder.png",
-		"tags": []
-	},
-	{
-		"id": 79,
-		"name": "Polar Designs (Broken)",
-		"url": "/applications/56/run",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/polar.JPG",
-		"tags": []
-	},
-	{
-		"id": 103,
-		"name": "Adinkra Carving Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/anishinaabe_final.png",
-		"tags": []
-	},
-	{
-		"id": 87,
-		"name": "Lakota",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/lakota-goal-6.png",
-		"tags": []
-	},
-	{
-		"id": 91,
-		"name": "Henna",
-		"url": "/culture/henna/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/thumb.png",
-		"tags": ["Discrete Iteration", "Across Cultures"]
-	},
-	{
-		"id": 106,
-		"name": "Cornrow Curves Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_7IJ4PZm.png",
-		"tags": []
-	},
-	{
-		"id": 110,
-		"name": "Lakota Quilting Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_svbunNf.png",
-		"tags": []
-	},
-	{
-		"id": 114,
-		"name": "Polar Yarn Art Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_dDqDHHW.png",
-		"tags": []
-	},
-	{
-		"id": 112,
-		"name": "Graffiti Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_LWsBHYS.png",
-		"tags": []
-	},
-	{
-		"id": 109,
-		"name": "Gee's Bend Quilting Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_TCnHiPw.png",
-		"tags": []
-	},
-	{
-		"id": 111,
-		"name": "Four Directions Quilting Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_hH0f9mj.png",
-		"tags": []
-	},
-	{
-		"id": 107,
-		"name": "Cornrow Animations Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_lz30Gof.png",
-		"tags": []
-	},
-	{
-		"id": 108,
-		"name": "Anishinaabe Quilting Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_ZEP6fPQ.png",
-		"tags": []
-	},
-	{
-		"id": 113,
-		"name": "Bead Loom Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_uq0QSSS.png",
-		"tags": []
-	},
-	{
-		"id": 119,
-		"name": "Biggers Afrofuturism Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya_0nOCkS7.jpg",
-		"tags": []
-	},
-	{
-		"id": 134,
-		"name": "Adire Simulation",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/undefined_image_5.png",
-		"tags": []
-	},
-	{
-		"id": 116,
-		"name": "Tuareg Tooled Leather Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_oitpq5f.png",
-		"tags": []
-	},
-	{
-		"id": 117,
-		"name": "Appalachian Quilting Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/berea2.png",
-		"tags": []
-	},
-	{
-		"id": 118,
-		"name": "Bailey Afrofuturism Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya_k0Xvnbw.jpg",
-		"tags": []
-	},
-	{
-		"id": 144,
-		"name": "Adinkra Grapher",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/hh-3.png",
-		"tags": []
-	},
-	{
-		"id": 120,
-		"name": "Nontsi Afrofuturism Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya_hoYFulo.jpg",
-		"tags": []
-	},
-	{
-		"id": 121,
-		"name": "Saya Afrofuturism Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/saya_6zaYyjF.jpg",
-		"tags": []
-	},
-	{
-		"id": 135,
-		"name": "Gara Simulation",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage_14.png",
-		"tags": []
-	},
-	{
-		"id": 122,
-		"name": "Henna Flowers & Radials Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/tut1.png",
-		"tags": []
-	},
-	{
-		"id": 123,
-		"name": "Henna Vines Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/tut2.png",
-		"tags": []
-	},
-	{
-		"id": 124,
-		"name": "Henna Curves Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/tut3.png",
-		"tags": []
-	},
-	{
-		"id": 125,
-		"name": "Henna Straight Lines Software",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/tut4.png",
-		"tags": []
-	},
-	{
-		"id": 126,
-		"name": "Cell Growth Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cell_SZMxU1h.png",
-		"tags": []
-	},
-	{
-		"id": 115,
-		"name": "Rectangular Yarn Art Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/pro_placeholder_ADZqIdW.png",
-		"tags": []
-	},
-	{
-		"id": 145,
-		"name": "SPA Cloud Save Test Grounds",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/target.jpeg",
-		"tags": []
-	},
-	{
-		"id": 129,
-		"name": "Quincunx",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/undefined_image_3.png",
-		"tags": []
-	},
-	{
-		"id": 130,
-		"name": "DIY Sports Science Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/main-tut.png",
-		"tags": []
-	},
-	{
-		"id": 127,
-		"name": "Barbershop Computing",
-		"url": "/culture/barbershop/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage_12.png",
-		"tags": []
-	},
-	{
-		"id": 131,
-		"name": "Mangbetu Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/undefined_image_4.png",
-		"tags": []
-	},
-	{
-		"id": 139,
-		"name": "Quilting",
-		"url": "/culture/quilting/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/quilting.jpeg",
-		"tags": []
-	},
-	{
-		"id": 136,
-		"name": "Afrofuturism Quilting",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage.png",
-		"tags": []
-	},
-	{
-		"id": 137,
-		"name": "Physical Science",
-		"url": "/culture/physicalscience/index.html",
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/image.png",
-		"tags": []
-	},
-	{
-		"id": 146,
-		"name": "Workbook - CS - Intro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/source.png",
-		"tags": []
-	},
-	{
-		"id": 141,
-		"name": "Polar Designs",
-		"url": "/applications/141/run",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/polar_7SzvT7A.jpeg",
-		"tags": []
-	},
-	{
-		"id": 138,
-		"name": "LocalTest",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/tree.png",
-		"tags": []
-	},
-	{
-		"id": 133,
-		"name": "Northwest Basket Weaver Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage_13.png",
-		"tags": []
-	},
-	{
-		"id": 142,
-		"name": "Lakota r2",
-		"url": null,
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage_5.png",
-		"tags": []
-	},
-	{
-		"id": 143,
-		"name": "Lakota Quilting Pro Variation",
-		"url": null,
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/Stage_6.png",
-		"tags": []
-	},
-	{
-		"id": 140,
-		"name": "Miller Quilting Animation",
-		"url": null,
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/quilting-animations.png",
-		"tags": []
-	},
-	{
-		"id": 132,
-		"name": "Navajo Rug Weaver Pro",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/programming-nrw.png",
-		"tags": []
-	},
-	{
-		"id": 128,
-		"name": "Cornrow Curves Elementary",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/highschoolimg.png",
-		"tags": []
-	},
-	{
-		"id": 149,
-		"name": "AI for African Art - Advanced",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/output_-_2022-04-18T130334.023.png",
-		"tags": []
-	},
-	{
-		"id": 147,
-		"name": "AI for African Art - Beginner",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/output_-_2022-04-18T130310.934.png",
-		"tags": []
-	},
-	{
-		"id": 148,
-		"name": "AI for African Art - Intermediate",
-		"url": null,
-		"featured": false,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/output_-_2022-04-18T130250.685.png",
-		"tags": []
+		"slug": "ewaste2makerspace",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/ewaste.png",
+		"tags": ["Hardware"],
+		"applications": ["E-Waste 2 Makerspace"]
 	},
 	{
 		"id": 9,
-		"name": "Cornrow Curves",
-		"url": "/culture/cornrowcurves/index.html",
-		"featured": true,
-		"screenshot": "http://127.0.0.1:8000/media/application_screenshot/cornrow_content_page_1_33BG3eo.png",
-		"tags": ["Discrete Iteration"]
+		"name": "Graffiti",
+		"slug": "graffiti",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/grafitti.png",
+		"tags": ["Across Cultures", "Continuous Paths", "Logarithmic Spirals"],
+		"applications": ["Graffiti Pro"]
+	},
+	{
+		"id": 8,
+		"name": "Henna",
+		"slug": "henna",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/henna.png",
+		"tags": ["Discrete Iteration", "Across Cultures"],
+		"applications": [
+			"Henna Flowers & Radials Software",
+			"Henna Vines Software",
+			"Henna Curves Software",
+			"Henna Straight Lines Software"
+		]
+	},
+	{
+		"id": 29,
+		"name": "Hexastrip Weaving",
+		"slug": "hexastripweaving",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/hexaStripWeaving.jpg",
+		"tags": ["African"],
+		"applications": ["African Hexastrips"]
+	},
+	{
+		"id": 7,
+		"name": "Kente Computing",
+		"slug": "kentecomputing",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/kenteComputing.jpg",
+		"tags": ["Discrete Iteration", "African"],
+		"applications": ["Kente Computing"]
+	},
+	{
+		"id": 28,
+		"name": "Mangbetu",
+		"slug": "mangbetu",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/mangbetu.jpeg",
+		"tags": ["African", "Transformational Geometry"],
+		"applications": ["Mangbetu Pro"]
+	},
+	{
+		"id": 32,
+		"name": "Navajo Rug Weaver",
+		"slug": "navajorugweaver",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/navajo.jpg",
+		"tags": ["Native American", "Cartesian Coordinates"],
+		"applications": ["Northwest Basket Weaver JS", "Northwest Basket Weaver Pro"]
+	},
+	{
+		"id": 33,
+		"name": "Northwest Basket Weaver",
+		"slug": "northwestbasketweaver",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/northwestBasketWeaver.jpg",
+		"tags": ["Native American", "Cartesian Coordinates"],
+		"applications": ["Northwest Basket Weaver JS", "Northwest Basket Weaver Pro"]
+	},
+	{
+		"id": 18,
+		"name": "Performing Arts",
+		"slug": "performingarts",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/performingarts.png",
+		"tags": ["Across Cultures", "Hardware", "Sound, Games, and Animations"],
+		"applications": ["Performance Arts"]
+	},
+	{
+		"id": 20,
+		"name": "ph Empowered",
+		"slug": "phempowered",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/ph.png",
+		"tags": ["African American", "Biology", "Hardware"],
+		"applications": ["pH Empowered"]
+	},
+	{
+		"id": 34,
+		"name": "Physical Systems",
+		"slug": "physicalscience",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/physicalscience.png",
+		"tags": ["Native American"],
+		"applications": ["Physical Science"]
+	},
+	{
+		"id": 13,
+		"name": "Pre-Columbian Pyramids",
+		"slug": "precolumbianpyramids",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/preColumbianPyramids.jpg",
+		"tags": ["3D", "Latinx"],
+		"applications": ["Pre-Columbian Pyramids"]
+	},
+	{
+		"id": 1,
+		"name": "Quilting",
+		"slug": "quilting",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/quilting.jpg",
+		"tags": ["Discrete Iteration", "Across Cultures"],
+		"applications": ["Gee's Bend Quilting Pro", "Four Directions Quilting Pro", "Anishinaabe Quilting Pro", "Quilting"]
+	},
+	{
+		"id": 24,
+		"name": "Rhythm Wheels",
+		"slug": "rhythmwheels",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/rhythmWheels.jpg",
+		"tags": ["Sound, Games, and Animations", "Latinx"],
+		"applications": ["RhythmWheelsSimulator", "Rhythm Wheels"]
+	},
+	{
+		"id": 6,
+		"name": "SciFi",
+		"slug": "scifi",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/scifi.jpeg",
+		"tags": ["Discrete Iteration"],
+		"applications": [
+			"Biggers Afrofuturism Software",
+			"Bailey Afrofuturism Software",
+			"Nontsi Afrofuturism Software",
+			"Saya Afrofuturism Software"
+		]
+	},
+	{
+		"id": 25,
+		"name": "Skateboarding",
+		"slug": "skateboarding",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/skateBoarding.png",
+		"tags": ["Sound, Games, and Animations", "Across Cultures", "Algebra"],
+		"applications": ["Skateboarding", "Skateboarder"]
+	},
+	{
+		"id": 17,
+		"name": "Sustainable Dyes",
+		"slug": "sustainabledyes",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/sustainable.png",
+		"tags": ["Across Cultures", "Biology", "Hardware", "Sustainability"],
+		"applications": ["Adire Simulation", "Gara Simulation"]
+	},
+	{
+		"id": 23,
+		"name": "Systems Science",
+		"slug": "systemsscience",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/systems.png",
+		"tags": ["Biology", "Hardware", "African American"],
+		"applications": ["Systems Science"]
+	},
+	{
+		"id": 3,
+		"name": "Tooled Leather",
+		"slug": "tooledleather",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/tooledleather.png",
+		"tags": ["Discrete Iteration", "Across Cultures"],
+		"applications": ["Tooled Leather"]
+	},
+	{
+		"id": 14,
+		"name": "Woven Heaven, Tangled Earth",
+		"slug": "whte",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/wovenheaventangledearth.png",
+		"tags": ["Latinx", "Statistics"],
+		"applications": ["Woven Heaven, Tangled Earth"]
+	},
+	{
+		"id": 5,
+		"name": "Yarn Arts",
+		"slug": "yarnarts",
+		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/yarnArts.jpg",
+		"tags": ["Discrete Iteration", "Across Cultures"],
+		"applications": ["Polar Yarn Art Pro", "Rectangular Yarn Art Pro"]
 	}
 ]

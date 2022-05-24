@@ -35,10 +35,8 @@ function App() {
 	const [activeTags, setActiveTags] = useState(0);
 
 	const fetchApplications = async () => {
-		const res = await fetch("http://127.0.0.1:8000/api/application_backgrounds/");
+		const res = await fetch("data.json");
 		const data = await res.json();
-
-		console.log(data);
 		setApps(data);
 		setFiltered(data);
 	};
