@@ -1,10 +1,8 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
 import { ProgressBar } from "react-bootstrap";
-import styles from "./PointsProgress.module.scss";
-
 import { FaTrophy } from "react-icons/fa";
+import styles from "./PointsProgress.module.scss";
 
 export default function PointsProgress(props) {
 	const earnedPoints = useSelector((state) => state.workbookState.data.points_earned);

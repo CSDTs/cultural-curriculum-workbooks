@@ -1,20 +1,23 @@
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import react from "@vitejs/plugin-react";
 import commonjs from "@rollup/plugin-commonjs";
-const path = require("path");
+const { resolve } = require("path");
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [react()],
 	base: "./",
-	build: {
-		// base: "/static/workbooks/",
-		cssCodeSplit: false,
-		jsCodeSplit: false,
-		rollupOptions: {
-			plugins: [commonjs()],
+	resolve: {
+		alias: {
+			"#components": resolve(__dirname, "/src/components"),
+			"#assets": resolve(__dirname, "/src/img"),
 		},
-		commonjsOptions: {
-			exclude: [/./],
+	},
+	build: {
+		rollupOptions: {
+			input: {
+				main: resolve(__dirname, "index.html"),
+				nested: resolve(__dirname, "/pages/cultural_curriculum/index.html"),
+			},
 		},
 	},
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 export default function VerifyUser() {
-	const user = useSelector((state) => state.currentUser.username);
+	const user = useSelector((state) => state.workbookState.user.username);
 
 	return (
 		<React.Fragment>

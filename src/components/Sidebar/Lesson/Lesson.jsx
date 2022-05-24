@@ -1,7 +1,6 @@
 import React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-
 import { setCurrentLessonData } from "../../../slices/workbookSlice";
 
 import styles from "./Lesson.module.scss";

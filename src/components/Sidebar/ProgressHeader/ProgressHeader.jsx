@@ -12,7 +12,7 @@ export default function ProgressHeader(props) {
 	let finished = document.querySelectorAll(`s`).length;
 	const dispatch = useDispatch();
 	const allLessons = useSelector((state) => state.workbookState.workbook.available_lessons);
-	const availablePoints = useSelector((state) => state.workbookState.workbook.available_points);
+
 	let total = allLessons.length;
 
 	const saveObjectClassroom = useSelector((state) => state.workbookState.user.selected_classroom);

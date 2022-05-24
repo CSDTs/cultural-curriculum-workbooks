@@ -1,14 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { goToPreviousLesson, goToNextLesson } from "../../../slices/workbookSlice.js";
+import { goToPreviousLesson, goToNextLesson } from "/src/slices/workbookSlice.js";
 import { Button } from "react-bootstrap";
 
 export default function LessonNav() {
 	const dispatch = useDispatch();
 	const numOfLessons = useSelector((state) => state.workbookState.workbook.available_lessons).length;
 	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson_id);
-	const data = useSelector((state) => state.workbookState.data);
 
 	let endOfWorkbook = currentLesson == numOfLessons - 1;
 	let startOfWorkbook = currentLesson == 0;
@@ -24,20 +22,11 @@ export default function LessonNav() {
 				<Button
 					variant="primary"
 					disabled={startOfWorkbook}
-					onClick={() => {
-						dispatch(goToPreviousLesson());
-						console.log(data);
-					}}
+					onClick={() => dispatch(goToPreviousLesson())}
 					className="mx-2">
 					Prev
 				</Button>
-				<Button
-					variant="primary"
-					disabled={endOfWorkbook}
-					onClick={() => {
-						dispatch(goToNextLesson());
-						console.log(data);
-					}}>
+				<Button variant="primary" disabled={endOfWorkbook} onClick={() => dispatch(goToNextLesson())}>
 					Next
 				</Button>
 			</span>

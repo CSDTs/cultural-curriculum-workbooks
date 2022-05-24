@@ -4,9 +4,9 @@
 	"version": "0.0.0",
 	"scripts": {
 		"dev": "vite",
-		"build": "vite build && sh adjust.sh",
-		"test": "vite build --base=/static/workbooks/",
-		"preview": "vite preview"
+		"build": "vite build --base=/static/workbooks/",
+		"test": "vite build && sh adjust.sh ",
+		"preview": "vite preview "
 	},
 	"dependencies": {
 		"@chakra-ui/react": "^2.0.2",
@@ -17,17 +17,22 @@
 		"@reduxjs/toolkit": "^1.8.1",
 		"@rollup/plugin-commonjs": "^22.0.0",
 		"dompurify": "^2.3.7",
-		"react": "^18.0.0",
+		"framer-motion": "^6.3.3",
+		"muuri": "^0.9.5",
+		"muuri-react": "^3.1.6",
+		"react": "^18.1.0",
 		"react-bootstrap": "^2.3.1",
 		"react-circular-progressbar": "^2.0.4",
 		"react-dom": "^18.0.0",
 		"react-icons": "^4.3.1",
 		"react-redux": "^8.0.1",
 		"react-router-dom": "^6.3.0",
+		"react-toastify": "^9.0.1",
 		"reapop": "^4.0.5",
 		"rollup-plugin-cjs": "^1.0.0",
 		"rollup-plugin-includepaths": "^0.2.4",
-		"sass": "^1.51.0"
+		"sass": "^1.51.0",
+		"web-animations-js": "^2.3.2"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.0",

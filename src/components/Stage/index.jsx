@@ -6,6 +6,7 @@ import DOMPurify from "dompurify";
 import VerifyUser from "./VerifyUser/VerifyUser";
 import Homepage from "./Homepage/Homepage";
 
+import CSnap from "./CSnap/CSnap";
 import SaveButtons from "./SaveButtons/SaveButtons";
 
 import styles from "./Stage.module.scss";
@@ -53,9 +54,11 @@ export default function Stage() {
 
 	const dispatch = useDispatch();
 
-	let loadProjectXML = () => {
+	const urlPath = `${import.meta.env.PROD ? "/static/workbooks/" : ""}${lesson?.project}`;
+
+	let loadProjectXML = (urlPath) => {
 		if (lesson?.tags?.includes("csnap")) {
-			fetch(lesson.project)
+			fetch(urlPath)
 				.then((response) => response.text())
 				.then((data) => {
 					let iframe = document.querySelector("iframe");
@@ -84,9 +87,9 @@ export default function Stage() {
 
 	React.useEffect(() => {
 		if (lesson?.tags?.includes("csnap")) {
-			loadProjectXML();
+			loadProjectXML(urlPath);
 		}
-	}, []);
+	}, [urlPath]);
 
 	return (
 		<section className="px-3 mt-3">
@@ -106,9 +109,7 @@ export default function Stage() {
 				}}
 			/>
 
-			{lesson?.tags?.includes("csnap") && (
-				<iframe className={`w-100 shadow ${styles.csnapFrame}`} src="/static/csnap_pro/csdt/snap.html"></iframe>
-			)}
+			{lesson?.tags?.includes("csnap") && <CSnap />}
 
 			{lesson?.tags?.includes("login") && <VerifyUser />}
 

@@ -1,7 +1,7 @@
 import react from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { notify, dismissNotifications, dismissNotification } from "reapop";
-
+import { toast } from "react-toastify";
 // async function postWorkbookSave(project, method = "POST") {
 // 	const response = await fetch(`http://127.0.0.1:8000/api/workbook_saves/`, {
 // 		method: method,
@@ -67,7 +67,7 @@ async function workbookRequest(project, method) {
 	console.log(alterProps);
 	console.log(response);
 	console.log(data);
-	return { data, status: response.status };
+	return { data, status: response.status, ok: response.ok };
 }
 
 async function getClassroomInfo(id) {
