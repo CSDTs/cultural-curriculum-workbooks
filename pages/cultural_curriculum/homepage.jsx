@@ -7,8 +7,8 @@ import Navigation from "#components/Navigation/Navigation";
 import Application from "./Application/Application";
 import Filter from "./Filter/Filter";
 
-import { getClassrooms, getUser } from "/src/utils/apiRequests";
-import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "/src/slices/workbookSlice";
+import { getUser } from "/src/utils/apiRequests";
+import { setCurrentUser } from "/src/slices/workbookSlice";
 import { motion, AnimatePresence } from "framer-motion";
 
 import "/src/App.css";
