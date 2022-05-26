@@ -4,8 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 import Navigation from "#components/Navigation/Navigation";
 
-import Application from "./Application";
-import Filter from "./Filter";
+import Application from "./Application/Application";
+import Filter from "./Filter/Filter";
 
 import { getClassrooms, getUser } from "/src/utils/apiRequests";
 import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "/src/slices/workbookSlice";

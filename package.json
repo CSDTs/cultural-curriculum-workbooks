@@ -28,6 +28,7 @@
 		"react-redux": "^8.0.1",
 		"react-router-dom": "^6.3.0",
 		"react-toastify": "^9.0.1",
+		"react-transition-group": "^4.4.2",
 		"reapop": "^4.0.5",
 		"rollup-plugin-cjs": "^1.0.0",
 		"rollup-plugin-includepaths": "^0.2.4",
