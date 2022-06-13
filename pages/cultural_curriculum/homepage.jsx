@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -6,6 +6,8 @@ import Navigation from "#components/Navigation/Navigation";
 
 import Application from "./Application/Application";
 import Filter from "./Filter/Filter";
+import Menu from "./Filter/Menu";
+import Search from "./Filter/Search";
 
 import { getClassrooms, getUser } from "/src/utils/apiRequests";
 import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "/src/slices/workbookSlice";
@@ -30,8 +32,12 @@ function App() {
 
 	const user = useSelector((state) => state.workbookState.user);
 
-	const [apps, setApps] = useState([]);
-	const [filtered, setFiltered] = useState([]);
+	const [apps, setApps] = useState([]); //CardList
+	var [filtered, setFiltered] = useState([]); //Selectedcategory
+	const [searchField, setSearchField] = useState(""); //forsearchfield
+	var [searchResult, setSearchResult] = useState([]); //for search result to iterate 
+	const [selectedOption, setSelectedOption] = useState([]);
+
 	const [activeTags, setActiveTags] = useState(0);
 
 	const fetchApplications = async () => {
@@ -39,9 +45,38 @@ function App() {
 		const data = await res.json();
 		setApps(data);
 		setFiltered(data);
+		// setOptionList(data);
 	};
 
 	let localStorageUser = JSON.parse(localStorage.getItem("currentUser")) || "";
+
+	// function handleCategoryChange(event) {
+	// 	// setFiltered(event.target.value);
+	// 	setSelectedOption(event.target.value);
+	// 	// getFilteredList(event.target.value);
+	// }
+
+	// useEffect(() => {
+	// 	setApps(data);
+	// }, []);
+
+	// // Function to get filtered list for dropdown
+	// function getFilteredList() {
+	// 	// Avoid filter when selectedCategory is null
+	// 	if (selectedOption.length != 0) {
+	// 		if (selectedOption === 'All') {
+	// 			console.log(selectedOption);
+	// 			console.log("inside All condition");
+	// 			return apps;
+	// 		}
+	// 		return apps.filter((app) => app.category === selectedOption);
+	// 	}
+	// 	return apps;
+	// 	// return apps.filter((app) => apps.category === filtered);
+	// }
+
+	// // // Avoid duplicate function calls with useMemo
+	// filtered = useMemo(getFilteredList, [selectedOption, apps]);
 
 	React.useEffect(() => {
 		if (localStorageUser) setUser(localStorageUser, dispatch);
@@ -63,6 +98,8 @@ function App() {
 
 				<ToastContainer />
 				<section className={` col-md-10 mx-auto mt-5`}>
+					<Menu apps={apps} setFiltered={setFiltered} selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+					<Search apps={apps} setFiltered={setFiltered} setSearchResult={setSearchResult} setSearchField={setSearchField} searchField={searchField} />
 					<Filter apps={apps} setFiltered={setFiltered} activeTags={activeTags} setActiveTags={setActiveTags} />
 					<motion.div layout className={`applications`}>
 						<AnimatePresence>

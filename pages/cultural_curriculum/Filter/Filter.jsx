@@ -14,20 +14,22 @@ export default function Filter({ setActiveTags, activeTags, setFiltered, apps })
 		setFiltered(filtered);
 	}, [activeTags]);
 
+
+
 	return (
 		<>
 			<div className="row">
-				<div className="col-md-4">
-					<Form.Select aria-label="Default select example">
-						<option>Open this select menu</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
+				{/* <div className="col-md-4">
+					<Form.Select aria-label="Default select example" name="category-list" id="category-list" onChange={handleCategoryChange}>
+						<option>All</option>
+						<option value="1">Teacher</option>
+						<option value="2">Artisian</option>
+						<option value="3">Student</option>
 					</Form.Select>
-				</div>
-				<div className="col-md-4">
+				</div> */}
+				{/* <div className="col-md-4">
 					<Form.Control type="text" placeholder="Search in applications" />
-				</div>
+				</div> */}
 
 				<div className="col-md-4">
 					<DropdownButton id="dropdown-item-button" title="Dropdown button">
