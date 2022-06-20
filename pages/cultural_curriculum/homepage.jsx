@@ -5,9 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import Navigation from "#components/Navigation/Navigation";
 
 import Application from "./Application/Application";
-import Filter from "./Filter/Filter";
-import Menu from "./Filter/Menu";
-import Search from "./Filter/Search";
 
 import AdvancedFilter from "./Filter";
 
@@ -89,11 +86,9 @@ function App() {
 					{/* Added parent filter to handle all filtering operations */}
 					<AdvancedFilter apps={apps} setFiltered={setFiltered} />
 					<motion.div layout className={`applications`}>
-						<AnimatePresence>
-							{filtered.map((app) => (
-								<Application {...app} key={app.name} />
-							))}
-						</AnimatePresence>
+						{filtered.length > 0 ? filtered.map((app) => (
+							<AnimatePresence> <Application {...app} key={app.name} /> </AnimatePresence>
+						)) : <div class="no-data"> No entry found</div>}
 					</motion.div>
 				</section>
 			</main>

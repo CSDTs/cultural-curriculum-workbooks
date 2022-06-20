@@ -1,11 +1,11 @@
 import React from "react";
-import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
-import ItemList from "../Application/ItemList";
+import { Form, DropdownButton, Dropdown, Accordion, Button } from "react-bootstrap";
 export default function AdvancedFilter({ setFiltered, apps }) {
 	// Each option has its own state for filtering
 	const [filteredCategories, setFilteredCategories] = React.useState("All");
-	const [filteredSearch, setFilteredSearch] = React.useState(0);
+	const [filteredSearch, setFilteredSearch] = React.useState("");
 	const [filteredTags, setFilteredTags] = React.useState([]);
+	const [checked, setChecked] = React.useState(false);
 
 	//Added ability to just create a relevant list of categories based on the API call
 	let categories = apps
@@ -32,12 +32,34 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 		if (tags.includes(checkValue)) tags = tags.filter((tag) => tag != checkValue);
 		else tags.push(checkValue);
 		setFilteredTags(tags);
+		setChecked(!checked);
 	};
 
 	//? Not sure what this was supposed to be for
 	// function searchList() {
 	// 	return <ItemList filtered={[]} />;
 	// }
+
+	const onReset = () => {
+		if (filteredCategories !== "All") {
+			setFilteredCategories("All");
+		}
+
+		if (filteredSearch !== "") {
+			setFilteredSearch("");
+		}
+
+		if (filteredTags != []) {
+			setFilteredTags([]);
+			if (checked === true) {
+				setChecked(false);
+			}
+		}
+
+
+		// || filteredSearch > 0 || filteredTags > 0)
+		// 	console.log("inside reset");
+	};
 
 	//Apps render only when one of the three passed options are changed
 	React.useEffect(() => {
@@ -60,8 +82,8 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 				filteredTags.length == 0
 					? true
 					: filteredTags.reduce((acc, tag) => {
-							return acc || app.tags.includes(tag);
-					  }, false);
+						return acc || app.tags.includes(tag);
+					}, false);
 
 			//Return true if app matches all given criteria (also set default states to true to allow for blank entries)
 			return cat && str && res;
@@ -74,9 +96,29 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 		<>
 			<div className="row">
 				<div className="col-md-4">
-					{/* Advanced Filtering with checkboxes. For users who really wants specific results */}
+					{/* Category grouping for users who just want generic results*/}
 					{/* Could be separated into its own component */}
-					<DropdownButton id="dropdown-item-button" title="Filter" className="btn-block" block>
+					<Form.Select
+						aria-label="Default select example"
+						name="category-list"
+						id="category-list"
+						value={filteredCategories}
+						onChange={handleCategoryChange}>
+						<option value="All">All Categories</option>
+						{[...new Set(categories)].map((type) => (
+							<option value={`${type}`}>{type}</option>
+						))}
+					</Form.Select>
+				</div>
+				<div className="col-md-4">
+					{/* Search bar for users who knows the name of the app they want*/}
+					{/* Could be separated into its own component */}
+					<Form.Control type="text" value={filteredSearch} placeholder="Search by name in applications" onChange={handleChange} />
+					{/* Not sure what search list does still.  */}
+					{/* <span>{searchList()}</span> */}
+				</div>
+				<div className="col-md-2">
+					<DropdownButton id="dropdown-item-button" title="Advance Filter" className="btn-block" block>
 						<Dropdown.ItemText className="advanced-filter">
 							<Accordion defaultActiveKey="0">
 								<Accordion.Item eventKey="0">
@@ -87,8 +129,26 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 												<div key={`default-${type}`} className="mb-3">
 													<Form.Check
 														type="checkbox"
+														checked={checked[type]}
 														id={`default-${type}`}
 														label={`${type} School`}
+														value={type}
+														onChange={handleTagGroupChange}
+													/>
+												</div>
+											))}
+										</Form>
+									</Accordion.Body>
+									<Accordion.Header>Technology Domain</Accordion.Header>
+									<Accordion.Body>
+										<Form value={filteredTags}>
+											{["Hardware", "Biology", "Physical Science"].map((type) => (
+												<div key={`default-${type}`} className="mb-3">
+													<Form.Check
+														type="checkbox"
+														checked={checked[type]}
+														id={`default-${type}`}
+														label={`${type}`}
 														value={type}
 														onChange={handleTagGroupChange}
 													/>
@@ -101,26 +161,10 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 						</Dropdown.ItemText>
 					</DropdownButton>
 				</div>
-				<div className="col-md-4">
-					{/* Category grouping for users who just want generic results*/}
+				<div className="col-md-2">
+					{/* Advanced Filtering with checkboxes. For users who really wants specific results */}
 					{/* Could be separated into its own component */}
-					<Form.Select
-						aria-label="Default select example"
-						name="category-list"
-						id="category-list"
-						onChange={handleCategoryChange}>
-						<option value="All">All Categories</option>
-						{[...new Set(categories)].map((type) => (
-							<option value={`${type}`}>{type}</option>
-						))}
-					</Form.Select>
-				</div>
-				<div className="col-md-4">
-					{/* Search bar for users who knows the name of the app they want*/}
-					{/* Could be separated into its own component */}
-					<Form.Control type="text" placeholder="Search in applications" onChange={handleChange} />
-					{/* Not sure what search list does still.  */}
-					{/* <span>{searchList()}</span> */}
+					<Button display-if={filteredCategories !== "All" || filteredSearch > 0 || filteredTags > 0} onClick={onReset} class="clear-button"> Clear</Button>
 				</div>
 			</div>
 		</>

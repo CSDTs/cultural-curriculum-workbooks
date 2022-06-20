@@ -3,6 +3,7 @@
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	grid-column-gap: 1rem;
 	grid-row-gap: 2rem;
+	padding-top: 2rem;
 	// height: 75vh;
 	// overflow-y: scroll !important;
 }
@@ -79,4 +80,11 @@ h4 {
 
 .advanced-filter {
 	width: 20rem;
+}
+
+.no-data {
+	color: white;
+	margin: auto;
+	font-size: 2rem;
+	padding-top: 2rem;
 }
