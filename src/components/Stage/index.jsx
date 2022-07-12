@@ -9,6 +9,8 @@ import Homepage from "./Homepage/Homepage";
 import CSnap from "./CSnap/CSnap";
 import SaveButtons from "./SaveButtons/SaveButtons";
 
+import CurrentSavePrompt from "./CurrentSavePrompt/CurrentSavePrompt";
+
 import styles from "./Stage.module.scss";
 
 //This is for any workbooks that have specialized functionality
@@ -98,8 +100,8 @@ export default function Stage() {
 					<h4>{lesson.title}</h4>
 					<LoadSaveState />
 				</div>
-
 				<SaveButtons />
+				<CurrentSavePrompt />
 			</div>
 
 			<hr className={styles.headerDivide} />

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import WorkbookSelectionCard from "./WorkbookSelectionCard";
-
+import Spinner from "react-bootstrap/Spinner";
 import { setAvailableWorkbooksData } from "../../slices/workbookSlice";
 import styles from "./WorkbookSelection.module.scss";
 
@@ -49,6 +49,11 @@ export default function WorkbookSelection() {
 					))}
 			</div>
 
+			{!isError && availableWorkbooks.length == 0 && (
+				<Spinner animation="border" role="status" variant="primary">
+					<span className="visually-hidden">Loading...</span>
+				</Spinner>
+			)}
 			{isError && (
 				<div className="row mt-5">
 					<div className="col-6">

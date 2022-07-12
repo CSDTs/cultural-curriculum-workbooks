@@ -139,4 +139,11 @@ async function loginUser() {
 	return { data: userData, status: getUserResponse.status };
 }
 
-export { getCsrfToken, workbookRequest, getClassroomInfo, getClassrooms, getUser, loginUser };
+async function checkSaveState(user, classroom) {
+	const response = await fetch(`${WORKBOOK_API_HOST}?userid=${user}&classroom=${classroom}`);
+	const data = await response.json();
+
+	return { data, status: response.status };
+}
+
+export { getCsrfToken, workbookRequest, getClassroomInfo, getClassrooms, getUser, loginUser, checkSaveState };

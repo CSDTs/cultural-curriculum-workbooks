@@ -124,19 +124,21 @@ export default function SaveButtons() {
 		console.log(givenState);
 	};
 
+	const checkIfCanBeSaved = () => {};
+
 	return (
 		<div className={`col-auto ${styles.saveGroup}`}>
 			<ButtonGroup aria-label="Basic example">
 				{((isCurrentUser && saveID) || (isCurrentUser && !userClassrooms)) && (
 					<>
-						<Button
+						{/* <Button
 							variant="secondary"
 							onClick={() => {
 								updateWorkbookSave();
 								alert("TODO: add redirect to user's workbook page");
 							}}>
 							Save and Exit
-						</Button>
+						</Button> */}
 						<Button variant="secondary" onClick={() => updateWorkbookSave()}>
 							Save and Continue
 						</Button>

@@ -2,6 +2,7 @@ import React from "react";
 
 import { NavDropdown, Nav } from "react-bootstrap";
 import { FaUser, FaRegUser } from "react-icons/fa";
+import styles from "./Navigation.module.scss";
 
 export default function UserDropdown({ user }) {
 	const status = (
@@ -14,7 +15,7 @@ export default function UserDropdown({ user }) {
 	return (
 		<>
 			{user.username ? (
-				<NavDropdown title={status} id="collapsible-nav-dropdown" className="w-auto mx-0 px-0">
+				<NavDropdown title={status} id="collapsible-nav-dropdown" className={`${styles.userDropdown} w-auto mx-0 px-0`}>
 					<NavDropdown.Item href={`/users/${user.id}`}>My Projects</NavDropdown.Item>
 					<NavDropdown.Item href={`/users/${user.id}/classes`}>My Classrooms</NavDropdown.Item>
 					<NavDropdown.Item href={`/users/${user.id}/workbooks`}>My Workbooks</NavDropdown.Item>

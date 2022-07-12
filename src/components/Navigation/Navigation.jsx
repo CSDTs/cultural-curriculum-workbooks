@@ -13,8 +13,8 @@ export default function Navigation() {
 		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
 			<Container>
 				<Navbar.Brand href="/">
-					<img src="/src/img/nsf.gif" width="40" height="40" alt="" />
-					<img src="/src/img/logo.svg" width="100" height="40" alt="" />
+					<img src="./img/nsf.gif" width="40" height="40" alt="" />
+					<img src="./img/logo.svg" width="100" height="40" alt="" />
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />

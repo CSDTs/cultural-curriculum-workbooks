@@ -6,34 +6,45 @@ import { workbookRequest, getClassroomInfo } from "../../../utils/apiRequests";
 import { setWorkbookClassroom } from "../../../slices/workbookSlice.js";
 import style from "./NewSavePrompt.module.scss";
 
+import { checkSaveState } from "../../../utils/apiRequests";
+
 export default function Modal(props) {
 	const [show, setShow] = React.useState(false);
 	const [isSaving, setIsSaving] = React.useState(false);
 	const dispatch = useDispatch();
 	const handleClose = () => setShow(false);
-	const handleShow = () => {
-		setShow(true);
-	};
 
+	const currentUser = useSelector((state) => state.workbookState.user);
 	const userClassrooms = useSelector((state) => state.workbookState.user.classroom_list);
 	const saveObjectClassroom = useSelector((state) => state.workbookState.user.selected_classroom);
 
 	const saveWorkbook = props.handleClassNum.bind(this);
 
+	const handleShow = () => {
+		setShow(true);
+	};
+
 	React.useEffect(() => {
 		if (isSaving) {
 			saveWorkbook();
 		}
+		checkSaveState(currentUser.id, parseInt(saveObjectClassroom.id)).then((data) => {
+			console.log(data);
+		});
+
+		checkSaveState(currentUser.id, "None").then((data) => {
+			console.log(data);
+		});
 	}, [saveObjectClassroom, isSaving]);
 
 	return (
 		<>
 			<Button variant="primary" onClick={handleShow}>
-				Save and Exit (New)
+				First Time Save
 			</Button>
-			<Button variant="primary" onClick={handleShow}>
+			{/* <Button variant="primary" onClick={handleShow}>
 				Save and Continue (New)
-			</Button>
+			</Button> */}
 
 			<BootstrapModal show={show} onHide={handleClose} centered className={style.prompt}>
 				<BootstrapModal.Header closeButton>
@@ -52,7 +63,8 @@ export default function Modal(props) {
 										id="disabledSelect"
 										onChange={(e) => {
 											dispatch(setWorkbookClassroom(JSON.parse(e.target.value)));
-										}}>
+										}}
+										disabled>
 										{userClassrooms.map((classroom) => (
 											<option
 												key={classroom.team}
@@ -61,6 +73,7 @@ export default function Modal(props) {
 											</option>
 										))}
 									</Form.Select>
+									<p className="text-muted figure-caption">Coming Soon!</p>
 								</Form.Group>
 							</fieldset>
 						</Form>
@@ -73,7 +86,8 @@ export default function Modal(props) {
 							handleClose();
 							dispatch(setWorkbookClassroom(JSON.parse(document.querySelector("#disabledSelect").value)));
 							setIsSaving(true);
-						}}>
+						}}
+						disabled>
 						Save
 					</Button>
 					<Button
