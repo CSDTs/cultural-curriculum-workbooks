@@ -38,6 +38,16 @@ const SECTION_1_AIKR = [
 		tags: "slide",
 		points: 4,
 	},
+	{
+		title: "Creating an AI App",
+		tags: "slide",
+		points: 4,
+	},
+	{
+		title: "Next Steps",
+		tags: "slide",
+		points: 0,
+	},
 ];
 
 const WORKBOOK_AIKR_COMPARE = [

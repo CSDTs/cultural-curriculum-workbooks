@@ -28,20 +28,27 @@ export default function SlideThree() {
 	let currentOptional = data.optional[index] || "";
 
 	const conceptQuestions = {
-		bias: {
-			label: "Classifying silverware as spoons or forks when only photos of the spoons have shadows in them.",
+		license: {
+			label: "An AI algorithm trained to read US license plates fails to read license plates from New Mexico.",
 			isCorrect: true,
 			hint: "bias could be.",
+			afterthought:
+				"Yes! This is an example of poor validation performance. We can not say if spurious correlation is the cause but perhaps more diverse data would help.",
 		},
-		small: {
-			label: "We only had 1 example of each category?",
-			isCorrect: true,
+		speech: {
+			label:
+				"When listening to speech from people that stutter, a closed captioning AI maintains successful performance even though it had never seen that data before.",
+			isCorrect: false,
 			hint: "small could be.",
+			afterthought: "No! This is an example of good validation performance and is not poor validation performance",
 		},
-		examples: {
-			label: "We had all possible examples of each category?",
+		apples: {
+			label:
+				"An AI is 100 percent correct in classifying two species of apples that are very similar in appearance. The first apple was photographed on a light grey background and the second apple on a white background. ",
 			isCorrect: true,
 			hint: "examples could be.",
+			afterthought:
+				"Yes! This is an example of likely spurious correlation because the AI likely saw the biggest visual difference in the background color and not the apple itself.",
 		},
 	};
 
@@ -87,13 +94,44 @@ export default function SlideThree() {
 					<h4>Some examples</h4>
 
 					<p>
-						Take for example, Joe's Lunch. Briefly describe validation against hold out data. Have pictorial example of
-						red, green results. Talk about importance of avoid spurious correlations.
+						To help you understand the concept of validation please read through these short examples. They will help
+						you successfully answer the concept check questions too.
+					</p>
+
+					<strong>
+						<p className="text-white ">Good Validation Performance</p>
+					</strong>
+
+					<p>
+						Oftentimes if you know why something happens you can anticipate it happening in the future. For example,
+						imagine that after a lot of time outside you notice that clouds must form before rain can fall. Because
+						you’ve successfully applied this rule to many outside environments over time the rule demonstrates good
+						validation performance. Here you can be “sure” that the rule is right because it is often correct in the
+						situations where it actually ended up raining!
+					</p>
+					<strong>
+						<p className="text-white ">Poor Validation Performance</p>
+					</strong>
+
+					<p>
+						There are many times when a rule can lead to poor validation performance. One possibility is when the rule
+						was inspired by something called “spurious correlation.” A popular example is using AI to detect tanks. In
+						this retelling an AI was trained to be quite successful at detecting tanks from photos. However, the AI
+						catastrophically failed when it was validated against new data, an example of poor validation performance.
+						In this case the algorithm was “sure” it was right even though the actual answer was different than what it
+						expected.{" "}
+						<a href="https://neil.fraser.name/writing/tank/">
+							{" "}
+							Read this brief article from Neil Fraser, a Google software engineer, to learn more.
+						</a>
 					</p>
 				</div>
 				<div className="col-md-4">
 					<h4>Concept Check</h4>
-					<p>Which kinds of problems can be treated as classification problems?</p>
+					<p>
+						From the list below, check examples that include poor validation performance or spurious correlation. Leave
+						blank examples that include good validation performance.
+					</p>
 
 					<CreateConceptCheck data={conceptQuestions} currentAnswers={currentResponse} callback={checkConcepts} />
 				</div>

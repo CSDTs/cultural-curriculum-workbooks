@@ -1,6 +1,6 @@
 import React from "react";
 import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
-import { Popover, OverlayTrigger, Form, Button } from "react-bootstrap";
+import { Popover, OverlayTrigger, Form, Button, Card } from "react-bootstrap";
 import SlideOne from "./SlideOne";
 import SlideTwo from "./SlideTwo";
 import SlideThree from "./SlideThree";
@@ -8,7 +8,8 @@ import SlideFour from "./SlideFour";
 import SlideFive from "./SlideFive";
 import SlideSix from "./SlideSix";
 import SlideSeven from "./SlideSeven";
-
+import SlideEight from "./SlideEight";
+import SlideNine from "./SlideNine";
 import styles from "./Slides.module.scss";
 
 export const STATIC_URL = "./img/aikr_compare/";
@@ -43,7 +44,11 @@ export const createPopover = (data, type) => {
 	return (
 		<Popover id={`popover-${data.slug}`}>
 			<Popover.Header as="h3">{data.title}</Popover.Header>
-			{type == "basic" && <Popover.Body>{data.body}</Popover.Body>}
+			{type == "basic" && (
+				<Popover.Body>
+					{data.body} <a href={data.readMoreLink}>{data.readMoreText}</a>
+				</Popover.Body>
+			)}
 			{type == "images" && (
 				<Popover.Body>
 					<span className="mb-3 d-block">{data.body}</span>
@@ -192,13 +197,44 @@ export const CreateWriteUp = ({ title, callback, next, data, show, rows }) => {
 					Advance
 				</Button>
 			)}
-			<p>Does it pass the vibe check? {`${data.verified}`}</p>
+		</div>
+	);
+};
+
+export const CreateWriteUpBasic = ({ title, callback, next, data, show, rows }) => {
+	return (
+		<div className="col-md-3 align-self-center">
+			<p>
+				<strong>{title}</strong>
+			</p>
+			<textarea
+				className="form-control"
+				rows={rows}
+				onChange={(e) => {
+					callback(e.target.value, data);
+				}}
+				placeholder={data.statement}
+				value={data.response || data.statement}
+			/>
+
+			<p>Word Count: {data.response.split(" ").length - 1}</p>
+			{data.verified && <p>Good Job!</p>}
 		</div>
 	);
 };
 
 export default function Slides(props) {
-	const SLIDE_ARRAY = [SlideOne, SlideTwo, SlideThree, SlideFour, SlideFive, SlideSix, SlideSeven];
+	const SLIDE_ARRAY = [
+		SlideOne,
+		SlideTwo,
+		SlideThree,
+		SlideFour,
+		SlideFive,
+		SlideSix,
+		SlideSeven,
+		SlideEight,
+		SlideNine,
+	];
 
 	let Content = SLIDE_ARRAY[props.slideID];
 

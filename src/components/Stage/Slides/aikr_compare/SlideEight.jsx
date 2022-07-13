@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { compareTwoStrings, findBestMatch } from "string-similarity";
 
 import {
 	updateMiscResponse,
@@ -11,14 +12,14 @@ import {
 	updateObjectResponse,
 } from "../../../../slices/workbookSlice.js";
 
-import { Form, Button, Breadcrumb } from "react-bootstrap";
+import { Form, Button, Breadcrumb, Alert } from "react-bootstrap";
 import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
 import TextWriteUp from "./TextWriteUp";
 import styles from "./Slides.module.scss";
 import { notify, dismissNotification } from "reapop";
 import { status, fetchedProps, commonProps } from "/src/utils/notificationProps";
 
-import { STATIC_URL, createMoreInfo, CreateConceptCheck, CreateWriteUp } from "./index";
+import { STATIC_URL, createMoreInfo, CreateConceptCheck, CreateWriteUp, CreateWriteUpBasic } from "./index";
 export default function SlideSeven() {
 	const dispatch = useDispatch();
 	const currentIndex = useSelector((state) => state.workbookState.workbook.current_lesson_id);
@@ -32,76 +33,142 @@ export default function SlideSeven() {
 	// console.log(useSelector((state) => state.workbookState.workbook.current_lesson));
 	// dispatch(updateResponse([{}]));
 
+	// var similarity = compareTwoStrings("healed", "sealed");
+
+	// var matches = findBestMatch("healed", ["edward", "sealed", "theatre"]);
+
+	// console.log(similarity);
 	let [num, setNum] = useState(0);
 	const [fireOnce, setFireOnce] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
+
+	const [problemPrompt, setProblemPrompt] = useState("");
+	const [categoryAPrompt, setCategoryAPrompt] = useState("");
+	const [categoryBPrompt, setCategoryBPrompt] = useState("");
+	const [rationalePrompt, setRationalePrompt] = useState("");
+
+	React.useEffect(() => {
+		// console.log(compareTwoStrings(problemPrompt, categoryAPrompt));
+	}, [problemPrompt, categoryAPrompt, categoryBPrompt, rationalePrompt]);
+
+	let classificationGuidelines = {
+		wordCount: 200,
+	};
+
 	let statementRevision = {
 		slug: "statementRevision",
-		statement:
-			"Fake medicine is a worldwide problem. West Africans are often sold fake medicine, fake anti-malaria drugs alone kill an estimated 250,00 per year.",
-		statementLength: 21,
+		statement: "",
+		statementLength: 199,
 		lengthGoal: 3,
 		lessWords: true,
 		keywords: ["West Africans", "malaria", "drugs"],
 		verified: currentMisc?.statementRevision?.verified || false,
 		response: currentMisc?.statementRevision?.response || "",
+		promptCheck: false,
 	};
 
 	let categoryARevision = {
 		slug: "categoryARevision",
-		statement: "Real malaria drugs",
-		statementLength: 7,
+		statement: "",
+		statementLength: 199,
 		lengthGoal: 4,
 		lessWords: false,
 		keywords: ["real", "malaria", "drugs"],
 		verified: currentMisc?.categoryARevision?.verified || false,
 		response: currentMisc?.categoryARevision?.response || "",
+		promptCheck: false,
 	};
 
 	let categoryBRevision = {
 		slug: "categoryBRevision",
-		statement: "Fake malaria drugs",
-		statementLength: 8,
+		statement: "",
+		statementLength: 199,
 		lengthGoal: 5,
 		lessWords: false,
 		keywords: ["fake", "malaria", "drugs"],
 		verified: currentMisc?.categoryBRevision?.verified || false,
 		response: currentMisc?.categoryBRevision?.response || "",
+		promptCheck: false,
 	};
 	let rationaleRevision = {
 		slug: "rationaleRevision",
-		statement: "Small difference between fake and real malaria drugs",
-		statementLength: 13,
+		statement: "",
+		statementLength: 199,
 		lengthGoal: 5,
 		lessWords: false,
 		keywords: ["fake", "malaria", "drugs", "environment"],
 		verified: currentMisc?.rationaleRevision?.verified || false,
 		response: currentMisc?.rationaleRevision?.response || "",
+		promptCheck: false,
 	};
 	const wordCount = (str) => {
 		return str.split(" ").length;
 	};
+
+	const checkForSimilarity = () => {
+		let ab = compareTwoStrings(
+			currentMisc?.statementRevision?.response || "",
+			currentMisc?.categoryARevision?.response || ""
+		);
+		let ac = compareTwoStrings(
+			currentMisc?.statementRevision?.response || "",
+			currentMisc?.categoryBRevision?.response || ""
+		);
+		let ad = compareTwoStrings(
+			currentMisc?.statementRevision?.response || "",
+			currentMisc?.rationaleRevision?.response || ""
+		);
+
+		let bc = compareTwoStrings(
+			currentMisc?.categoryARevision?.response || "",
+			currentMisc?.categoryBRevision?.response || ""
+		);
+		let bd = compareTwoStrings(
+			currentMisc?.categoryARevision?.response || "",
+			currentMisc?.rationaleRevision?.response || ""
+		);
+
+		let cd = compareTwoStrings(
+			currentMisc?.categoryBRevision?.response || "",
+			currentMisc?.rationaleRevision?.response || ""
+		);
+		return !(ab >= 0.98 || ac >= 0.98 || ad >= 0.98 || bc >= 0.98 || bd >= 0.98 || cd >= 0.98);
+	};
+
+	let ab,
+		ac,
+		ad,
+		bc,
+		bd,
+		cd = 0;
 	const spinCheck = (a, revisionSet) => {
-		let sameCheck = a != revisionSet.statement;
+		// let sameCheck = a != revisionSet.statement;
+		let lengthCheck = wordCount(a) > revisionSet.statementLength;
 
-		let lengthMode = revisionSet.lessWords
-			? wordCount(a) < revisionSet.statementLength
-			: wordCount(a) > revisionSet.statementLength;
-		let lengthCheck = a.length != 0 && lengthMode && wordCount(a) != 0;
+		let textPrompts = document.querySelectorAll("textarea");
 
-		let statementAdjust = a.toLowerCase();
-		let keywordCheck = revisionSet.keywords.reduce((result, current) => {
-			return result && (a.includes(current) || statementAdjust.includes(current));
-		}, true);
+		if (textPrompts) {
+			ab = compareTwoStrings(textPrompts[0].value, textPrompts[1].value);
+			ac = compareTwoStrings(textPrompts[0].value, textPrompts[2].value);
+			ad = compareTwoStrings(textPrompts[0].value, textPrompts[3].value);
+
+			bc = compareTwoStrings(textPrompts[1].value, textPrompts[2].value);
+			bd = compareTwoStrings(textPrompts[1].value, textPrompts[3].value);
+
+			cd = compareTwoStrings(textPrompts[2].value, textPrompts[3].value);
+
+			console.log(ab >= 0.98 || ac >= 0.98 || ad >= 0.98 || bc >= 0.98 || bd >= 0.98 || cd >= 0.98);
+			console.log(ab, ac, ad, bc, bd, cd);
+			revisionSet.promptCheck = lengthCheck;
+		}
 
 		let currentSpin = {
 			[revisionSet.slug]: {
 				response: a,
-				verified: sameCheck && lengthCheck && keywordCheck,
+				verified: lengthCheck,
 			},
 		};
 
-		// Object.assign(temp, currentSpin);
 		dispatch(updateObjectResponse(currentSpin));
 		dispatch(updateEarnedPoints());
 		dispatch(updateSaveStatus(false));
@@ -155,6 +222,15 @@ export default function SlideSeven() {
 		return currentMisc?.[key]?.verified || false;
 	};
 
+	const checkForFinishedPrompt = () => {
+		return (
+			(currentMisc?.statementRevision?.verified || false) &&
+			(currentMisc?.categoryARevision?.verified || false) &&
+			(currentMisc?.categoryBRevision?.verified || false) &&
+			(currentMisc?.rationaleRevision?.verified || false)
+		);
+	};
+
 	const goToWriteUp = (num, key) => {
 		if (checkForWriteUpComplete(key)) setNum(num);
 	};
@@ -200,107 +276,69 @@ export default function SlideSeven() {
 	return (
 		<React.Fragment>
 			<p>
-				Great job! Now that we helped Joe let's use our new AI superpowers to help others. We'll help others by writing
-				about how AI applications can solve problems in other communities.
+				Great job! Finally, it is now your turn to write your very own AI application that helps solve a community
+				problem! Instead of revising you'll be creating.
 			</p>
 			<p>
-				Since this is likely your first time doing this we'll help you along by asking you to revise a complete example.
-				Then you'll get a chance to write your own!
+				Using what you've learned so far about deciding on a problem, turning it into a binary classification problem,
+				validating an AI binary classification model and correlation, please fill in each box in order.{" "}
+				<strong>Each box should be at least 200 words</strong>. When all boxes are filled in you can advance to the next
+				screen.
 			</p>
 
-			<p>
-				<strong>Be sensical and do not copy content from elsewhere.</strong>
-			</p>
-
-			<div className="d-inline-flex w-100">
-				<Breadcrumb className="mx-auto">
-					<Breadcrumb.Item
-						className={num >= 0 || isWorkbookFinished ? styles.active : styles.disabled}
-						onClick={() => goToWriteUp(0, "statementRevision")}>
-						Problem
-					</Breadcrumb.Item>
-					<Breadcrumb.Item
-						className={num >= 1 || isWorkbookFinished ? styles.active : styles.disabled}
-						onClick={() => goToWriteUp(1, "categoryARevision")}>
-						Category A
-					</Breadcrumb.Item>
-					<Breadcrumb.Item
-						className={num >= 2 || isWorkbookFinished ? styles.active : styles.disabled}
-						onClick={() => goToWriteUp(2, "categoryBRevision")}>
-						Category B
-					</Breadcrumb.Item>
-					<Breadcrumb.Item
-						className={num >= 3 || isWorkbookFinished ? styles.active : styles.disabled}
-						onClick={() => goToWriteUp(3, "rationaleRevision")}>
-						Rationale
-					</Breadcrumb.Item>
-					<Breadcrumb.Item
-						className={num >= 4 || isWorkbookFinished ? styles.active : styles.disabled}
-						onClick={() => goToWriteUp(4, "all")}>
-						Summary
-					</Breadcrumb.Item>
-				</Breadcrumb>
-			</div>
-
+			<Alert key={"warning"} variant={"warning"} hidden={checkForSimilarity()}>
+				There seems to be at least two prompts that are pretty similar. Please make sure to write unique responses for
+				your AI application.
+			</Alert>
 			<section className="row mt-3 justify-content-center">
-				{(show.first || show.all) && (
-					<>
-						<CreateWriteUp
-							title={"Problem Statement"}
-							callback={spinCheck}
-							next={incNum}
-							data={statementRevision}
-							current={currentMisc?.statementRevision?.response}
-							show={show}
-							rows={8}
-						/>
+				<CreateWriteUpBasic
+					title={"Problem Statement"}
+					callback={spinCheck}
+					next={incNum}
+					data={statementRevision}
+					current={currentMisc?.statementRevision?.response}
+					show={show}
+					rows={9}
+				/>
 
-						{!show.all && <RevisionGoals set={statementRevision} />}
-					</>
-				)}
+				<CreateWriteUpBasic
+					title={"Train AI on samples of this for first category"}
+					callback={spinCheck}
+					next={incNum}
+					data={categoryARevision}
+					show={show}
+					rows={8}
+				/>
 
-				{(show.second || show.all) && (
-					<>
-						<CreateWriteUp
-							title={"Train AI on samples of this for first category"}
-							callback={spinCheck}
-							next={incNum}
-							data={categoryARevision}
-							show={show}
-							rows={8}
-						/>
+				<CreateWriteUpBasic
+					title={"Train AI on samples of this for second category"}
+					callback={spinCheck}
+					next={incNum}
+					data={categoryBRevision}
+					show={show}
+					rows={8}
+				/>
 
-						{!show.all && <RevisionGoals set={categoryARevision} />}
-					</>
-				)}
-				{(show.third || show.all) && (
-					<>
-						<CreateWriteUp
-							title={"Train AI on samples of this for second category"}
-							callback={spinCheck}
-							next={incNum}
-							data={categoryBRevision}
-							show={show}
-							rows={8}
-						/>
-						{!show.all && <RevisionGoals set={categoryBRevision} />}
-					</>
-				)}
-				{(show.fourth || show.all) && (
-					<>
-						<CreateWriteUp
-							title={"Rationale"}
-							callback={spinCheck}
-							next={incNum}
-							data={rationaleRevision}
-							show={show}
-							rows={8}
-						/>
-
-						{!show.all && <RevisionGoals set={rationaleRevision} />}
-					</>
-				)}
+				<CreateWriteUpBasic
+					title={"Rationale"}
+					callback={spinCheck}
+					next={incNum}
+					data={rationaleRevision}
+					show={show}
+					rows={9}
+				/>
 			</section>
+
+			<Button
+				variant="primary"
+				type="submit"
+				className="mt-3 w-100"
+				disabled={!(checkForFinishedPrompt() && checkForSimilarity())}>
+				Next Lesson
+			</Button>
+
+			<p>Every box at least 200 words: {checkForFinishedPrompt().toString()}</p>
+			<p>Every box at least somewhat different (98%): {checkForSimilarity().toString()}</p>
 		</React.Fragment>
 	);
 }

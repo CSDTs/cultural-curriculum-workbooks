@@ -38,15 +38,15 @@ export default function SlideFive() {
 	}, []);
 
 	const homeParams = [
-		{ type: "homeHome", label: "Home" },
-		{ type: "homeOutside", label: "Outside" },
-		{ type: "homeCafeteria", label: "Cafeteria" },
+		{ type: "homeHome", label: "Dimmer Lighting" },
+		{ type: "homeOutside", label: "Brighter Lighting" },
+		{ type: "homeCafeteria", label: "With Square Surfaces" },
 	];
 
 	const factoryParams = [
-		{ type: "factoryHome", label: "Home" },
-		{ type: "factoryOutside", label: "Outside" },
-		{ type: "factoryCafeteria", label: "Cafeteria" },
+		{ type: "factoryHome", label: "Dimmer Lighting" },
+		{ type: "factoryOutside", label: "Brighter Lighting" },
+		{ type: "factoryCafeteria", label: "With Square Surfaces" },
 	];
 	return (
 		<React.Fragment>

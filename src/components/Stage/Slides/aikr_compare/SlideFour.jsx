@@ -23,56 +23,85 @@ export default function SlideFour() {
 	let currentOptional = data.optional[index] || "";
 
 	const conceptQuestionsA = {
-		energy: {
-			label: "Excessive energy use",
-			isCorrect: true,
+		temperature: {
+			label: "Developing a temperature sensor that reports ambient heat",
+			isCorrect: false,
 			hint: "Energy could be.",
+			afterthought: "No! Ambient heat is measured and reported as a real number here, not as one or a few categories",
 		},
-		weight: {
-			label: "The range of baby weights",
+		volunteer: {
+			label: "Whether a person is eligible to volunteer for a soup kitchen",
 			isCorrect: true,
 			hint: "Weight could be.",
+			afterthought: "Yes! Eligibility can described as a set of categories a person must meet",
 		},
-		noise: {
-			label: "Noisy neighbors",
+		artwork: {
+			label: "Determining if artwork has been plagiarized",
 			isCorrect: true,
 			hint: "Noise could be.",
+			afterthought:
+				"Yes! Plagiarism, includes authentic and fake categories to help decide if something has been copied improperly",
+		},
+		friend: {
+			label: "Asking a busy friend if they can provide transportation for you",
+			isCorrect: true,
+			hint: "Noise could be.",
+			afterthought:
+				"Yes! In talking to your friend they will say yes or no. Their answer determines if you can get a ride or not",
 		},
 	};
 
 	const conceptQuestionsB = {
-		apple: {
-			label: "Apples are divided into Honeycrisp, Golden and NY.",
-			isCorrect: true,
+		coins: {
+			label: "The denominations of all US coins?",
+			isCorrect: false,
 			hint: "Apples could be.",
+			afterthought: "No! Pennies, nickels, and dimes make up three categories and there still are other coins.",
 		},
-		money: {
-			label: "Dollar bills that are real and counterfeit",
+		dialysis: {
+			label: "Whether someone needs kidney dialysis or not?",
 			isCorrect: true,
 			hint: "money could be.",
+			afterthought:
+				"Yes! There are specific Western medical criteria that can be checked and used to tell someone they need to be put on dialysis, or that they do not need it.",
 		},
-		silverware: {
-			label: "Forks, spoons and knives.",
+		medicine: {
+			label: " Is heart medicine counterfeit or not?",
 			isCorrect: true,
 			hint: "silverware could be.",
+			afterthought:
+				"Yes! By learning and modeling the difference between counterfeit and authentic medicine you can decide which category it belongs to",
+		},
+		friends: {
+			label: "In a group of friends, is anyone yourself?",
+			isCorrect: false,
+			hint: "silverware could be.",
+			afterthought:
+				"No! Although this is a strange question, there is only one category of answer: no one else in your friend group is yourself.",
 		},
 	};
 
 	const conceptQuestionsC = {
-		bias: {
-			label: "Classifying silverware as spoons or forks when only photos of the spoons have shadows in them.",
+		cloudy: {
+			label: "An AI is found to reliably detect tanks only on cloudy days",
 			isCorrect: true,
 			hint: "bias could be.",
+			afterthought:
+				"Yes! This is an example of poor validation performance and spurious correlation. When tested against new data, such as sunny days, the AI starts performing poorly. An AI engineer would say it has not “generalized” well",
 		},
-		small: {
-			label: "We only had 1 example of each category?",
+		lunches: {
+			label:
+				"Lunches that sit on square trays are always classified as factory made by an AI even if they were made at home.",
 			isCorrect: true,
 			hint: "small could be.",
+			afterthought:
+				"Yes! This is an example of spurious classification. Taking a diversity of other photos is important to avoid spurious classification",
 		},
-		examples: {
-			label: "We had all possible examples of each category?",
+		environmental: {
+			label: "When shown an entirely new product an AI is able to correctly estimate its environmental impact",
 			isCorrect: true,
 			hint: "examples could be.",
+			afterthought: "No! This is an example of good validation performance",
 		},
 	};
 
@@ -115,17 +144,26 @@ export default function SlideFour() {
 			<section className="row mt-5">
 				<div className="col-md-4">
 					<h4>Problem Concept Check</h4>
-					<p>Which kinds of problems can be treated as classification problems?</p>
+					<p>
+						Which kinds of problems can be treated as classification problems? A classification problem can have two or
+						more categories of outcomes. Please check all that apply.
+					</p>
 					<CreateConceptForm data={conceptQuestionsA} currentAnswers={currentResponse} offset={0} />
 				</div>
 				<div className="col-md-4">
 					<h4>2 Category Concept Check</h4>
-					<p>Which are examples of binary classification problems?</p>
+					<p>
+						From the list below check binary classification problems. Leave blank problems that are not described as
+						binary classification problems.
+					</p>
 					<CreateConceptForm data={conceptQuestionsB} currentAnswers={currentResponse} offset={3} />
 				</div>
 				<div className="col-md-4">
 					<h4>Validation Concept Check</h4>
-					<p>Which kinds of problems can be treated as classification problems?</p>
+					<p>
+						From the list below, check examples that include poor validation performance or spurious correlation. Leave
+						blank examples that include good validation performance.
+					</p>
 					<CreateConceptForm data={conceptQuestionsC} currentAnswers={currentResponse} offset={6} />
 				</div>
 			</section>
