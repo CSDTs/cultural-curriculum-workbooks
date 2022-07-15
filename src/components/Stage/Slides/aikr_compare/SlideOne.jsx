@@ -41,6 +41,7 @@ export default function SlideOne() {
 		dispatch(updateSaveStatus(false));
 	};
 
+	// Init concept check with current responses
 	useEffect(() => {
 		Array.from(document.querySelectorAll("form input")).map((item, index) => {
 			item.checked = currentResponse[index];
@@ -74,17 +75,16 @@ export default function SlideOne() {
 						<img src={`${STATIC_URL}fake_grapes.png`} className="img-fluid col-md-6" />
 					</div>
 				</div>
-				<div className="col-md-4">
-					<MoreInfoExamples title={"Some examples"} data={slideOneExamples} type={"basic"} />
+				<div className="col-md-8">
+					<MoreInfoExamples data={slideOneExamples} type={"basic"} />
 
 					<OptionalText
 						title={"What is a problem where visual difference is important?"}
-						placeholder={"*optional"}
 						callback={checkOptional}
 						currentValue={currentOptional}
 					/>
 				</div>
-				<div className="col-md-4">
+				{/* <div className="col-md-4">
 					<ConceptCheck
 						description={
 							"Which kinds of problems can be treated as classification problems? " +
@@ -95,7 +95,7 @@ export default function SlideOne() {
 						currentAnswers={currentResponse}
 						callback={checkConcepts}
 					/>
-				</div>
+				</div> */}
 			</section>
 		</>
 	);

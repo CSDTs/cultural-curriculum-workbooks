@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -29,7 +29,7 @@ export default function SlideFive() {
 		dispatch(updateSaveStatus(false));
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (currentMisc.classASet) document.querySelector(`#${currentMisc.classASet}-checkbox`).checked = true;
 		if (currentMisc.classACount) document.querySelector(`#classACount-input`).value = currentMisc.classACount;
 
@@ -49,20 +49,18 @@ export default function SlideFive() {
 		{ type: "factoryCafeteria", label: "With Square Surfaces" },
 	];
 	return (
-		<React.Fragment>
+		<>
 			<p>
 				Now that you have a solid understanding of a few AI classification concepts, let's get interactive! Our favorite
 				school cafeteria worker, Chef Joe, is in danger of being put out of work by factory made lunches. Your cell
 				phone app will be used by students to help them buy only Joe's delicious hand-made lunches. So your first step
 				is to train the AI on the two classes of images: authentic hand-made versus factory-produced imitations.
 			</p>
-
 			<p>
 				On this page we want our classifier that detects homemade meals to perform better than the other classifier made
 				by a big data company. The other classifier suffers from many of the issues to watch out about, like spurious
 				correlation, … and its important create a classifier that actually works well for students.
 			</p>
-
 			<p>
 				To do this, try selecting what number of real and fake images you'll use. For each category check where you want
 				to sample images from: in the cafeteria, outside and/or at home. We'll help you train it and compare it against
@@ -70,32 +68,75 @@ export default function SlideFive() {
 			</p>
 
 			<section className="row mt-4 justify-content-around">
-				<div className="col-md-4">
+				<div className="col-md-3">
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>How many home made?</Form.Label>
-							<CreateLunchOptions data={""} callback={updateLunchParams} type={"classACount"} />
+
+							<Form.Control
+								type="number"
+								defaultValue="0"
+								className="w-100"
+								max="10"
+								min="0"
+								id={`classACount-input`}
+								onChange={(e) => {
+									updateLunchParams(e.target.value, "classACount");
+								}}
+							/>
 						</Form.Group>
 						<Form.Group className="mb-3 ">
 							<Form.Label>Where to take these images from?</Form.Label>
-							<CreateLunchOptions data={homeParams} callback={updateLunchParams} type={"classASet"} />
+							{homeParams.map((opt) => (
+								<div key={`${opt.type}-checkbox`} className="mb-3 d-inline">
+									<Form.Check
+										inline
+										type="checkbox"
+										id={`${opt.type}-checkbox`}
+										label={opt.label}
+										value={opt.type}
+										onClick={(e) => updateLunchParams(e.target.value, "classASet")}
+									/>
+								</div>
+							))}
 						</Form.Group>
 					</Form>
 				</div>
-				<div className="col-md-4">
+				<div className="col-md-3">
 					<Form>
 						<Form.Group className="mb-3">
 							<Form.Label>How many factory made?</Form.Label>
-							<CreateLunchOptions data={""} callback={updateLunchParams} type={"classBCount"} />
+
+							<Form.Control
+								type="number"
+								defaultValue="0"
+								className="w-100"
+								max="10"
+								min="0"
+								id={`classBCount-input`}
+								onChange={(e) => {
+									updateLunchParams(e.target.value, "classBCount");
+								}}
+							/>
 						</Form.Group>
 						<Form.Group className="mb-3 ">
 							<Form.Label>Where to take these images from?</Form.Label>
-							<CreateLunchOptions data={factoryParams} callback={updateLunchParams} type={"classBSet"} />
+							{factoryParams.map((opt) => (
+								<div key={`${opt.type}-checkbox`} className="mb-3 d-inline">
+									<Form.Check
+										inline
+										type="checkbox"
+										id={`${opt.type}-checkbox`}
+										label={opt.label}
+										value={opt.type}
+										onClick={(e) => updateLunchParams(e.target.value, "classBSet")}
+									/>
+								</div>
+							))}
 						</Form.Group>
 					</Form>
 				</div>
 			</section>
-
 			<div className="justify-content-center w-100">
 				<Button
 					variant="primary"
@@ -105,6 +146,6 @@ export default function SlideFive() {
 					Head to Joe's Lunch
 				</Button>
 			</div>
-		</React.Fragment>
+		</>
 	);
 }

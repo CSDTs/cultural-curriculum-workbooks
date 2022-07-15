@@ -41,7 +41,7 @@ const createListItem = (data, type) => {
 export default function MoreInfoExamples({ title, description, data, type }) {
 	return (
 		<>
-			<h4>{title}</h4>
+			<h4>{title || "Some examples"}</h4>
 			<p>{description || ""}</p>
 			<ul>
 				{data.map((explainer) => (

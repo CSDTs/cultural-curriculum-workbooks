@@ -181,11 +181,6 @@ export default function SlideSeven() {
 		return "all";
 	};
 
-	// React.useEffect(() => {
-	// 	// console.log(gData);
-	// 	if (!currentMisc) dispatch(updateResponse({}));
-	// }, [currentMisc]);
-
 	React.useEffect(() => {
 		checkInitState();
 	}, []);

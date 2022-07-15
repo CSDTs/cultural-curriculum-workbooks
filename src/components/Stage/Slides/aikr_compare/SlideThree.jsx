@@ -1,22 +1,13 @@
-import React from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-	updateResponse,
-	updateOptionalResponse,
-	updateEarnedPoints,
-	updateSaveStatus,
-} from "/src/slices/workbookSlice.js";
+import { updateResponse, updateEarnedPoints, updateSaveStatus } from "/src/slices/workbookSlice.js";
 
-import { STATIC_URL, CreateConceptCheck } from "./index";
+import { STATIC_URL } from "./index";
 
-import styles from "./Slides.module.scss";
+import ConceptCheck from "../../../Response/ConceptCheck";
 
-const conceptHints = {
-	bias: "First one explainer text",
-	small: "Second one explainer text",
-	examples: "Third one explainer text",
-};
+import { slideThreeConcepts } from "./data";
 
 export default function SlideThree() {
 	const dispatch = useDispatch();
@@ -25,32 +16,6 @@ export default function SlideThree() {
 	const index = useSelector((state) => state.workbookState.workbook.current_lesson_id);
 
 	let currentResponse = data.responses[index] || "";
-	let currentOptional = data.optional[index] || "";
-
-	const conceptQuestions = {
-		license: {
-			label: "An AI algorithm trained to read US license plates fails to read license plates from New Mexico.",
-			isCorrect: true,
-			hint: "bias could be.",
-			afterthought:
-				"Yes! This is an example of poor validation performance. We can not say if spurious correlation is the cause but perhaps more diverse data would help.",
-		},
-		speech: {
-			label:
-				"When listening to speech from people that stutter, a closed captioning AI maintains successful performance even though it had never seen that data before.",
-			isCorrect: false,
-			hint: "small could be.",
-			afterthought: "No! This is an example of good validation performance and is not poor validation performance",
-		},
-		apples: {
-			label:
-				"An AI is 100 percent correct in classifying two species of apples that are very similar in appearance. The first apple was photographed on a light grey background and the second apple on a white background. ",
-			isCorrect: true,
-			hint: "examples could be.",
-			afterthought:
-				"Yes! This is an example of likely spurious correlation because the AI likely saw the biggest visual difference in the background color and not the apple itself.",
-		},
-	};
 
 	const checkConcepts = (event) => {
 		event.preventDefault();
@@ -62,14 +27,15 @@ export default function SlideThree() {
 		dispatch(updateSaveStatus(false));
 	};
 
-	React.useEffect(() => {
+	// Init concept check with current responses
+	useEffect(() => {
 		Array.from(document.querySelectorAll("form input")).map((item, index) => {
 			item.checked = currentResponse[index];
 		});
 	}, []);
 
 	return (
-		<React.Fragment>
+		<>
 			<p>
 				With a fake and real dataset we can use AI to help tell the difference between each category. Sometimes AI will
 				pick up on unexpected similarities within a category to tell the difference and it won’t work as well on real
@@ -127,15 +93,17 @@ export default function SlideThree() {
 					</p>
 				</div>
 				<div className="col-md-4">
-					<h4>Concept Check</h4>
-					<p>
-						From the list below, check examples that include poor validation performance or spurious correlation. Leave
-						blank examples that include good validation performance.
-					</p>
-
-					<CreateConceptCheck data={conceptQuestions} currentAnswers={currentResponse} callback={checkConcepts} />
+					<ConceptCheck
+						description={
+							"From the list below, check examples that include poor validation performance or spurious correlation. Leave" +
+							"blank examples that include good validation performance."
+						}
+						data={slideThreeConcepts}
+						currentAnswers={currentResponse}
+						callback={checkConcepts}
+					/>
 				</div>
 			</section>
-		</React.Fragment>
+		</>
 	);
 }

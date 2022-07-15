@@ -7,7 +7,12 @@ export default function OptionalText({ title, placeholder, callback, currentValu
 			<h4 className="mt-5">
 				{currentValue && <FaCheck className={styles.correct} />} {title}
 			</h4>
-			<textarea placeholder={placeholder} className="form-control" onChange={(e) => callback(e)} value={currentValue} />
+			<textarea
+				placeholder={placeholder || "*optional"}
+				className="form-control"
+				onChange={(e) => callback(e)}
+				value={currentValue}
+			/>
 		</>
 	);
 }

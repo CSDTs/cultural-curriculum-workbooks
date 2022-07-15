@@ -6,7 +6,7 @@ const SECTION_1_AIKR = [
 	{
 		title: "Deciding on a Problem",
 		tags: "slide",
-		points: 3,
+		points: 0,
 	},
 	{
 		title: "Finding Examples for Both Categories",
