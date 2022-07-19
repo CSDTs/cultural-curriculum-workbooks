@@ -224,17 +224,7 @@ export const CreateWriteUpBasic = ({ title, callback, next, data, show, rows }) 
 };
 
 export default function Slides(props) {
-	const SLIDE_ARRAY = [
-		SlideOne,
-		SlideTwo,
-		SlideThree,
-		SlideFour,
-		SlideFive,
-		SlideSix,
-		SlideSeven,
-		SlideEight,
-		SlideNine,
-	];
+	const SLIDE_ARRAY = [SlideOne, SlideTwo, SlideThree, SlideFour];
 
 	let Content = SLIDE_ARRAY[props.slideID];
 

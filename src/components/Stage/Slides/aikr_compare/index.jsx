@@ -1,6 +1,8 @@
 import React from "react";
 import { FaQuestionCircle, FaCheck, FaExclamation } from "react-icons/fa";
 import { Popover, OverlayTrigger, Form, Button, Card } from "react-bootstrap";
+import SlidePreTest from "./SlidePreTest";
+import SlidePostTest from "./SlidePostTest";
 import SlideOne from "./SlideOne";
 import SlideTwo from "./SlideTwo";
 import SlideThree from "./SlideThree";
@@ -12,6 +14,11 @@ import SlideEight from "./SlideEight";
 import SlideNine from "./SlideNine";
 import styles from "./Slides.module.scss";
 
+import SlideOneA from "../ai_labor/SlideOne";
+import SlideTwoA from "../ai_labor/SlideTwo";
+import SlideThreeA from "../ai_labor/SlideThree";
+import SlideFourA from "../ai_labor/SlideFour";
+import SlideFiveA from "../ai_labor/SlideFive";
 export const STATIC_URL = "./img/aikr_compare/";
 
 export const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -225,15 +232,22 @@ export const CreateWriteUpBasic = ({ title, callback, next, data, show, rows }) 
 
 export default function Slides(props) {
 	const SLIDE_ARRAY = [
+		SlideOneA,
+		SlideTwoA,
+		SlideThreeA,
+		SlideFourA,
+		SlideFiveA,
+		SlidePreTest,
 		SlideOne,
 		SlideTwo,
 		SlideThree,
 		SlideFour,
-		SlideFive,
+
 		SlideSix,
-		SlideSeven,
+
 		SlideEight,
 		SlideNine,
+		SlidePostTest,
 	];
 
 	let Content = SLIDE_ARRAY[props.slideID];

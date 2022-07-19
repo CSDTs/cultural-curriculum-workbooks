@@ -52,8 +52,8 @@ export default function SlideFour() {
 				detail while answering these questions.
 			</p>
 
-			<section className="row mt-5">
-				<div className="col-md-4">
+			<section className="row mt-5 justify-content-center">
+				{/* <div className="col-md-4">
 					<ConceptCheckMulti
 						title="Problem Concept Check"
 						description="Which kinds of problems can be treated as classification problems? A classification problem can have two or
@@ -62,25 +62,25 @@ export default function SlideFour() {
 						currentAnswers={currentResponse}
 						offset={0}
 					/>
-				</div>
-				<div className="col-md-4">
+				</div> */}
+				<div className="col-md-5">
 					<ConceptCheckMulti
 						title="2 Category Concept Check"
 						description="From the list below check binary classification problems. Leave blank problems that are not described as
 						binary classification problems."
 						data={slideFourConceptsB}
 						currentAnswers={currentResponse}
-						offset={4}
+						offset={0}
 					/>
 				</div>
-				<div className="col-md-4">
+				<div className="col-md-5">
 					<ConceptCheckMulti
 						title="Validation Concept Check"
 						description="From the list below, check examples that include poor validation performance or spurious correlation. Leave
 						blank examples that include good validation performance."
 						data={slideFourConceptsC}
 						currentAnswers={currentResponse}
-						offset={8}
+						offset={3}
 					/>
 				</div>
 			</section>

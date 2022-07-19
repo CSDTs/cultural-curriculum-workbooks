@@ -28,23 +28,51 @@ const status = {
 		state: "success",
 	},
 };
+// const saveErrorProps = {
+// 	render: "There was an error saving your work. Please try again later.",
+// 	type: "error",
+// 	isLoading: false,
+// 	autoClose: 5000,
+// };
+const getErrorProps = {
+	render: "There was an error fetching your work. Please try again later.",
+	type: "error",
+	isLoading: false,
+	autoClose: 5000,
+	pauseOnHover: true,
+	closeOnClick: true,
+	closeButton: true,
+};
+
+const saveErrorProps = {
+	render: "There was an error saving your work. Please try again later.",
+	type: "error",
+	isLoading: false,
+	autoClose: 5000,
+	pauseOnHover: true,
+	closeOnClick: true,
+	closeButton: true,
+};
 
 const loadProps = {
-	dismissible: false,
+	dismissible: true,
 	showDismissButton: false,
 	dismissAfter: false,
 	id: "saveProgress",
+	closeOnClick: true,
 };
 const fetchedProps = {
-	dismissible: false,
+	dismissible: true,
 	showDismissButton: false,
 	dismissAfter: 5000,
+	closeOnClick: true,
 };
 
 const commonProps = {
 	dismissible: true,
 	showDismissButton: true,
 	dismissAfter: 5000,
+	closeOnClick: true,
 };
 
-export { status, loadProps, fetchedProps, commonProps };
+export { status, loadProps, fetchedProps, commonProps, getErrorProps, saveErrorProps };

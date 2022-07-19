@@ -117,7 +117,8 @@ export const slideTwoConcepts = {
 
 export const slideThreeConcepts = {
 	license: {
-		label: "An AI algorithm trained to read US license plates fails to read license plates from New Mexico.",
+		label:
+			"An algorithm that associates African Americans with longer jail sentences for same crimes done by other races.",
 		isCorrect: true,
 		hint: "bias could be.",
 		afterthought:
@@ -171,7 +172,7 @@ export const slideFourConceptsA = {
 
 export const slideFourConceptsB = {
 	coins: {
-		label: "The denominations of all US coins?",
+		label: "When inserting coins into a vending machine, detecting what of the 6 possible coins it could be.",
 		isCorrect: false,
 		hint: "Apples could be.",
 		afterthought: "No! Pennies, nickels, and dimes make up three categories and there still are other coins.",
@@ -190,18 +191,18 @@ export const slideFourConceptsB = {
 		afterthought:
 			"Yes! By learning and modeling the difference between counterfeit and authentic medicine you can decide which category it belongs to",
 	},
-	friends: {
-		label: "In a group of friends, is anyone yourself?",
-		isCorrect: false,
-		hint: "silverware could be.",
-		afterthought:
-			"No! Although this is a strange question, there is only one category of answer: no one else in your friend group is yourself.",
-	},
+	// friends: {
+	// 	label: "In a group of friends, is anyone yourself?",
+	// 	isCorrect: false,
+	// 	hint: "silverware could be.",
+	// 	afterthought:
+	// 		"No! Although this is a strange question, there is only one category of answer: no one else in your friend group is yourself.",
+	// },
 };
 
 export const slideFourConceptsC = {
 	cloudy: {
-		label: "An AI is found to reliably detect tanks only on cloudy days",
+		label: "For the same crime, an AI gives longer sentences to African Americans than whites.",
 		isCorrect: true,
 		hint: "bias could be.",
 		afterthought:
@@ -216,7 +217,7 @@ export const slideFourConceptsC = {
 			"Yes! This is an example of spurious classification. Taking a diversity of other photos is important to avoid spurious classification",
 	},
 	environmental: {
-		label: "When shown an entirely new product an AI is able to correctly estimate its environmental impact",
+		label: "When shown an entirely new piece of real kente cloth an AI is able to correctly categorize it as authentic",
 		isCorrect: true,
 		hint: "examples could be.",
 		afterthought: "No! This is an example of good validation performance",

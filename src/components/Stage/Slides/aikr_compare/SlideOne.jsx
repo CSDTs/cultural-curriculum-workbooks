@@ -79,23 +79,11 @@ export default function SlideOne() {
 					<MoreInfoExamples data={slideOneExamples} type={"basic"} />
 
 					<OptionalText
-						title={"What is a problem where visual difference is important?"}
+						title={"Which problem would you work on and why?"}
 						callback={checkOptional}
 						currentValue={currentOptional}
 					/>
 				</div>
-				{/* <div className="col-md-4">
-					<ConceptCheck
-						description={
-							"Which kinds of problems can be treated as classification problems? " +
-							"A classification problem can have two or more categories of outcomes. " +
-							"Please check all that apply."
-						}
-						data={slideOneConcepts}
-						currentAnswers={currentResponse}
-						callback={checkConcepts}
-					/>
-				</div> */}
 			</section>
 		</>
 	);

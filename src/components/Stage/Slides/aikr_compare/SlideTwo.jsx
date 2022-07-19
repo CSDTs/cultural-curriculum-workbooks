@@ -51,8 +51,8 @@ export default function SlideTwo() {
 	return (
 		<>
 			<p>
-				To make a problem a “binary classification” one we have to think about ways the problem can be divided into two
-				categories. Once we have two categories we can start collecting data for each category.
+				A problem that can be divided into two kinds of categories is called a “binary classification” problem. Once we
+				have two categories we can start collecting data.
 			</p>
 
 			<section className="row mt-5">
@@ -69,16 +69,17 @@ export default function SlideTwo() {
 						<img src={`${STATIC_URL}image_select.png`} className="img-fluid col-12" />
 					</div>
 				</div>
-				<div className="col-md-4">
+				<div className="col-md-8">
 					<MoreInfoExamples title={"Some examples of real vs fake"} data={slideTwoExamples} type={"images"} />
 
 					<OptionalText
-						title={"Using a problem from the last screen please list, real and fake categories:"}
+						title={"What real vs fake problem would you work on if you could?"}
 						callback={checkOptional}
 						currentValue={currentOptional}
+						rows={6}
 					/>
 				</div>
-				<div className="col-md-4">
+				{/* <div className="col-md-4">
 					<ConceptCheck
 						description={
 							"From the list below check binary classification problems. Leave blank problems that are not described as" +
@@ -88,7 +89,7 @@ export default function SlideTwo() {
 						currentAnswers={currentResponse}
 						callback={checkConcepts}
 					/>
-				</div>
+				</div> */}
 			</section>
 		</>
 	);

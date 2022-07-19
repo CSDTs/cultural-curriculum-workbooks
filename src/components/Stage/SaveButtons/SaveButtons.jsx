@@ -5,11 +5,12 @@ import { ButtonGroup, Button, Dropdown } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 import { workbookRequest, getClassroomInfo } from "../../../utils/apiRequests";
-import { status, fetchedProps, loadProps } from "../../../utils/notificationProps";
-import LoginPrompt from "../LoginPropmt/LoginPrompt";
+import { status, fetchedProps, loadProps, saveErrorProps, getErrorProps } from "../../../utils/notificationProps";
+import LoginPrompt from "../LoginPrompt/LoginPrompt";
 import { loadConfigSave, setSaveDataId, updateSaveStatus } from "../../../slices/workbookSlice";
-import NewSavePrompt from "../NewSavePrompt/NewSavePrompt";
 
+import NewSavePrompt from "#components/UI/Prompt/NewSavePrompt";
+import DebugButton from "#components/UI/Button/DebugButton";
 import styles from "./SaveButtons.module.scss";
 
 const notifySaving = () => toast.loading("Saving your work, please wait...", { theme: "colored" });
@@ -53,14 +54,14 @@ export default function SaveButtons() {
 		workbookRequest(serializeResponses(), "GET")
 			.then((response) => {
 				if (!response.ok) {
-					toast.update(getToast, errorProps);
+					toast.update(getToast, getErrorProps);
 					return;
 				}
 				toast.update(getToast, successProps);
 				console.log(response.data);
 			})
 			.catch((error) => {
-				toast.update(getToast, errorProps);
+				toast.update(getToast, getErrorProps);
 				console.log(error);
 			});
 	};
@@ -147,20 +148,11 @@ export default function SaveButtons() {
 				{isCurrentUser && !saveID && userClassrooms && <NewSavePrompt handleClassNum={newWorkbookSave} />}
 
 				{import.meta.env.DEV && (
-					<Dropdown>
-						<Dropdown.Toggle variant="success" id="dropdown-basic">
-							Test API Requests
-						</Dropdown.Toggle>
-
-						<Dropdown.Menu>
-							<Dropdown.Item onClick={() => fetchUserWorkbooks()}>GET</Dropdown.Item>
-							<Dropdown.Item onClick={() => newWorkbookSave()}>POST</Dropdown.Item>
-							<Dropdown.Item onClick={() => updateWorkbookSave()}>PUT</Dropdown.Item>
-							<Dropdown.Item onClick={() => printState(workbookData)}>Print Workbook State</Dropdown.Item>
-							<Dropdown.Item onClick={() => printState(currentUser)}>Print User State</Dropdown.Item>
-							<Dropdown.Item onClick={() => printState(saveData)}>Print Data State</Dropdown.Item>
-						</Dropdown.Menu>
-					</Dropdown>
+					<DebugButton
+						getCallback={fetchUserWorkbooks}
+						postCallback={newWorkbookSave}
+						putCallback={updateWorkbookSave}
+					/>
 				)}
 
 				{!isCurrentUser && <LoginPrompt />}

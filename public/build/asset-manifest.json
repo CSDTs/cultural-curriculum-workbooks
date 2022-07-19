@@ -1,39 +1,16 @@
 {
   "files": {
-    "main.css": "./static/css/main.4406cfc3.css",
-    "main.js": "./static/js/main.64824635.js",
+    "main.css": "./static/css/main.252a9f26.css",
+    "main.js": "./static/js/main.9b430fa7.js",
     "static/js/787.96e58526.chunk.js": "./static/js/787.96e58526.chunk.js",
-    "static/media/good-5.png": "./static/media/good-5.70d2c0810169cce25af7.png",
-    "static/media/bad-8.png": "./static/media/bad-8.0daeea923c64cb9b6acf.png",
-    "static/media/good-3.png": "./static/media/good-3.107b93173c1f770b86af.png",
-    "static/media/good-10.png": "./static/media/good-10.a1d295aa92c51cd9b30b.png",
-    "static/media/good-2.png": "./static/media/good-2.826c8acb750176c45d3e.png",
-    "static/media/bad-2.png": "./static/media/bad-2.bbfdeea524ede5f7fd79.png",
-    "static/media/good-6.png": "./static/media/good-6.250d8e93c0e0139ae296.png",
-    "static/media/good-8.png": "./static/media/good-8.48b8544ef58e8c12b32d.png",
-    "static/media/good-4.png": "./static/media/good-4.3ff125a74cd494a0d788.png",
-    "static/media/bad-6.png": "./static/media/bad-6.46ae9ff2c08f3d7acc85.png",
-    "static/media/good-9.png": "./static/media/good-9.13a15bbef4edd69d2dab.png",
-    "static/media/bad-4.png": "./static/media/bad-4.ef71c32bf66378224064.png",
-    "static/media/bad-10.png": "./static/media/bad-10.f98ebca7a2478e8db4fa.png",
-    "static/media/bad-5.png": "./static/media/bad-5.d85b19c6e50df8e1652f.png",
-    "static/media/bad-3.png": "./static/media/bad-3.b64811b03f3cd06e8ec4.png",
-    "static/media/good-1.png": "./static/media/good-1.21dc76a736177359e3a8.png",
-    "static/media/bad-9.png": "./static/media/bad-9.944a5f575c892f77a7ae.png",
-    "static/media/bad-7.png": "./static/media/bad-7.1b407173048a42ecbee1.png",
-    "static/media/bad-1.png": "./static/media/bad-1.114f7d5ec2b82dd34268.png",
     "static/media/check.png": "./static/media/check.de390e5faa0287ea96dd.png",
-    "static/media/checkpng": "./static/media/checkbcd1a436590360ed53ac2f46c76e43e4.de390e5faa0287ea96dd.png",
-    "static/media/good-7.png": "./static/media/good-7.f171015a85f4cc5d3abd.png",
-    "static/media/nsf.gif": "./static/media/nsf.f06faef09126015b2e64.gif",
-    "static/media/logo.svg": "./static/media/logo.2ff471c12bd46b491ed17dac1df77b3d.svg",
     "index.html": "./index.html",
-    "main.4406cfc3.css.map": "./static/css/main.4406cfc3.css.map",
-    "main.64824635.js.map": "./static/js/main.64824635.js.map",
+    "main.252a9f26.css.map": "./static/css/main.252a9f26.css.map",
+    "main.9b430fa7.js.map": "./static/js/main.9b430fa7.js.map",
     "787.96e58526.chunk.js.map": "./static/js/787.96e58526.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4406cfc3.css",
-    "static/js/main.64824635.js"
+    "static/css/main.252a9f26.css",
+    "static/js/main.9b430fa7.js"
   ]
 }

@@ -9,7 +9,7 @@ import styles from "./WorkbookSelection.module.scss";
 
 const createFetchLink = () => {
 	if (import.meta.env.PROD) return `/api/workbooks/`;
-	return "http://127.0.0.1:8000/api/workbooks/";
+	return "https://csdt.org/api/workbooks/";
 };
 
 const getWorkbooks = (setIsError, dispatch) => {
@@ -38,15 +38,17 @@ export default function WorkbookSelection() {
 
 	return (
 		<section className="col-10 mx-auto">
-			<h1 className={`${styles.welcomeHeader} display-1`}>Welcome!</h1>
+			<div className="container">
+				<h1 className={`${styles.welcomeHeader} display-1`}>Welcome!</h1>
 
-			<p>Please select one of the available workbooks to begin:</p>
-			<div className="row">
-				{!isError &&
-					availableWorkbooks.length > 0 &&
-					availableWorkbooks.map((workbook, index) => (
-						<WorkbookSelectionCard workbook={workbook} key={workbook.name + "_" + index} />
-					))}
+				<p>Please select one of the available workbooks to begin:</p>
+				<div className="row">
+					{!isError &&
+						availableWorkbooks.length > 0 &&
+						availableWorkbooks.map((workbook, index) => (
+							<WorkbookSelectionCard workbook={workbook} key={workbook.name + "_" + index} />
+						))}
+				</div>
 			</div>
 
 			{!isError && availableWorkbooks.length == 0 && (

@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DOMPurify from "dompurify";
 
@@ -10,8 +10,11 @@ import CSnap from "./CSnap/CSnap";
 import SaveButtons from "./SaveButtons/SaveButtons";
 
 import CurrentSavePrompt from "./CurrentSavePrompt/CurrentSavePrompt";
+import AutoSavePrompt from "#components/UI/Prompt/AutoSavePrompt";
 
 import styles from "./Stage.module.scss";
+
+import WorkbookOptions from "#components/Core/WorkbookOptions";
 
 //This is for any workbooks that have specialized functionality
 function loadSlides(name) {
@@ -50,7 +53,7 @@ export default function Stage() {
 	const currentLesson = useSelector((state) => state.workbookState.workbook.current_lesson_id);
 	const lesson = useSelector((state) => state.workbookState.workbook.current_lesson);
 	const slug = useSelector((state) => state.workbookState.workbook.slug);
-
+	const [autoSaveShow, setAutoSaveShow] = useState(true);
 	let SlideComponent;
 	if (lesson?.tags?.includes("slide")) SlideComponent = loadSlides(slug);
 
@@ -100,8 +103,10 @@ export default function Stage() {
 					<h4>{lesson.title}</h4>
 					<LoadSaveState />
 				</div>
-				<SaveButtons />
+				{/* <SaveButtons /> */}
+				<WorkbookOptions />
 				<CurrentSavePrompt />
+				<AutoSavePrompt show={autoSaveShow} onHide={() => setAutoSaveShow(false)} />
 			</div>
 
 			<hr className={styles.headerDivide} />

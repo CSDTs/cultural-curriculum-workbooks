@@ -42,6 +42,8 @@ export default function SlideSeven() {
 	const [fireOnce, setFireOnce] = useState(true);
 	const [isOpen, setIsOpen] = useState(false);
 
+	const [prompt, setPrompt] = useState("");
+
 	const [problemPrompt, setProblemPrompt] = useState("");
 	const [categoryAPrompt, setCategoryAPrompt] = useState("");
 	const [categoryBPrompt, setCategoryBPrompt] = useState("");
@@ -273,6 +275,34 @@ export default function SlideSeven() {
 		}
 	}, [num]);
 
+	const handleOnChange = (e) => {
+		setPrompt(`Detecting real or fake African kente cloth is a problem of great economic significance for the country of
+		Ghana. This is because counterfeit kente cloth exists in large numbers and tourists often can not tell the
+		difference. The government has tried RFID chips, badges of authentication and other approaches. But
+		requiring extra equipment, such as RFID chips or certificates, comes with extra costs. Interestingly,
+		there are AI algorithms that can analyze images in ways designed by algorithm designers, such as yourself.
+		How would you design an image based AI app that detected real or fake African kente cloth?`);
+
+		if (e === "water")
+			setPrompt(`The quality of water in Michigan rivers has often raised serious health concerns. Two well known examples
+		are the lead water crisis in Flint, Michigan and synthetic forever chemicals, or PFAS, found in Ann Arbor,
+		MI’s Huron river. In both cases citizen compliments came long before a formal water evaluation. How would
+		you use AI with binary classification to help categorize citizen complaints to help City officials act
+		before a formal evaluation is needed to declare a water quality disaster?`);
+
+		if (e === "web")
+			setPrompt(`One way a new website helps connect artisan craters with each other and potential customers is by posting
+	volunteer opportunities. In these opportunities an interested customer can volunteer to work for an
+	artisan as a way to help them and learn in depth about their work. However, there are many volunteer
+	opportunities for many different artisans. Reviewing and managing what volunteers are best matched to what
+	artisan is a time consuming job. How would you design an AI to help match volunteers to artisans?`);
+
+		if (e === "malaria")
+			setPrompt(
+				`Malaria is a life threatening disease transmitted by mosquitoes carrying parasites. Beyond threatening millions of people, particularly in Nigeria, recovery from the disease is hampered by fake anti-malarial medicine. In 2011, a World Health Organization (WHO) survey revealed that 64% of the malaria medicine imported in Nigeria were fake. Want to tackle this problem of counterfeit drugs? Using the concepts you’ve learned try your hand at describing the problem, the binary classification problem and any spurious correlations to acth out for. `
+			);
+	};
+
 	return (
 		<React.Fragment>
 			<p>
@@ -285,7 +315,24 @@ export default function SlideSeven() {
 				<strong>Each box should be at least 200 words</strong>. When all boxes are filled in you can advance to the next
 				screen.
 			</p>
-
+			<Form>
+				<fieldset>
+					<Form.Group className="mb-3">
+						<Form.Label htmlFor="disabledSelect">Select a scenario: </Form.Label>
+						<Form.Select id="disabledSelect" onChange={(e) => handleOnChange(e.target.value)}>
+							<option>Choose...</option>
+							<option value="kente">Kente Cloth</option>
+							<option value="malaria">Water</option>
+							<option value="water">Water</option>
+							<option value="web">Web</option>
+						</Form.Select>
+						<Alert key={"info"} variant={"info"} hidden={prompt === ""}>
+							{prompt}
+						</Alert>
+						<p></p>
+					</Form.Group>
+				</fieldset>
+			</Form>
 			<Alert key={"warning"} variant={"warning"} hidden={checkForSimilarity()}>
 				There seems to be at least two prompts that are pretty similar. Please make sure to write unique responses for
 				your AI application.

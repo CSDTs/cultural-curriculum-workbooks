@@ -8,7 +8,7 @@ import { STATIC_URL } from "./index";
 import ConceptCheck from "../../../Response/ConceptCheck";
 
 import { slideThreeConcepts } from "./data";
-
+import Accordion from "react-bootstrap/Accordion";
 export default function SlideThree() {
 	const dispatch = useDispatch();
 
@@ -63,34 +63,32 @@ export default function SlideThree() {
 						To help you understand the concept of validation please read through these short examples. They will help
 						you successfully answer the concept check questions too.
 					</p>
-
-					<strong>
-						<p className="text-white ">Good Validation Performance</p>
-					</strong>
-
-					<p>
-						Oftentimes if you know why something happens you can anticipate it happening in the future. For example,
-						imagine that after a lot of time outside you notice that clouds must form before rain can fall. Because
-						you’ve successfully applied this rule to many outside environments over time the rule demonstrates good
-						validation performance. Here you can be “sure” that the rule is right because it is often correct in the
-						situations where it actually ended up raining!
-					</p>
-					<strong>
-						<p className="text-white ">Poor Validation Performance</p>
-					</strong>
-
-					<p>
-						There are many times when a rule can lead to poor validation performance. One possibility is when the rule
-						was inspired by something called “spurious correlation.” A popular example is using AI to detect tanks. In
-						this retelling an AI was trained to be quite successful at detecting tanks from photos. However, the AI
-						catastrophically failed when it was validated against new data, an example of poor validation performance.
-						In this case the algorithm was “sure” it was right even though the actual answer was different than what it
-						expected.{" "}
-						<a href="https://neil.fraser.name/writing/tank/">
-							{" "}
-							Read this brief article from Neil Fraser, a Google software engineer, to learn more.
-						</a>
-					</p>
+					<Accordion flush>
+						<Accordion.Item eventKey="0">
+							<Accordion.Header>Good Validation Performance</Accordion.Header>
+							<Accordion.Body>
+								Oftentimes if you know why something happens you can anticipate it happening in the future. For example,
+								imagine that after a lot of time outside you notice that clouds must form before rain can fall. Because
+								you've successfully applied this rule to many outside environments over time the rule demonstrates good
+								validation performance. Here you can be “sure” that the rule is right because it is often correct in the
+								situations where it actually ended up raining!
+							</Accordion.Body>
+						</Accordion.Item>
+						<Accordion.Item eventKey="1">
+							<Accordion.Header>Spurious correlation</Accordion.Header>
+							<Accordion.Body>
+								Detecting real or fake African kente cloth is a problem of great economic significance for the country
+								of Ghana. This is because counterfeit kente cloth exists in large numbers and tourists often can not
+								tell the difference. The government has tried RFID chips, badges of authentication and other approaches.
+								In our own work we've designed an Kente authentication AI algorithm that learns from examples of real
+								and fake cloth. Being aware of spurious correlation, we had to be sure to take carefully controlled
+								photos of each kind of kente cloth. In fact, we took both sets of photos within the same hour so that
+								differences sunlight and local atmospheric conditions would not introduce unrelated, or spurious,
+								differences between real and fake kente cloth. This way the AI algorithm could focus on actual
+								differences between the two kinds of kente cloth.
+							</Accordion.Body>
+						</Accordion.Item>
+					</Accordion>
 				</div>
 				<div className="col-md-4">
 					<ConceptCheck
