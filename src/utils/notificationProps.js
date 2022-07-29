@@ -44,6 +44,16 @@ const getErrorProps = {
 	closeButton: true,
 };
 
+const successProps = {
+	render: "Your workbook successfully saved.",
+	type: "success",
+	isLoading: false,
+	autoClose: 5000,
+	pauseOnHover: true,
+	closeOnClick: true,
+	closeButton: true,
+};
+
 const saveErrorProps = {
 	render: "There was an error saving your work. Please try again later.",
 	type: "error",
@@ -75,4 +85,4 @@ const commonProps = {
 	closeOnClick: true,
 };
 
-export { status, loadProps, fetchedProps, commonProps, getErrorProps, saveErrorProps };
+export { status, loadProps, fetchedProps, commonProps, getErrorProps, successProps, saveErrorProps };

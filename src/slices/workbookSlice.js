@@ -33,6 +33,8 @@ const initialState = {
 		completion: 0,
 	},
 	save_status: true,
+	is_saving: false,
+	autosave: false,
 };
 
 export const workbookSlice = createSlice({
@@ -122,27 +124,35 @@ export const workbookSlice = createSlice({
 		updateSaveStatus: (state, action) => {
 			state.save_status = action.payload;
 		},
+		updateIsSavingStatus: (state, action) => {
+			state.is_saving = action.payload;
+		},
 		updateWorkbookFinished: (state, action) => {
 			state.workbook.is_finished = action.payload;
+		},
+		updateAutoSaveState: (state, action) => {
+			state.workbook.autosave = action.payload;
 		},
 		updateEarnedPoints: (state) => {
 			state.data.points_earned = state.data.responses.reduce((total, response, index) => {
 				let current = 0;
 
 				if (state.workbook.available_lessons[index].points && state.workbook.available_lessons[index].points > 0) {
-					if (typeof response == "object") {
-						if (Array.isArray(response)) {
-							current += response.reduce((acc, obj) => {
-								return acc + obj;
-							}, 0);
-						} else if (Object.keys(response).length > 0) {
-							current += Object.keys(response).reduce((acc, obj) => {
-								return acc + response[obj]?.verified || 0;
-							}, false);
+					if (response !== null) {
+						if (typeof response == "object") {
+							if (Array.isArray(response)) {
+								current += response.reduce((acc, obj) => {
+									return acc + obj;
+								}, 0);
+							} else if (Object.keys(response).length > 0) {
+								current += Object.keys(response).reduce((acc, obj) => {
+									return acc + response[obj]?.verified || 0;
+								}, false);
+							}
+						} else if (typeof response == "string") {
+							current += response != "" ? 1 : 0;
+							return total + current;
 						}
-					} else if (typeof response == "string") {
-						current += response != "" ? 1 : 0;
-						return total + current;
 					}
 				}
 
@@ -173,6 +183,8 @@ export const {
 	setAvailablePoints,
 	updateWorkbookFinished,
 	updateObjectResponse,
+	updateIsSavingStatus,
+	updateAutoSaveState,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

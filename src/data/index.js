@@ -10,7 +10,7 @@ const AVAILABLE_WORKBOOKS = {
 		slug: "cc_math_introduction",
 	},
 	aikr_compare: {
-		title: "AIKR: Joe's Lunch",
+		title: "AIKR: AI Keepin' it Real",
 		data: WORKBOOK_AIKR_COMPARE,
 		slug: "aikr_compare",
 	},

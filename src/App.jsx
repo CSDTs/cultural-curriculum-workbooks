@@ -3,17 +3,25 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
-import Navigation from "./components/Navigation/Navigation";
-import Stage from "./components/Stage";
-import Sidebar from "./components/Sidebar";
-import WorkbookSelection from "./components/WorkbookSelection/WorkbookSelection";
+import Navigation from "./components/layout/Navigation";
+import Stage from "./components/layout/Stage/Stage";
+import Sidebar from "./components/layout/Sidebar";
+import WorkbookSelection from "./features/WorkbookSelection/WorkbookSelection";
 
 import { getClassrooms, getUser } from "./utils/apiRequests";
 import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "./slices/workbookSlice";
-
+import SavePrompt from "#components/ui/Prompt/SavePrompt";
 import AVAILABLE_WORKBOOKS from "./data/";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+
+import TimeAgo from "javascript-time-ago";
+
+import en from "javascript-time-ago/locale/en.json";
+import ru from "javascript-time-ago/locale/ru.json";
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(ru);
 
 const checkForWorkbookType = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -50,6 +58,7 @@ function App() {
 	const dispatch = useDispatch();
 
 	const user = useSelector((state) => state.workbookState.user);
+	const saveID = user.save_id;
 
 	let localStorageUser = JSON.parse(localStorage.getItem("currentUser")) || "";
 
@@ -72,16 +81,19 @@ function App() {
 	}, []);
 
 	return (
-		<React.Fragment>
-			<main className={`justify-content-between d-inline-flex h-100 w-100`}>
+		<>
+			<main className={`d-inline-flex h-100 w-100`}>
 				{(isValidWorkbook || currentWorkbook) && <Sidebar />}
-				<section className={`appContainer ${!isValidWorkbook || !currentWorkbook ? "col-12" : "col-9"}`}>
+				<section className={`appContainer ${!isValidWorkbook || !currentWorkbook ? "col-12" : "w-100"}`}>
 					<Navigation user={user} />
 					<ToastContainer />
+					{/* <CurrentSavePrompt /> */}
+					{(isValidWorkbook || currentWorkbook) && saveID == null && <SavePrompt />}
+
 					{!isValidWorkbook || !currentWorkbook ? <WorkbookSelection /> : <Stage />}
 				</section>
 			</main>
-		</React.Fragment>
+		</>
 	);
 }
 

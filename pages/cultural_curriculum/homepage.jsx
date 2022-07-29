@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 
-import Navigation from "#components/Navigation/Navigation";
+import Navigation from "#components/layout/Navigation";
 
 import Application from "./Application/Application";
 import Filter from "./Filter/Filter";
