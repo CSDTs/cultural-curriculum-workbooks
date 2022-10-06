@@ -1,23 +1,24 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { Button, ButtonGroup, ButtonToolbar, Spinner } from "react-bootstrap";
-import { RiSettings3Fill, RiSave2Fill } from "react-icons/ri";
+import { RiSave2Fill, RiSettings3Fill } from "react-icons/ri";
 
-import { workbookRequest } from "#utils/apiRequests";
-import { getErrorProps, saveErrorProps, successProps } from "#utils/notificationProps";
-import { updateURL } from "#utils/helpers";
-import { serializeResponses } from "#utils/save";
 import { setSaveDataId, updateSaveStatus } from "#slices/workbookSlice";
+import { workbookRequest } from "#utils/apiRequests";
+import { updateURL } from "#utils/helpers";
+import { getErrorProps, saveErrorProps, successProps } from "#utils/notificationProps";
+import { serializeResponses } from "#utils/save";
 
 import LoginPrompt from "#components/ui/Prompt/LoginPrompt";
 import NewSavePrompt from "#components/ui/Prompt/NewSavePrompt";
-import DebugButton from "#components/ui/Button/DebugButton";
+import { DebugButton } from "../Debugging";
 
-import { triggerSaveUpdate, triggerNewSave } from "#utils/triggerSave";
+import { triggerNewSave, triggerSaveUpdate } from "#utils/triggerSave";
 
 import styles from "./WorkbookOptions.module.scss";
 
+import { Flex } from "@chakra-ui/react";
 import AutoSaveIndicator from "../AutoSaveIndicator";
 
 export default function WorkbookOptions() {
@@ -101,12 +102,12 @@ export default function WorkbookOptions() {
 	const isSaving = useSelector((state) => state.workbookState.is_saving);
 	return (
 		<div className={`col-auto ${styles.saveGroup}`}>
-			<ButtonToolbar aria-label="Toolbar with button groups">
+			<Flex aria-label="Toolbar with button groups" justifyContent={"end"}>
 				<ButtonGroup className="me-2" aria-label="First group">
 					{((isCurrentUser && saveID) || (isCurrentUser && !userClassrooms)) &&
 						(isAutoSaveEnabled === "false" || isAutoSaveEnabled == null) && (
 							<>
-								<Button variant="secondary" onClick={() => updateWorkbookSave()}>
+								<Button variant="secondary" onClick={() => updateWorkbookSave()} size="sm">
 									Save and Continue
 								</Button>
 							</>
@@ -125,7 +126,7 @@ export default function WorkbookOptions() {
 				</ButtonGroup>
 
 				<AutoSaveIndicator />
-			</ButtonToolbar>
+			</Flex>
 		</div>
 	);
 }

@@ -8,6 +8,8 @@ import { triggerSaveUpdate, triggerNewSave } from "#utils/triggerSave";
 import { updateURL } from "#utils/helpers";
 import { setSaveDataId, updateSaveStatus, updateAutoSaveState } from "#slices/workbookSlice";
 import { serializeResponses } from "#utils/save";
+
+import LoginPrompt from "#components/ui/Prompt/LoginPrompt";
 export default function SavePrompt() {
 	const checkAutoSave = window.localStorage.getItem("autoSave") || false;
 
@@ -29,11 +31,11 @@ export default function SavePrompt() {
 	const isAutoSaveEnabled = window.localStorage.getItem("autoSave") || false;
 
 	const handleChange = (event) => {
-		if (event.target.checked) {
-			console.log("✅ Auto save is enabled");
-		} else {
-			console.log("⛔️ Auto save is disabled");
-		}
+		// if (event.target.checked) {
+		// 	console.log("✅ Auto save is enabled");
+		// } else {
+		// 	console.log("⛔️ Auto save is disabled");
+		// }
 		setIsOptingForAutoSave((current) => !current);
 	};
 
@@ -41,13 +43,13 @@ export default function SavePrompt() {
 		if (isSaving) {
 			saveWorkbook();
 		}
-		checkSaveState(currentUser.id, parseInt(saveObjectClassroom.id)).then((data) => {
-			console.log(data);
-		});
+		// checkSaveState(currentUser.id, parseInt(saveObjectClassroom.id)).then((data) => {
+		// 	console.log(data);
+		// });
 
-		checkSaveState(currentUser.id, "None").then((data) => {
-			console.log(data);
-		});
+		// checkSaveState(currentUser.id, "None").then((data) => {
+		// 	console.log(data);
+		// });
 	}, [saveObjectClassroom, isSaving]);
 
 	const saveAndContinue = () => {
@@ -90,53 +92,67 @@ export default function SavePrompt() {
 				<Modal.Title id="contained-modal-title-vcenter">First Time Save</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<p>You have the option to save to a classroom or save to your profile.</p>
-				{userClassrooms && userClassrooms.length > 0 && (
-					<Form className="mt-4">
-						<fieldset>
-							<Form.Group className="mb-3">
-								<Form.Label htmlFor="disabledSelect">All your classrooms</Form.Label>
-								<Form.Select
-									defaultValue={userClassrooms[0].team}
-									id="disabledSelect"
-									onChange={(e) => {
-										dispatch(setWorkbookClassroom(JSON.parse(e.target.value)));
-									}}>
-									<option key="unselected-option" value={JSON.stringify({ id: null, name: "" })}>
-										Select an option...
-									</option>
-									{userClassrooms.map((classroom) => (
-										<option
-											key={classroom.team}
-											value={JSON.stringify({ id: classroom.team, name: classroom.team_name })}>
-											{classroom.team_name}
+				{!currentUser.id && <p>You have the ability to save your work if you are logged in.</p>}
+				{currentUser.id && userClassrooms && userClassrooms.length > 0 && (
+					<>
+						<p>You have the option to save to a classroom or save to your profile.</p>
+						<Form className="mt-4">
+							<fieldset>
+								<Form.Group className="mb-3">
+									<Form.Label htmlFor="disabledSelect">All your classrooms</Form.Label>
+									<Form.Select
+										defaultValue={userClassrooms[0].team}
+										id="disabledSelect"
+										onChange={(e) => {
+											dispatch(setWorkbookClassroom(JSON.parse(e.target.value)));
+										}}>
+										<option key="unselected-option" value={JSON.stringify({ id: null, name: "" })}>
+											Select an option...
 										</option>
-									))}
-								</Form.Select>
-							</Form.Group>
-						</fieldset>
-					</Form>
+										{userClassrooms.map((classroom) => (
+											<option
+												key={classroom.team}
+												value={JSON.stringify({ id: classroom.team, name: classroom.team_name })}>
+												{classroom.team_name}
+											</option>
+										))}
+									</Form.Select>
+								</Form.Group>
+							</fieldset>
+						</Form>
+					</>
 				)}
 				{import.meta.env.DEV && (
 					<strong>
 						<p className="mt-2">Dev mode. Unable to fetch classrooms </p>
 					</strong>
 				)}
-				<Form.Check
-					type="checkbox"
-					id={`enable-auto-save`}
-					label={`Select to enable auto saving`}
-					value={isOptingForAutoSave}
-					onChange={handleChange}
-					checked={isOptingForAutoSave}
-					// onChange={() => console.log("auto save enabled")}
-				/>
+
+				{currentUser.id && (
+					<Form.Check
+						type="checkbox"
+						id={`enable-auto-save`}
+						label={`Select to enable auto saving`}
+						value={isOptingForAutoSave}
+						onChange={handleChange}
+						checked={isOptingForAutoSave}
+
+						// onChange={() => console.log("auto save enabled")}
+					/>
+				)}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="outline-primary" onClick={() => skipForNow()}>
+				<Button variant="outline-primary" onClick={() => skipForNow()} size="sm">
 					Skip for Now
 				</Button>
-				<Button onClick={() => saveAndContinue()}>Save and Continue</Button>
+				{!currentUser.id && <LoginPrompt />}
+
+				{currentUser.id && (
+					<Button onClick={() => saveAndContinue()} size="sm">
+						{" "}
+						Save and Continue
+					</Button>
+				)}
 			</Modal.Footer>
 		</Modal>
 	);

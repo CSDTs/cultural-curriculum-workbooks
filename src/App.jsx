@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
-import Navigation from "./components/layout/Navigation";
-import Stage from "./components/layout/Stage/Stage";
-import Sidebar from "./components/layout/Sidebar";
 import WorkbookSelection from "./features/WorkbookSelection/WorkbookSelection";
 
-import { getClassrooms, getUser } from "./utils/apiRequests";
-import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "./slices/workbookSlice";
-import SavePrompt from "#components/ui/Prompt/SavePrompt";
-import AVAILABLE_WORKBOOKS from "./data/";
-import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+import AVAILABLE_WORKBOOKS from "./data/";
+import { loadConfigSave, setCurrentUser, setUserClassrooms, setWorkbookData } from "./slices/workbookSlice";
+import { getClassrooms, getUser } from "./utils/apiRequests";
 
 import TimeAgo from "javascript-time-ago";
 
 import en from "javascript-time-ago/locale/en.json";
 import ru from "javascript-time-ago/locale/ru.json";
+
+import FirstTimePrompt from "./features/FirstTimePrompt";
+import useCurrentLesson from "./hooks/useCurrentLesson";
+import { Main, WorkbookLayout } from "./layout";
+import SelectionScreen from "./pages/SelectionScreen";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -40,7 +41,11 @@ const checkForCurrentSave = (dispatch) => {
 
 const notifyError = (error) => {
 	if (import.meta.env.PROD)
-		toast.error("There seems to be an issue connecting to the server. Please try again later.", { theme: "colored" });
+		toast.info("You are not currently logged in. Make sure to log in to save your work.", {
+			theme: "colored",
+			pauseOnHover: false,
+			closeOnClick: true,
+		});
 	console.error(error);
 };
 
@@ -56,6 +61,9 @@ const setUser = (userObject, dispatch) => {
 
 function App() {
 	const dispatch = useDispatch();
+
+	const [wb, setWb] = useState(null);
+	const [lesson, setLesson] = useState(null);
 
 	const user = useSelector((state) => state.workbookState.user);
 	const saveID = user.save_id;
@@ -73,26 +81,33 @@ function App() {
 		getUser()
 			.then((response) => {
 				if (localStorageUser?.username == response.data?.username) return;
+
 				setUser(response.data, dispatch);
 			})
 			.catch((error) => notifyError(error));
 
 		checkForCurrentSave(dispatch);
 	}, []);
+	useEffect(() => {
+		setWb(AVAILABLE_WORKBOOKS[currentWorkbook]);
+
+		console.log(AVAILABLE_WORKBOOKS[currentWorkbook]);
+	}, [currentWorkbook]);
+
+	useEffect(() => {
+		console.log(lesson);
+	}, [lesson]);
 
 	return (
 		<>
-			<main className={`d-inline-flex h-100 w-100`}>
-				{(isValidWorkbook || currentWorkbook) && <Sidebar />}
-				<section className={`appContainer ${!isValidWorkbook || !currentWorkbook ? "col-12" : "w-100"}`}>
-					<Navigation user={user} />
-					<ToastContainer />
-					{/* <CurrentSavePrompt /> */}
-					{(isValidWorkbook || currentWorkbook) && saveID == null && <SavePrompt />}
+			<WorkbookLayout title={wb?.title || "CSDT Workbook"} sections={wb?.data} setLesson={setLesson}>
+				<ToastContainer />
+				{/* <CurrentSavePrompt /> */}
 
-					{!isValidWorkbook || !currentWorkbook ? <WorkbookSelection /> : <Stage />}
-				</section>
-			</main>
+				{/* {(isValidWorkbook || currentWorkbook) && saveID == null && <FirstTimePrompt />} */}
+
+				{!isValidWorkbook || !currentWorkbook ? <SelectionScreen /> : <Main />}
+			</WorkbookLayout>
 		</>
 	);
 }

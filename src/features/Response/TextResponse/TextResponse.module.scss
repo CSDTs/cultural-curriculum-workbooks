@@ -1,7 +1,12 @@
 .correct {
 	fill: green;
 }
-
 .incorrect {
 	fill: red;
+}
+
+.heading {
+	display: inline-flex;
+	justify-content: space-between;
+	width: 100%;
 }

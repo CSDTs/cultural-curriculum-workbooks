@@ -64,9 +64,9 @@ async function workbookRequest(project, method) {
 	const response = await fetch(`${WORKBOOK_API_HOST}${query}`, method === "GET" ? {} : alterProps);
 	const data = await response.json();
 
-	console.log(alterProps);
-	console.log(response);
-	console.log(data);
+	// console.log(alterProps);
+	// console.log(response);
+	// console.log(data);
 	return { data, status: response.status, ok: response.ok };
 }
 
@@ -81,7 +81,7 @@ async function getUser() {
 	const response = await fetch(`${USER_API_HOST}`);
 	const data = await response.json();
 
-	if (data?.id == null) throw new Error("Accessing from different host.");
+	if (data?.id == null) throw new Error("User is not currently logged in");
 	return { data, status: response.status };
 }
 
@@ -126,7 +126,7 @@ async function loginUser() {
 		body: new URLSearchParams(`login=${payload.login}&password=${payload.password}`),
 	});
 
-	console.log(response.redirected);
+	// console.log(response.redirected);
 
 	if (!response.redirected) throw new Error("Incorrect login info.");
 
@@ -146,4 +146,21 @@ async function checkSaveState(user, classroom) {
 	return { data, status: response.status };
 }
 
-export { getCsrfToken, workbookRequest, getClassroomInfo, getClassrooms, getUser, loginUser, checkSaveState };
+async function getAllSaves() {
+	const response = await fetch(`${WORKBOOK_API_HOST}`);
+
+	const data = await response.json();
+
+	return { data, status: response.status };
+}
+
+export {
+	getAllSaves,
+	getCsrfToken,
+	workbookRequest,
+	getClassroomInfo,
+	getClassrooms,
+	getUser,
+	loginUser,
+	checkSaveState,
+};

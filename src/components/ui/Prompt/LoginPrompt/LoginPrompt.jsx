@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, InputGroup, Col, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { getCsrfToken, loginUser } from "../../../../utils/apiRequests";
+import { getCsrfToken, loginUser, getClassrooms } from "../../../../utils/apiRequests";
 import styles from "./LoginPrompt.module.scss";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { setCurrentUser } from "../../../../slices/workbookSlice.js";
+import { setCurrentUser, setUserClassrooms } from "../../../../slices/workbookSlice.js";
 import { notify } from "reapop";
 
 import { commonProps } from "../../../../utils/notificationProps";
@@ -25,7 +25,12 @@ export default function LoginPrompt() {
 	const logThemIn = () => {
 		loginUser().then((res) => {
 			dispatch(setCurrentUser(res.data));
-			dispatch(notify(`Welcome back ${res.data.username}`, "info", commonProps));
+			// dispatch(notify(`Welcome back ${res.data.username}`, "info", commonProps));
+			getClassrooms(res.data.id)
+				.then((response) => {
+					dispatch(setUserClassrooms(response.data));
+				})
+				.catch((error) => console.error(error));
 		});
 	};
 

@@ -13,8 +13,8 @@ const isCorrect = (questions) => {
 		isChecked.push(questions[key].ref.current.isChecked || false);
 	});
 
-	console.log(isCorrect);
-	console.log(isChecked);
+	// console.log(isCorrect);
+	// console.log(isChecked);
 	return isEqual(isCorrect, isChecked);
 };
 

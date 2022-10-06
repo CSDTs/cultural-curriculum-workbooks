@@ -20,6 +20,7 @@ export default defineConfig({
 			input: {
 				main: resolve(__dirname, "index.html"),
 				nested: resolve(__dirname, "/pages/cultural_curriculum/index.html"),
+				view_results: resolve(__dirname, "/pages/view_results/index.html"),
 			},
 		},
 	},

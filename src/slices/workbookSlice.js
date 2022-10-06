@@ -134,32 +134,50 @@ export const workbookSlice = createSlice({
 			state.workbook.autosave = action.payload;
 		},
 		updateEarnedPoints: (state) => {
-			state.data.points_earned = state.data.responses.reduce((total, response, index) => {
-				let current = 0;
-
-				if (state.workbook.available_lessons[index].points && state.workbook.available_lessons[index].points > 0) {
-					if (response !== null) {
-						if (typeof response == "object") {
-							if (Array.isArray(response)) {
-								current += response.reduce((acc, obj) => {
-									return acc + obj;
-								}, 0);
-							} else if (Object.keys(response).length > 0) {
-								current += Object.keys(response).reduce((acc, obj) => {
-									return acc + response[obj]?.verified || 0;
-								}, false);
-							}
-						} else if (typeof response == "string") {
-							current += response != "" ? 1 : 0;
-							return total + current;
-						}
-					}
+			// state.data.points_earned = state.data.responses.reduce((total, response, index) => {
+			// 	let current = 0;
+			// 	if (state.workbook.available_lessons[index].points && state.workbook.available_lessons[index].points > 0) {
+			// 		if (response !== null) {
+			// 			if (typeof response == "object") {
+			// 				if (Array.isArray(response)) {
+			// 					current += response.reduce((acc, obj) => {
+			// 						return acc + obj;
+			// 					}, 0);
+			// 				} else if (Object.keys(response).length > 0) {
+			// 					current += Object.keys(response).reduce((acc, obj) => {
+			// 						return acc + response[obj]?.verified || 0;
+			// 					}, false);
+			// 				}
+			// 			} else if (typeof response == "string") {
+			// 				current += response != "" ? 1 : 0;
+			// 				return total + current;
+			// 			}
+			// 		}
+			// 	}
+			// 	return total + current;
+			// }, 0);
+			// state.data.completion = parseInt((state.data.points_earned / state.workbook.available_points) * 100);
+		},
+		updatePoints: (state) => {
+			const total = state.data.responses.reduce((accum, response) => {
+				console.log(accum);
+				if (response.points !== undefined) {
+					return (accum += response.points);
 				}
 
-				return total + current;
+				if (typeof response == "object" && response.response != "") {
+					return (accum += 1);
+				}
+
+				if (typeof response == "string" && response.trim() != "") {
+					return (accum += 1);
+				}
+
+				return accum;
 			}, 0);
 
-			state.data.completion = parseInt((state.data.points_earned / state.workbook.available_points) * 100);
+			state.data.points_earned = total;
+			state.data.completion = parseInt((total / state.workbook.available_points) * 100);
 		},
 	},
 });
@@ -185,6 +203,7 @@ export const {
 	updateObjectResponse,
 	updateIsSavingStatus,
 	updateAutoSaveState,
+	updatePoints,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

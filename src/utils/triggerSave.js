@@ -51,9 +51,9 @@ async function workbookRequest(project, method) {
 	const response = await fetch(`${WORKBOOK_API_HOST}${query}`, method === "GET" ? {} : alterProps);
 	const data = await response.json();
 
-	console.log(alterProps);
-	console.log(response);
-	console.log(data);
+	// console.log(alterProps);
+	// console.log(response);
+	// console.log(data);
 	return { data, status: response.status, ok: response.ok };
 }
 
@@ -89,14 +89,23 @@ const updateWorkbookSave = (id, data, callback) => {
 };
 
 function triggerNewSave(data, callback) {
-	console.log("new save");
+	// console.log("new save");
 	newWorkbookSave(data, callback);
 	// updateWorkbookSave(callback);
 }
 
 function triggerSaveUpdate(id, data, callback) {
-	console.log("update save");
+	// console.log("update save");
 	updateWorkbookSave(id, data, callback);
 }
 
-export { triggerNewSave, triggerSaveUpdate };
+function triggerSave(data, callback, id = null) {
+	if (id) Object.assign(data, { id: id });
+	workbookRequest(data, id ? "PUT" : "POST")
+		.then((response) => {
+			if (response.ok) callback(response);
+		})
+		.catch((err) => errCallback(err, postToast, saveErrorProps));
+}
+
+export { triggerNewSave, triggerSaveUpdate, triggerSave };
