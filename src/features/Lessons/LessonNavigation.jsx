@@ -1,33 +1,18 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import { useDispatch } from "react-redux";
-import useCurrentLesson from "../../hooks/useCurrentLesson";
-import useWorkbookData from "../../hooks/useWorkbookData";
-
-import { goToNextLesson, goToPreviousLesson } from "/src/slices/workbookSlice.js";
+import useLesson from "../../hooks/useLesson";
 
 export default function LessonNavigation() {
-	const dispatch = useDispatch();
+	const { current, available, nextLesson, previousLesson } = useLesson();
 
-	const { lessons } = useWorkbookData();
-	const { currentLesson } = useCurrentLesson();
-
-	let endOfWorkbook = currentLesson == lessons.length - 1;
-	let startOfWorkbook = currentLesson == 0;
-
-	const nextLesson = () => {
-		dispatch(goToNextLesson());
-	};
-
-	const previousLesson = () => {
-		dispatch(goToPreviousLesson());
-	};
+	let endOfWorkbook = current.id == available.length - 1;
+	let startOfWorkbook = current.id == 0;
 
 	return (
 		<Flex w="100%" justifyContent={"space-between"} px="5" align={"center"}>
 			<Text fontSize={"lg"} fontWeight={600}>
 				Lesson &nbsp;
-				{currentLesson + 1} / {lessons.length}
+				{current.id + 1} / {available.length}
 			</Text>
 
 			<span>

@@ -15,7 +15,7 @@ const useResponse = () => {
 
 	let currentResponse = data.responses[index] || "";
 	let currentOptional = data.optional[index] || "";
-
+	const lessonResponse = useSelector((state) => state.workbookState.data.responses)[index];
 	return {
 		checkRequired: (val) => {
 			console.log(val);
@@ -23,7 +23,15 @@ const useResponse = () => {
 			// dispatch(updateSaveStatus(false));
 			dispatch(updatePoints());
 		},
+
+		autoSaveResponse: async (val) => {
+			dispatch(updateResponse(val));
+			dispatch(updatePoints());
+		},
 		getRequired: currentResponse,
+		specificResponse: (id) => {
+			return data.responses[id];
+		},
 	};
 };
 export default useResponse;

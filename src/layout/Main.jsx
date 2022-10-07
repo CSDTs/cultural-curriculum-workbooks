@@ -1,20 +1,21 @@
-import { Box, Divider, Heading, Text, useColorModeValue } from "@chakra-ui/react";
+import { Divider, useColorModeValue } from "@chakra-ui/react";
 
 import { LoadPage } from "../features/Loading";
-import useCurrentLesson from "../hooks/useCurrentLesson";
+
+import useLesson from "../hooks/useLesson";
 import Header from "./Header";
 const Main = () => {
-	const { lessonData, currentLesson } = useCurrentLesson();
+	const { current } = useLesson();
 	return (
 		<>
-			<Header title={lessonData.title} />
+			<Header title={current.title} />
 			<Divider
 				my={3}
 				w={"75%"}
 				bgGradient={useColorModeValue("linear(to-r, #0092ed, gray.50)", "linear(to-r, #0092ed, gray.700)")}
 			/>
 
-			{lessonData?.tags?.includes("slide") && <LoadPage />}
+			{current?.tags?.includes("slide") && <LoadPage />}
 		</>
 	);
 };

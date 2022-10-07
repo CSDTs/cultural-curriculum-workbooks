@@ -30,11 +30,12 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { FaRegQuestionCircle, FaRegUser, FaUser, FaUserAlt } from "react-icons/fa";
+import useUserData from "../hooks/useUserData";
 // import useLocalStorage from "../../../hooks/useLocalStorage";
 export default function Navigation() {
 	const { isOpen, onToggle } = useDisclosure();
 	const prefix = import.meta.env.PROD ? "/static/img/misc" : "";
-	const currentUser = JSON.parse(localStorage.getItem("currentUser")) || "";
+	const [currentUser] = useUserData();
 
 	const { colorMode, toggleColorMode } = useColorMode();
 	return (

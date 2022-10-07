@@ -4,15 +4,22 @@ import PropTypes from "prop-types";
 import { debounce } from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import useResponse from "../../hooks/useResponse";
+import useSave from "../../hooks/useSave";
 const TextareaResponse = ({ points, question, placeholder, children }) => {
-	const { checkRequired, getRequired } = useResponse();
+	const { checkRequired, autoSaveResponse, getRequired } = useResponse();
 
+	const [isSaving, isSaved, { saveWorkbook }] = useSave();
 	const [response, setResponse] = useState(getRequired);
 
 	const debounceSave = useMemo(
 		() =>
 			debounce((val) => {
-				checkRequired(val);
+				autoSaveResponse(val).then(() => {
+					console.log("uploading to cloud");
+					saveWorkbook().then((res) => {
+						console.log(res);
+					});
+				});
 			}, 750),
 		[setResponse]
 	);
@@ -24,7 +31,6 @@ const TextareaResponse = ({ points, question, placeholder, children }) => {
 	return (
 		<>
 			{children}
-
 			<Textarea
 				placeholder={placeholder}
 				onChange={handleChange}
@@ -32,6 +38,8 @@ const TextareaResponse = ({ points, question, placeholder, children }) => {
 				borderColor={response.response && "rgb(129 252 138)"}
 				boxShadow={response.response && "rgb(129 252 138) 0px 0px 0px 1px"}
 			/>
+			{isSaving && <Text>{"Saving..."}</Text>}
+			{isSaved && <Text>{"Saved"}</Text>}
 		</>
 	);
 };

@@ -54,6 +54,13 @@ export const workbookSlice = createSlice({
 			state.workbook.slug = action.payload.slug;
 
 			if (!action.payload?.initLesson) state.workbook.current_lesson = action.payload.data[0].lessons[0];
+			else {
+				const initLesson = parseInt(action.payload.initLesson);
+				let temp = initLesson >= 0 && initLesson < totalLessons.length ? initLesson : 0;
+
+				state.workbook.current_lesson_id = temp;
+				state.workbook.current_lesson = totalLessons[temp];
+			}
 		},
 
 		setAvailableWorkbooksData: (state, action) => {

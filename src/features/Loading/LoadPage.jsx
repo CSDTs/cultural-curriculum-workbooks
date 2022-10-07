@@ -1,15 +1,18 @@
 import { Box } from "@chakra-ui/react";
-import { lazy, Suspense, useState } from "react";
-import useCurrentLesson from "../../hooks/useCurrentLesson";
+import { lazy, Suspense, useEffect, useState } from "react";
+
+import useLesson from "../../hooks/useLesson";
+import useWorkbook from "../../hooks/useWorkbook";
 import Loader from "./Loader";
 
 const LoadPage = () => {
-	const { currentLesson, slug } = useCurrentLesson();
-	// const [Page, setPage] = useState('');
+	const { current } = useLesson();
+	const { slug } = useWorkbook();
+
 	let Page = lazy(() => import(`../../pages/${slug}/index.jsx`));
 	return (
 		<Suspense fallback={<Loader />}>
-			<Page slideID={currentLesson} />
+			<Page slideID={current.id} />
 		</Suspense>
 	);
 };

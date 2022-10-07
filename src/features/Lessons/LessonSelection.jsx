@@ -2,33 +2,33 @@ import { Collapse, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
 import { Fragment, useEffect } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import NavItem from "../../components/NavItem";
-import useCurrentLesson from "../../hooks/useCurrentLesson";
+import useLesson from "../../hooks/useLesson";
+import useResponse from "../../hooks/useResponse";
 
-const LessonData = ({ lessonID, lessonData }) => {
-	const lesson = { lessonID, ...lessonData };
-
-	const { currentLesson, currentResponse, updateCurrentLesson } = useCurrentLesson(lessonID, lesson);
-
-	const isCurrentLesson = currentLesson == lessonID;
+const LessonData = ({ data }) => {
+	const { current, updateCurrentLesson } = useLesson(data);
+	const { specificResponse } = useResponse();
 
 	const navState = {
-		color: isCurrentLesson ? "#1f89dd" : "gray.500",
-		fontWeight: isCurrentLesson ? "800" : "500",
+		color: current.id == data.lessonID ? "#1f89dd" : "gray.500",
+		fontWeight: current.id == data.lessonID ? "800" : "500",
+		textDecoration: specificResponse(data.lessonID) && "line-through",
 	};
 
 	return (
 		<NavItem pl="12" py="2" onClick={updateCurrentLesson}>
-			<Text {...navState}>{currentResponse ? <s>{lessonData.title}</s> : <>{lessonData.title}</>}</Text>
+			<Text {...navState}>{data.title}</Text>
 		</NavItem>
 	);
 };
+
 const SectionData = ({ title, range, children }) => {
-	const { currentLesson } = useCurrentLesson();
+	const { current } = useLesson();
 	const { isOpen, onOpen, onToggle } = useDisclosure();
 
 	useEffect(() => {
-		if (currentLesson >= range.min && currentLesson < range.max) onOpen();
-	}, [currentLesson]);
+		if (current.id >= range.min && current.id < range.max) onOpen();
+	}, [current.id]);
 
 	return (
 		<Fragment>
@@ -54,7 +54,7 @@ const LessonSelection = ({ sections }) => {
 						key={section.title}
 						range={{ min: offset, max: (offset += section.lessons.length) }}>
 						{section.lessons.map((lesson) => (
-							<LessonData lessonID={lessonCount++} key={lesson.title} lessonData={lesson} />
+							<LessonData key={lesson.title} data={{ lessonID: lessonCount++, ...lesson }} />
 						))}
 					</SectionData>
 				))}
