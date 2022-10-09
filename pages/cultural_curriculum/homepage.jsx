@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
-import Navigation from "#components/layout/Navigation";
+// import Navigation from "#components/layout/Navigation";
 
 import Application from "./Application/Application";
 import Filter from "./Filter/Filter";
@@ -11,13 +11,13 @@ import Search from "./Filter/Search";
 
 import AdvancedFilter from "./Filter";
 
-import { getClassrooms, getUser } from "/src/utils/apiRequests";
-import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "/src/slices/workbookSlice";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { getClassrooms, getUser } from "/src/common/utils/apiRequests";
+import { loadConfigSave, setCurrentUser, setUserClassrooms } from "/src/setup/slices/workbookSlice";
 
-import "/src/App.css";
-import "./styles.scss";
 import "react-toastify/dist/ReactToastify.css";
+import "./styles.scss";
+import "/src/App.css";
 
 const notifyError = (error) => {
 	if (import.meta.env.PROD)
@@ -68,7 +68,7 @@ function App() {
 	return (
 		<React.Fragment>
 			<main className={`h-100 w-100`}>
-				<Navigation user={user} />
+				{/* <Navigation user={user} /> */}
 
 				<ToastContainer />
 				<section className={` col-md-10 mx-auto mt-5`}>

@@ -1,16 +1,16 @@
-import { useMemo, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
-import Navigation from "#components/layout/Navigation";
+// import Navigation from "#components/layout/Navigation";
 
-import { getClassrooms, getUser } from "/src/utils/apiRequests";
-import { setWorkbookData, setCurrentUser, setUserClassrooms, loadConfigSave } from "/src/slices/workbookSlice";
+import { getClassrooms, getUser } from "/src/common/utils/apiRequests";
+import { loadConfigSave, setCurrentUser, setUserClassrooms } from "/src/setup/slices/workbookSlice";
 
-import { getAllSaves } from "#utils/apiRequests";
-import "/src/App.css";
-import "./styles.scss";
 import "react-toastify/dist/ReactToastify.css";
+import "./styles.scss";
+import "/src/App.css";
+import { getAllSaves } from "/src/common/utils/apiRequests";
 
 const notifyError = (error) => {
 	if (import.meta.env.PROD)
@@ -52,7 +52,7 @@ function App() {
 
 	return (
 		<main className={`h-100 w-100`}>
-			<Navigation user={user} />
+			{/* <Navigation user={user} /> */}
 
 			<ToastContainer />
 			<section className={` col-md-10 mx-auto mt-5`}>

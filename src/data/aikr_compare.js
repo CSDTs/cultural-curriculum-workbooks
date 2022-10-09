@@ -7,6 +7,7 @@ const SECTION_0_AI_LABOR = [
 		title: "Introduction",
 		tags: "slide",
 		points: 1,
+		section: "",
 	},
 	{
 		title: "Examples of Replacement",

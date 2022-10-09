@@ -1,56 +1,73 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
 
 import AVAILABLE_WORKBOOKS from "./data/";
-import { loadConfigSave, setWorkbookData } from "./slices/workbookSlice";
+import { loadConfigSave, setSlug, setWorkbookData } from "/src/setup/slices/workbookSlice";
 
-import FirstTimePrompt from "./features/FirstTimePrompt";
+import { Heading } from "@chakra-ui/react";
+import useSlug from "./common/hooks/useSlug";
+import useWorkbook from "./common/hooks/useWorkbook";
+import useConfig from "/src/common/hooks/useConfig";
 
-import useConfig from "./hooks/useConfig";
-import useUserData from "./hooks/useUserData";
-import { Main, WorkbookLayout } from "./layout";
-import SelectionScreen from "./pages/SelectionScreen";
+import { Main, WorkbookLayout } from "/src/common/layout";
+import SelectionScreen from "/src/tools/SelectionScreen";
 
-const getParam = (param) => {
-	const [searchParams] = useSearchParams();
-	let urlParam = searchParams.get(param);
-	return urlParam;
-};
+import useLocalStorage from "./common/hooks/useLocalStorage";
+import useSave from "./common/hooks/useSave";
+import { getSlug } from "/src/common/services/WorkbookService";
+function updateURL(slug, id) {
+	window.history.pushState({}, "", `/workbooks/start_${slug}/${id}`);
+
+	// if (window.history !== undefined && window.history.pushState !== undefined) {
+	// 	let updatedPathname = window.location.pathname.replace(/\d+$/, `${id}`);
+	// 	if (updatedPathname === window.location.pathname) window.history.pushState({}, "", `${updatedPathname}${id}`);
+	// 	else window.history.pushState({}, "", updatedPathname);
+	// }
+}
 
 function App() {
 	const dispatch = useDispatch();
 
 	const [wb, setWb] = useState(null);
+	const [searchParams] = useSearchParams();
 	const [lesson, setLesson] = useState(null);
-	const [djangoConfig] = useConfig();
+	const [autoSave] = useLocalStorage("autoSave");
+	const saveData = useSelector((state) => state.workbookState.data);
+	const saveId = useSelector((state) => state.workbookState.user.save_id);
+	const reduxAutoSave = useSelector((state) => state.workbookState.workbook.autosave);
+	let lessonParam = searchParams.get("lesson");
+	const [isSaving, isSaved, { saveWorkbook }] = useSave(reduxAutoSave);
 
-	let lessonParam = getParam("lesson");
-
-	const [currentUser] = useUserData();
-
-	const saveID = currentUser?.save_id;
-
-	const currentWorkbook = djangoConfig ? djangoConfig.slug : getParam("wb");
-	const isValidWorkbook = currentWorkbook in AVAILABLE_WORKBOOKS;
+	const slug = getSlug();
 
 	useEffect(() => {
-		if (currentWorkbook && isValidWorkbook) {
-			dispatch(setWorkbookData({ initLesson: parseInt(lessonParam), ...AVAILABLE_WORKBOOKS[currentWorkbook] }));
-			setWb(AVAILABLE_WORKBOOKS[currentWorkbook]);
+		const isValidWorkbook = slug in AVAILABLE_WORKBOOKS;
+
+		if (slug && isValidWorkbook) {
+			dispatch(setWorkbookData({ initLesson: parseInt(lessonParam), ...AVAILABLE_WORKBOOKS[slug] }));
+			setWb(AVAILABLE_WORKBOOKS[slug]);
 		}
 
-		if (djangoConfig) dispatch(loadConfigSave(djangoConfig));
-	}, []);
+		if (typeof config !== undefined) dispatch(loadConfigSave(config));
+	}, [slug]);
+
+	useEffect(() => {
+		if (reduxAutoSave)
+			saveWorkbook().then((res) => {
+				// if (res.status == 201) updateURL(slug, res.data.id);
+				console.log(res);
+			});
+	}, [saveData]);
 
 	return (
-		<WorkbookLayout title={wb?.title || "CSDT Workbook"} sections={wb?.data} setLesson={setLesson}>
-			<ToastContainer />
-			{!isValidWorkbook || !currentWorkbook ? <SelectionScreen /> : <Main />}
-		</WorkbookLayout>
+		<>
+			<WorkbookLayout title={wb?.title || "CSDT Workbook"} sections={wb?.data} setLesson={setLesson}>
+				{(!slug || !wb) && <SelectionScreen />}
+
+				{slug && wb && <Main />}
+			</WorkbookLayout>
+		</>
 	);
 }
 
