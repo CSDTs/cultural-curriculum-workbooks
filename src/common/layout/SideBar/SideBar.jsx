@@ -5,7 +5,7 @@ import NamePlate from "./NamePlate";
 import WorkbookNavigation from "./WorkbookNavigation";
 import WorkbookSections from "./WorkbookSections";
 
-import { WorkbookProgress } from "/src/common/features/Progress";
+import { WorkbookProgress } from "/src/common/features/progress";
 
 const SideBar = ({ ...additionalStyles }) => {
 	return (

@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
+// import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
 import ItemList from "../Application/ItemList";
 
 export default function Menu({ apps, setFiltered, setSelectedOption, selectedOption }) {
@@ -34,7 +34,7 @@ export default function Menu({ apps, setFiltered, setSelectedOption, selectedOpt
 	return (
 		<>
 			<div className="col-md-4">
-				<Form.Select
+				{/* <Form.Select
 					aria-label="Default select example"
 					name="category-list"
 					id="category-list"
@@ -43,7 +43,7 @@ export default function Menu({ apps, setFiltered, setSelectedOption, selectedOpt
 					<option value="Teacher">Teacher</option>
 					<option value="Artisian">Artisian</option>
 					<option value="Student">Student</option>
-				</Form.Select>
+				</Form.Select> */}
 			</div>
 			{/* <div>{searchList()}</div> */}
 		</>

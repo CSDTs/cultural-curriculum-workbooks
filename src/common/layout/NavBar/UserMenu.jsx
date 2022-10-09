@@ -14,7 +14,9 @@ const UserMenu = () => {
 			{username && (
 				<Menu>
 					<MenuButton as={Button} rightIcon={<ChevronDownIcon />} leftIcon={<FaUserAlt />} variant="ghost">
-						<chakra.span px={1}>{username}</chakra.span>
+						<chakra.span px={1} display={{ base: "none", md: "none", lg: "flex" }}>
+							{username}
+						</chakra.span>
 					</MenuButton>
 					<MenuList>
 						<MenuItem

@@ -1,10 +1,11 @@
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 
-import useResponse from "/src/common/hooks/useResponse";
+import { P } from "/src/common/core";
+import { NoResponse } from "/src/common/features/responses";
 
 import DrivingVideo from "/src/assets/aikr/drive.mp4";
 import LawyerVideo from "/src/assets/aikr/lawyer.mp4";
@@ -43,8 +44,6 @@ const sourceProps = (src, title) => {
 };
 
 export default function ExamplesOfReplacement() {
-	const { updateNormal } = useResponse();
-
 	const musicianRef = useRef();
 	const lawyerRef = useRef();
 	const webRef = useRef();
@@ -55,21 +54,17 @@ export default function ExamplesOfReplacement() {
 	const webProps = sourceProps(WebVideo, "Web Designer Example of Replacement");
 	const drivingProps = sourceProps(DrivingVideo, "Driving Services Example of Replacement");
 
-	useEffect(() => {
-		updateNormal();
-	}, []);
-
 	const stopAllPlayback = () => {
 		[musicianRef, lawyerRef, webRef, drivingRef].map((vid) => {
 			vid.current.plyr.stop();
 		});
 	};
 	return (
-		<>
-			<p>
+		<NoResponse>
+			<P>
 				OK, let's explore the issue of people replacement a bit. Pick one or more of these to see how AI, robots and
 				other automation may affect this profession. Select on each of the tabs to see.
-			</p>
+			</P>
 			<Tabs mt={5} size="lg">
 				<TabList>
 					<Tab onClick={stopAllPlayback}>Musician</Tab>
@@ -110,6 +105,6 @@ export default function ExamplesOfReplacement() {
 					</TabPanel>
 				</TabPanels>
 			</Tabs>
-		</>
+		</NoResponse>
 	);
 }

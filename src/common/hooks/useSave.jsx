@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "./useLocalStorage";
-import { serializeResponses } from "/src/common/utils/save";
+import { serializeResponses } from "/src/common/utils/serializeResponses";
 
 const isProduction = import.meta.env.PROD;
 const ROOT_URL = isProduction ? "" : "http://127.0.0.1:8000";
 const CSRF_API_HOST = ROOT_URL + "/workbooks/csrf/";
 const WORKBOOK_API_HOST = ROOT_URL + "/api/workbook_saves/";
-function updateURL(id) {
-	if (window.history !== undefined && window.history.pushState !== undefined) {
-		let updatedPathname = window.location.pathname.replace(/\d+$/, `${id}`);
-		if (updatedPathname === window.location.pathname) window.history.pushState({}, "", `${updatedPathname}${id}`);
-		else window.history.pushState({}, "", updatedPathname);
-	}
-}
 
 const useSave = (autosave = true) => {
 	const currentUser = useSelector((state) => state.workbookState.user);
@@ -73,7 +66,9 @@ const useSave = (autosave = true) => {
 
 	const saveWorkbookDev = async () => {
 		const updatedSaveData = serializeResponses(currentUser, saveData);
+
 		setIsSaving(true);
+
 		if (saveID) {
 			Object.assign(updatedSaveData, { id: saveID });
 		}
@@ -86,8 +81,7 @@ const useSave = (autosave = true) => {
 		const data = { data: { id: 999, ...response }, status: 201, ok: true };
 
 		setIsSaving(false);
-		console.log(data.status);
-		setIsSaved(data.status == 201 ? true : false);
+		setIsSaved(data.ok == 201 ? true : false);
 		return data;
 	};
 

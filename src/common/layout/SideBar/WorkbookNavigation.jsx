@@ -3,10 +3,13 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import useLesson from "/src/common/hooks/useLesson";
 
 const WorkbookNavigation = () => {
-	const { current, available, nextLesson, previousLesson } = useLesson();
+	const { current, available, selectLesson } = useLesson();
 
 	let endOfWorkbook = current.id == available.length - 1;
 	let startOfWorkbook = current.id == 0;
+
+	const nextLesson = () => selectLesson(++current.id);
+	const previousLesson = () => selectLesson(--current.id);
 
 	return (
 		<Flex w="100%" justifyContent={"space-between"} px="5" align={"center"}>

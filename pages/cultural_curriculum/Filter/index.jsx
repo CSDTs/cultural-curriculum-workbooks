@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
+// import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
 import ItemList from "../Application/ItemList";
 export default function AdvancedFilter({ setFiltered, apps }) {
 	// Each option has its own state for filtering
@@ -76,7 +76,7 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 				<div className="col-md-4">
 					{/* Advanced Filtering with checkboxes. For users who really wants specific results */}
 					{/* Could be separated into its own component */}
-					<DropdownButton id="dropdown-item-button" title="Filter" className="btn-block" block>
+					{/* <DropdownButton id="dropdown-item-button" title="Filter" className="btn-block" block>
 						<Dropdown.ItemText className="advanced-filter">
 							<Accordion defaultActiveKey="0">
 								<Accordion.Item eventKey="0">
@@ -99,12 +99,12 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 								</Accordion.Item>
 							</Accordion>
 						</Dropdown.ItemText>
-					</DropdownButton>
+					</DropdownButton> */}
 				</div>
 				<div className="col-md-4">
 					{/* Category grouping for users who just want generic results*/}
 					{/* Could be separated into its own component */}
-					<Form.Select
+					{/* <Form.Select
 						aria-label="Default select example"
 						name="category-list"
 						id="category-list"
@@ -113,12 +113,12 @@ export default function AdvancedFilter({ setFiltered, apps }) {
 						{[...new Set(categories)].map((type) => (
 							<option value={`${type}`}>{type}</option>
 						))}
-					</Form.Select>
+					</Form.Select> */}
 				</div>
 				<div className="col-md-4">
 					{/* Search bar for users who knows the name of the app they want*/}
 					{/* Could be separated into its own component */}
-					<Form.Control type="text" placeholder="Search in applications" onChange={handleChange} />
+					{/* <Form.Control type="text" placeholder="Search in applications" onChange={handleChange} /> */}
 					{/* Not sure what search list does still.  */}
 					{/* <span>{searchList()}</span> */}
 				</div>

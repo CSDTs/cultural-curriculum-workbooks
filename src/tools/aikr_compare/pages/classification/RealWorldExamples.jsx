@@ -1,44 +1,25 @@
 import { Heading, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
+import { worldExamples } from "./data";
 import useResponse from "/src/common/hooks/useResponse";
-import { worldExamples } from "/src/tools/aikr_compare/data";
+
+import { P } from "/src/common/core";
+import { NoResponse } from "/src/common/features/responses";
 
 export default function RealWorldExamples() {
-	const { updateNormal } = useResponse();
-	const textStyle = {
-		mb: 5,
-		textAlign: {
-			base: "center",
-			sm: "left",
-		},
-		color: "gray.600",
-		_dark: {
-			color: "gray.400",
-		},
-		fontSize: {
-			md: "lg",
-		},
-	};
-	useEffect(() => {
-		updateNormal();
-	}, []);
-
 	return (
-		<>
-			<Text {...textStyle}>
-				{" "}
-				Now lets look at some other applications for real vs fake that matter for ordinary people.
-			</Text>
+		<NoResponse>
+			<P> Now lets look at some other applications for real vs fake that matter for ordinary people.</P>
 
 			{worldExamples.map((opt, idx) => (
-				<>
+				<Fragment key={idx}>
 					<Heading fontSize={"2xl"} mt={5}>
 						{opt.title}
 					</Heading>
-					<Text {...textStyle}>{opt.prompt}</Text>
-				</>
+					<P>{opt.prompt}</P>
+				</Fragment>
 			))}
-		</>
+		</NoResponse>
 	);
 }

@@ -1,68 +1,45 @@
 import CSnap from "/src/common/features/CSnap";
 
-import { Button, SimpleGrid, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
+import { useState } from "react";
 
-import { useDispatch } from "react-redux";
-import { SoftwareSelectionCard } from "/src/common/ui/cards";
+import { SoftwareCard } from "/src/common/ui/cards";
 
-import useResponse from "/src/common/hooks/useResponse";
+import { Box } from "@chakra-ui/react";
+import { NoResponse } from "/src/common/features/responses";
+
+import { P } from "/src/common/core";
+
+import AdvancedImg from "/src/assets/aikr/advanced-art.png";
+import BeginnerImg from "/src/assets/aikr/beginner-art.png";
+import IntermediateImg from "/src/assets/aikr/intermediate-art.png";
+
 export default function NeuralStyleTransfer() {
 	const [project, setProject] = useState("");
 
-	const { updateNormal } = useResponse();
-	const textStyle = {
-		mb: 5,
-		textAlign: {
-			base: "center",
-			sm: "left",
-		},
-		color: "gray.600",
-		_dark: {
-			color: "gray.400",
-		},
-		fontSize: {
-			md: "lg",
-		},
-	};
+	const setBeginner = () => setProject("xmls/aikr/art_basic.xml");
+	const setIntermediate = () => setProject("xmls/aikr/art_intermediate.xml");
+	const setAdvanced = () => setProject("xmls/aikr/art_advanced.xml");
+	const reset = () => setProject("");
 
-	useEffect(() => {
-		updateNormal();
-	}, []);
 	return (
-		<>
-			{project == "" && (
-				<Text {...textStyle}>Select on one of the available versions of our Neural Style Transfer tool to start: </Text>
-			)}
+		<NoResponse>
+			{project == "" && <P>Select on one of the available versions of our Neural Style Transfer tool to start: </P>}
 			{project != "" && (
-				<Button size="sm" className="mb-3" onClick={() => setProject("")} mb={5}>
+				<Button size="sm" className="mb-3" onClick={reset} mb={5}>
 					Reselect difficulty level
 				</Button>
 			)}
 
 			<SimpleGrid columns={3} spacing={10} hidden={project != ""}>
-				<SoftwareSelectionCard
-					image={"img/aikr_compare/beginner-art.png"}
-					title={"Beginner"}
-					handleOnClick={() => setProject("xmls/aikr/art_basic.xml")}
-				/>
-
-				<SoftwareSelectionCard
-					image={"img/aikr_compare/intermediate-art.png"}
-					title={"Intermediate"}
-					handleOnClick={() => setProject("xmls/aikr/art_intermediate.xml")}
-				/>
-
-				<SoftwareSelectionCard
-					image={"img/aikr_compare/advanced-art.png"}
-					title={"Advanced"}
-					handleOnClick={() => setProject("xmls/aikr/art_advanced.xml")}
-				/>
+				<SoftwareCard image={BeginnerImg} title={"Beginner"} handleOnClick={setBeginner} />
+				<SoftwareCard image={IntermediateImg} title={"Intermediate"} handleOnClick={setIntermediate} />
+				<SoftwareCard image={AdvancedImg} title={"Advanced"} handleOnClick={setAdvanced} />
 			</SimpleGrid>
 
-			<section hidden={project == ""}>
+			<Box hidden={project == ""}>
 				<CSnap project={project} />
-			</section>
-		</>
+			</Box>
+		</NoResponse>
 	);
 }

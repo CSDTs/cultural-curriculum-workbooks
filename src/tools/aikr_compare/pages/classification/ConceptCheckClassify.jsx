@@ -9,21 +9,20 @@ import {
 	Heading,
 	Image,
 	SimpleGrid,
-	Text,
 } from "@chakra-ui/react";
-import { data } from "jquery";
-import { slideTwoExamples } from "./data";
+
 import AlliA from "/src/assets/aikr/alli_a.png";
 import AlliB from "/src/assets/aikr/alli_b.png";
-import MoreInfoExamples from "/src/common/features/Response/MoreInfoExamples";
-import TextareaResponse from "/src/common/features/Response/TextareaResponse";
-import TextResponse from "/src/common/features/Response/TextResponse";
+
+import { TextareaResponse } from "/src/common/features/responses";
 
 import GameA from "/src/assets/aikr/game_a.png";
 import GameB from "/src/assets/aikr/game_b.png";
 
 import KenteA from "/src/assets/aikr/kente_a.jpg";
 import KenteB from "/src/assets/aikr/kente_b.jpg";
+
+import { P } from "/src/common/core";
 
 export const realWorldExamples = [
 	{
@@ -45,56 +44,43 @@ export const realWorldExamples = [
 
 export default function ConceptCheckClassify() {
 	const question = "Can you think of your own example where AI might be used to tell real from fake?";
-	const textStyle = {
-		mb: 5,
-		textAlign: {
-			base: "center",
-			sm: "left",
-		},
-		color: "gray.600",
-		_dark: {
-			color: "gray.400",
-		},
-		fontSize: {
-			md: "lg",
-		},
-	};
+
 	return (
 		<>
-			<Text {...textStyle}>Now that we helped Joe, let's apply what we discovered:</Text>
-
-			<Accordion allowToggle>
-				{realWorldExamples.map((example, idx) => (
-					<AccordionItem key={example.title}>
-						<h2>
-							<AccordionButton>
-								<Box flex="1" textAlign="left" fontWeight={"600"}>
-									{example.title}
-								</Box>
-								<AccordionIcon />
-							</AccordionButton>
-						</h2>
-						<AccordionPanel pb={4}>
-							{example.body}
-
-							<SimpleGrid columns={example.compare.length} spacing={10} mt={5}>
-								{example.compare.map((img, imgIdx) => (
-									<AspectRatio ratio={1.618} key={`img_${idx}_${imgIdx}`}>
-										<Image src={img} alt={example.title + "_img_" + idx} />
-									</AspectRatio>
-								))}
-							</SimpleGrid>
-						</AccordionPanel>
-					</AccordionItem>
-				))}
-			</Accordion>
-
 			<TextareaResponse points={1} placeholder={"I would choose to work on ...."} question={question}>
-				<Text my={5} {...textStyle}>
+				<P>Now that we helped Joe, let's apply what we discovered through examples:</P>
+
+				<Accordion allowToggle my={5}>
+					{realWorldExamples.map((example, idx) => (
+						<AccordionItem key={example.title}>
+							<h2>
+								<AccordionButton>
+									<Box flex="1" textAlign="left" fontWeight={"600"}>
+										{example.title}
+									</Box>
+									<AccordionIcon />
+								</AccordionButton>
+							</h2>
+							<AccordionPanel pb={4}>
+								{example.body}
+
+								<SimpleGrid columns={example.compare.length} spacing={10} mt={5}>
+									{example.compare.map((img, imgIdx) => (
+										<AspectRatio ratio={1.618} key={`img_${idx}_${imgIdx}`}>
+											<Image src={img} alt={example.title + "_img_" + idx} />
+										</AspectRatio>
+									))}
+								</SimpleGrid>
+							</AccordionPanel>
+						</AccordionItem>
+					))}
+				</Accordion>
+
+				<P>
 					{question} If you have trouble coming up with one, trying doing a google search for “common scams”, or just
 					think about the last time someone told you “I got ripped off”. Describe your example problem. How do you think
 					AI could be designed to help this?
-				</Text>
+				</P>
 				<Heading fontSize={"lg"}> Write your answer here:</Heading>
 			</TextareaResponse>
 		</>

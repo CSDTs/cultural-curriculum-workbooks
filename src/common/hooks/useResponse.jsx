@@ -1,9 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setSaveDataId,
-	updateEarnedPoints,
 	updateIsSavingStatus,
-	updateOptionalResponse,
 	updatePoints,
 	updateResponse,
 	updateSaveStatus,

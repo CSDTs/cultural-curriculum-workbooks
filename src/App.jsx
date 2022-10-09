@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 import AVAILABLE_WORKBOOKS from "./data/";
-import { loadConfigSave, setSlug, setWorkbookData } from "/src/setup/slices/workbookSlice";
-
-import { Heading } from "@chakra-ui/react";
-import useSlug from "./common/hooks/useSlug";
-import useWorkbook from "./common/hooks/useWorkbook";
-import useConfig from "/src/common/hooks/useConfig";
+import { loadConfigSave, setWorkbookData } from "/src/setup/slices/workbookSlice";
 
 import { Main, WorkbookLayout } from "/src/common/layout";
 import SelectionScreen from "/src/tools/SelectionScreen";
@@ -17,13 +12,13 @@ import useLocalStorage from "./common/hooks/useLocalStorage";
 import useSave from "./common/hooks/useSave";
 import { getSlug } from "/src/common/services/WorkbookService";
 function updateURL(slug, id) {
-	window.history.pushState({}, "", `/workbooks/start_${slug}/${id}`);
-
 	// if (window.history !== undefined && window.history.pushState !== undefined) {
 	// 	let updatedPathname = window.location.pathname.replace(/\d+$/, `${id}`);
 	// 	if (updatedPathname === window.location.pathname) window.history.pushState({}, "", `${updatedPathname}${id}`);
 	// 	else window.history.pushState({}, "", updatedPathname);
 	// }
+
+	window.history.pushState({}, "", `/workbooks/start_${slug}/${id}/` + window.location.search);
 }
 
 function App() {
@@ -49,13 +44,13 @@ function App() {
 			setWb(AVAILABLE_WORKBOOKS[slug]);
 		}
 
-		if (typeof config !== undefined) dispatch(loadConfigSave(config));
+		if (typeof config !== "undefined") dispatch(loadConfigSave(config));
 	}, [slug]);
 
 	useEffect(() => {
 		if (reduxAutoSave)
 			saveWorkbook().then((res) => {
-				// if (res.status == 201) updateURL(slug, res.data.id);
+				if (res.ok && import.meta.env.PROD) updateURL(slug, res.data.id);
 				console.log(res);
 			});
 	}, [saveData]);

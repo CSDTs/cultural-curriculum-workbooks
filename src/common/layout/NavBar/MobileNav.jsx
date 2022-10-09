@@ -9,6 +9,8 @@ const MobileNav = ({ data }) => {
 			{data.map((navItem) => (
 				<MobileNavItem key={navItem.label} {...navItem} />
 			))}
+			<hr></hr>
+			<MobileNavItem label={"Help"} href={"/culture/help/index.html"} />
 		</Stack>
 	);
 };

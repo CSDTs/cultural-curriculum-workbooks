@@ -1,5 +1,5 @@
 import { Box, Drawer, DrawerContent, DrawerOverlay, useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import Loader from "../features/Loading/Loader";
+import Footer from "./Footer";
 
 import NavBar from "./NavBar/NavBar";
 import SideBar from "./SideBar";
@@ -14,7 +14,7 @@ export default function WorkbookLayout({ title, sections, children }) {
 				sections={sections}
 				display={{
 					base: "none",
-					md: "unset",
+					lg: "unset",
 				}}
 			/>
 			<Drawer isOpen={sidebar.isOpen} onClose={sidebar.onClose} placement="left">
@@ -26,15 +26,20 @@ export default function WorkbookLayout({ title, sections, children }) {
 			<Box
 				ml={{
 					base: 0,
-					md: 96,
+					lg: 96,
 				}}
 				transition=".3s ease"
-				minH="100vh">
-				<NavBar />
-				<Box as="main" p="4" h={"100%"}>
-					{children}
-					{/* <Loader /> */}
+				minH="100vh"
+				display={"flex"}
+				flexDir={"column"}
+				justifyContent={"space-between"}>
+				<Box>
+					<NavBar />
+					<Box as="main" p="4" maxH={{ base: "calc(100vh - 164px)", md: "calc(100vh - 124px)" }} overflowY={"scroll"}>
+						{children}
+					</Box>
 				</Box>
+				<Footer />
 			</Box>
 		</Box>
 	);

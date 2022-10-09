@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-import { Alert, Select, Text } from "@chakra-ui/react";
-import MultiTextareaResponse from "../../../../common/features/Response/MultiTextareaResponse";
+import { Alert, Select } from "@chakra-ui/react";
+import { MultiTextareaResponse } from "/src/common/features/responses";
 
-import { worldExamples } from "/src/tools/aikr_compare/data";
+import { worldExamples } from "./data";
+import { P } from "/src/common/core";
 export default function CreatingAnApp() {
 	const [prompt, setPrompt] = useState("");
 
@@ -18,33 +19,39 @@ export default function CreatingAnApp() {
 
 		setPrompt(current[0].prompt);
 	};
-	const textStyle = {
-		mb: 5,
-		textAlign: {
-			base: "center",
-			sm: "left",
-		},
-		color: "gray.600",
-		_dark: {
-			color: "gray.400",
-		},
-		fontSize: {
-			md: "lg",
-		},
-	};
+
 	return (
-		<>
-			<Text {...textStyle}>
+		<MultiTextareaResponse
+			points={4}
+			questions={[
+				{
+					question: "Problem statement",
+					placeholder: "The problem is... ",
+				},
+				{
+					question: "Training for first category",
+					placeholder: "I would train the AI's first category with samples of...",
+				},
+				{
+					question: "Training for second category",
+					placeholder: "I would train the AI's second category with samples of...",
+				},
+				{
+					question: "Rationale",
+					placeholder: "The rationale of this would be...",
+				},
+			]}>
+			<P>
 				Finally, it is now your turn to write your very own AI application that helps solve a community problem! Instead
 				of revising you'll be creating.
-			</Text>
-			<Text {...textStyle}>
+			</P>
+			<P>
 				Using what you've learned so far about deciding on a problem, turning it into a binary classification problem,
 				validating an AI binary classification model and correlation, please fill in each box in order. When all boxes
 				are filled in you can advance to the next screen.
-			</Text>
+			</P>
 
-			<Select placeholder="Select option" variant="filled" onChange={handleOnSelect} defaultValue="">
+			<Select placeholder="Select option" variant="filled" onChange={handleOnSelect} defaultValue="" my={5}>
 				{worldExamples.map((example) => (
 					<option value={example.title} key={example.title}>
 						{example.title}
@@ -53,28 +60,6 @@ export default function CreatingAnApp() {
 			</Select>
 
 			{prompt && <Alert>{prompt}</Alert>}
-
-			<MultiTextareaResponse
-				points={4}
-				questions={[
-					{
-						question: "Problem statement",
-						placeholder: "The problem is... ",
-					},
-					{
-						question: "Training for first category",
-						placeholder: "I would train the AI's first category with samples of...",
-					},
-					{
-						question: "Training for second category",
-						placeholder: "I would train the AI's second category with samples of...",
-					},
-					{
-						question: "Rationale",
-						placeholder: "The rationale of this would be...",
-					},
-				]}
-			/>
-		</>
+		</MultiTextareaResponse>
 	);
 }

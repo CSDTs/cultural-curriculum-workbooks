@@ -1,35 +1,29 @@
-import { Box, chakra, Flex, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Box, chakra, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 
 import FoodImg from "/src/assets/aikr/food.png";
 import PatternsImg from "/src/assets/aikr/patterns.png";
-
+import { P } from "/src/common/core";
+import { NoResponse } from "/src/common/features/responses";
 import useLesson from "/src/common/hooks/useLesson";
-import useResponse from "/src/common/hooks/useResponse";
-import SectionCard from "/src/tools/aikr_compare/components/SectionCard";
+import { SectionCard } from "/src/common/ui/cards";
 
 export default function ExperimentingWithSolutions() {
 	const { selectLesson } = useLesson();
-	const { updateNormal } = useResponse();
 
 	const setToClassify = () => selectLesson(5);
 	const setToCreative = () => selectLesson(13);
 
-	useEffect(() => {
-		updateNormal();
-	}, []);
-
 	return (
-		<>
-			<Text>
+		<NoResponse>
+			<P>
 				Now onto solutions! The data from economists suggest that technology does not have to have these impacts. It
 				might be possible to design a different kind of system, one where automation empowers workers and consumers.
 				This will be one of the most important challenges for your generation.{" "}
 				<chakra.strong color={"gray.200"}>Choose one of the two paths below:</chakra.strong>
-			</Text>
+			</P>
 
-			<Flex justifyContent={"space-around"} mt={5}>
-				<Box maxW={"250px"}>
+			<SimpleGrid columns={{ base: 1, md: 2 }} mt={5} spacing={10}>
+				<Box>
 					<SectionCard
 						image={FoodImg}
 						title={"Real vs. Fake"}
@@ -62,7 +56,7 @@ export default function ExperimentingWithSolutions() {
 						</Text>
 					</SectionCard>
 				</Box>
-			</Flex>
-		</>
+			</SimpleGrid>
+		</NoResponse>
 	);
 }

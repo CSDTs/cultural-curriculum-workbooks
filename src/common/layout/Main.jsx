@@ -1,7 +1,8 @@
 import { Divider, useColorModeValue } from "@chakra-ui/react";
 
-import { LoadPage } from "/src/common/features/Loading";
+import { LoadPage } from "/src/common/features/contentLoading";
 
+import Footer from "./Footer";
 import PageHeader from "./PageHeader";
 import useLesson from "/src/common/hooks/useLesson";
 

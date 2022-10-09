@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
+// import { Form, DropdownButton, Dropdown, Accordion } from "react-bootstrap";
 export default function Filter({ setActiveTags, activeTags, setFiltered, apps }) {
 	React.useEffect(() => {
 		if (activeTags === 0) {
@@ -14,12 +14,10 @@ export default function Filter({ setActiveTags, activeTags, setFiltered, apps })
 		setFiltered(filtered);
 	}, [activeTags]);
 
-
-
 	return (
 		<>
-			<div className="row">
-				{/* <div className="col-md-4">
+			{/* <div className="row"> */}
+			{/* <div className="col-md-4">
 					<Form.Select aria-label="Default select example" name="category-list" id="category-list" onChange={handleCategoryChange}>
 						<option>All</option>
 						<option value="1">Teacher</option>
@@ -27,11 +25,11 @@ export default function Filter({ setActiveTags, activeTags, setFiltered, apps })
 						<option value="3">Student</option>
 					</Form.Select>
 				</div> */}
-				{/* <div className="col-md-4">
+			{/* <div className="col-md-4">
 					<Form.Control type="text" placeholder="Search in applications" />
 				</div> */}
 
-				<div className="col-md-4">
+			{/* <div className="col-md-4">
 					<DropdownButton id="dropdown-item-button" title="Dropdown button">
 						<Dropdown.ItemText className="advanced-filter">
 							<Accordion>
@@ -61,9 +59,9 @@ export default function Filter({ setActiveTags, activeTags, setFiltered, apps })
 						</Dropdown.ItemText>
 					</DropdownButton>
 				</div>
-			</div>
+			</div> */}
 
-			<div className="filter-container">
+			{/* <div className="filter-container">
 				<button className={activeTags === 0 ? "active" : ""} onClick={() => setActiveTags(0)}>
 					All
 				</button>
@@ -77,7 +75,7 @@ export default function Filter({ setActiveTags, activeTags, setFiltered, apps })
 					onClick={() => setActiveTags("Across Cultures")}>
 					Across Cultures
 				</button>
-			</div>
+			</div> */}
 		</>
 	);
 }

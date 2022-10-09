@@ -91,10 +91,19 @@ const NavBar = () => {
 					<Center height="auto" py={"10px"} color={"teal"} display={{ base: "none", md: "inline-flex" }}>
 						<Divider orientation="vertical" borderColor={useColorModeValue("gray.600", "white")} />
 					</Center>
-					<Button as={"a"} fontSize={"lg"} fontWeight={400} variant={"link"} href={"#"} className="help-step">
+					<Button
+						as={"a"}
+						fontSize={"lg"}
+						fontWeight={400}
+						variant={"link"}
+						href={"#"}
+						className="help-step"
+						display={{ base: "none", md: "flex" }}>
 						<FaRegQuestionCircle />
 					</Button>
-					<Button onClick={toggleColorMode}>{colorMode === "light" ? <MoonIcon /> : <SunIcon />}</Button>
+					<Button onClick={toggleColorMode} display={{ base: "none" }}>
+						{colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+					</Button>
 				</Stack>
 			</Flex>
 

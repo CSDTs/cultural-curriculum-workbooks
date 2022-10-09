@@ -53,7 +53,6 @@ export const workbookSlice = createSlice({
 
 			state.workbook.available_lessons = totalLessons;
 
-			// state.workbook.current_lesson = totalLessons[0];
 			state.workbook.slug = action.payload.slug;
 
 			if (!action.payload?.initLesson) state.workbook.current_lesson = action.payload.data[0].lessons[0];
@@ -82,37 +81,10 @@ export const workbookSlice = createSlice({
 			state.workbook.current_lesson_id = action.payload.lessonID;
 			state.workbook.current_lesson = action.payload;
 		},
-
-		goToNextLesson: (state) => {
-			if (state.workbook.current_lesson_id < state.workbook.available_lessons.length) {
-				state.workbook.current_lesson_id += 1;
-				state.workbook.current_lesson = state.workbook.available_lessons[state.workbook.current_lesson_id];
-			}
-		},
-		goToPreviousLesson: (state) => {
-			if (state.workbook.current_lesson_id > 0) {
-				state.workbook.current_lesson_id -= 1;
-				state.workbook.current_lesson = state.workbook.available_lessons[state.workbook.current_lesson_id];
-			}
-		},
-
 		updateResponse: (state, action) => {
 			state.data.responses[state.workbook.current_lesson_id] = action.payload;
 		},
 
-		updateObjectResponse: (state, action) => {
-			if (!state.data.responses[state.workbook.current_lesson_id])
-				state.data.responses[state.workbook.current_lesson_id] = action.payload;
-			else Object.assign(state.data.responses[state.workbook.current_lesson_id], action.payload);
-		},
-
-		updateOptionalResponse: (state, action) => {
-			state.data.optional[state.workbook.current_lesson_id] = action.payload;
-		},
-
-		updateMiscResponse: (state, action) => {
-			Object.assign(state.data.misc, action.payload);
-		},
 		setWorkbookClassroom: (state, action) => {
 			// state.data.classroom = action.payload;
 			state.user.selected_classroom = action.payload;
@@ -137,37 +109,11 @@ export const workbookSlice = createSlice({
 		updateIsSavingStatus: (state, action) => {
 			state.is_saving = action.payload;
 		},
-		updateWorkbookFinished: (state, action) => {
-			state.workbook.is_finished = action.payload;
-		},
+
 		updateAutoSaveState: (state, action) => {
 			state.workbook.autosave = action.payload;
 		},
-		updateEarnedPoints: (state) => {
-			// state.data.points_earned = state.data.responses.reduce((total, response, index) => {
-			// 	let current = 0;
-			// 	if (state.workbook.available_lessons[index].points && state.workbook.available_lessons[index].points > 0) {
-			// 		if (response !== null) {
-			// 			if (typeof response == "object") {
-			// 				if (Array.isArray(response)) {
-			// 					current += response.reduce((acc, obj) => {
-			// 						return acc + obj;
-			// 					}, 0);
-			// 				} else if (Object.keys(response).length > 0) {
-			// 					current += Object.keys(response).reduce((acc, obj) => {
-			// 						return acc + response[obj]?.verified || 0;
-			// 					}, false);
-			// 				}
-			// 			} else if (typeof response == "string") {
-			// 				current += response != "" ? 1 : 0;
-			// 				return total + current;
-			// 			}
-			// 		}
-			// 	}
-			// 	return total + current;
-			// }, 0);
-			// state.data.completion = parseInt((state.data.points_earned / state.workbook.available_points) * 100);
-		},
+
 		updatePoints: (state) => {
 			const total = state.data.responses.reduce((accum, response) => {
 				if (response) {

@@ -1,7 +1,6 @@
 import { AspectRatio } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./CSnap.module.scss";
 
 export default function CSnap({ project }) {
 	const lesson = useSelector((state) => state.workbookState.workbook.current_lesson);

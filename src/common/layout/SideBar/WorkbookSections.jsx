@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import useWorkbook from "/src/common/hooks/useWorkbook";
-
+import { useSelector } from "react-redux";
 import SectionGrouping from "./SectionGrouping";
 import SectionItem from "./SectionItem";
 
@@ -9,7 +8,7 @@ const WorkbookSections = () => {
 	let lessonCount = 0;
 	let offset = 0;
 
-	const { sections } = useWorkbook();
+	const { available_sections: sections } = useSelector((state) => state.workbookState.workbook);
 	return (
 		<Flex direction="column" as="nav" fontSize="sm" color="gray.600" aria-label="Main Navigation">
 			{sections &&

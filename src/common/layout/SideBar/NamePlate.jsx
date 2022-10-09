@@ -1,9 +1,11 @@
 import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import PropTypes from "prop-types";
-import useWorkbook from "/src/common/hooks/useWorkbook";
+import { useSelector } from "react-redux";
 
 const NamePlate = () => {
-	const { title, chosenClassroom } = useWorkbook();
+	const { title } = useSelector((state) => state.workbookState.workbook);
+	const { name: chosenClassroom } = useSelector((state) => state.workbookState.user.selected_classroom);
+
 	return (
 		<Flex px="4" py="5" align="left" direction={"column"}>
 			<Text

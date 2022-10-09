@@ -1,32 +1,3 @@
-import react from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { notify, dismissNotifications, dismissNotification } from "reapop";
-import { toast } from "react-toastify";
-// async function postWorkbookSave(project, method = "POST") {
-// 	const response = await fetch(`http://127.0.0.1:8000/api/workbook_saves/`, {
-// 		method: method,
-// 		headers: method === "POST" ? { "X-CSRFToken": await getCsrfToken(), "Content-Type": "application/json" } : {},
-// 		credentials: "include",
-// 		body: JSON.stringify(project),
-// 	});
-// 	const data = await response.json();
-// 	console.log(data);
-// 	console.log(response);
-// 	return response.status;
-// }
-
-// async function patchWorkbookSave(project, method = "PATCH") {
-// 	const response = await fetch(`http://127.0.0.1:8000/api/workbook_saves/1/`, {
-// 		method: method,
-// 		headers: method === "PATCH" ? { "X-CSRFToken": await getCsrfToken(), "Content-Type": "application/json" } : {},
-// 		credentials: "include",
-// 		body: JSON.stringify(project),
-// 	});
-// 	const data = await response.json();
-// 	console.log(data);
-// 	console.log(response);
-// 	return response.status;
-// }
 const isProduction = import.meta.env.PROD;
 const ROOT_URL = isProduction ? "" : "http://127.0.0.1:8000";
 const WORKBOOK_API_HOST = ROOT_URL + "/api/workbook_saves/";
@@ -64,9 +35,6 @@ async function workbookRequest(project, method) {
 	const response = await fetch(`${WORKBOOK_API_HOST}${query}`, method === "GET" ? {} : alterProps);
 	const data = await response.json();
 
-	// console.log(alterProps);
-	// console.log(response);
-	// console.log(data);
 	return { data, status: response.status, ok: response.ok };
 }
 
@@ -84,27 +52,6 @@ async function getUser() {
 	if (data?.id == null) throw new Error("User is not currently logged in");
 	return { data, status: response.status };
 }
-
-// async function loginUser(payload) {
-// 	const props = {
-// 		method: "POST",
-// 		headers: { "X-CSRFToken": await getCsrfToken(), "Content-Type": "application/json" },
-// 		credentials: "include",
-// 		body: JSON.stringify(payload),
-// 	};
-// 	// const response = await fetch(`${LOGIN_API_HOST}`, props);
-// 	const response = await fetch(`${LOGIN_API_HOST}`, {
-// 		method: "POST",
-// 		headers: { "Content-Type": "application/json" },
-// 		body: JSON.stringify({ login: "localtest", password: "password" }),
-// 	});
-
-// 	const data = await response.json();
-// 	console.log(response);
-
-// 	if (data?.id == null) throw new Error("Accessing from different host.");
-// 	return { data, status: response.status };
-// }
 
 async function getClassrooms(userid) {
 	const response = await fetch(`${USER_CLASSROOMS_API_HOST}?user=${userid}`);
@@ -125,8 +72,6 @@ async function loginUser() {
 		credentials: "include",
 		body: new URLSearchParams(`login=${payload.login}&password=${payload.password}`),
 	});
-
-	// console.log(response.redirected);
 
 	if (!response.redirected) throw new Error("Incorrect login info.");
 
