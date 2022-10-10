@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const NamePlate = () => {
-	const { title } = useSelector((state) => state.workbookState.workbook);
-	const { name: chosenClassroom } = useSelector((state) => state.workbookState.user.selected_classroom);
-
+	const title = useSelector((state) => state.workbookState.workbook.title);
+	const name = useSelector((state) => state.workbookState.user.selected_classroom);
+	const color = useColorModeValue("gray.800", "gray.400");
 	return (
 		<Flex px="4" py="5" align="left" direction={"column"}>
 			<Text
@@ -23,17 +23,14 @@ const NamePlate = () => {
 					Development Mode
 				</Text>
 			)}
-			{chosenClassroom && (
-				<Text fontSize="md" ml="2" color={useColorModeValue("gray.800", "gray.400")} fontWeight="400">
-					{chosenClassroom.name}
+
+			{name.name && (
+				<Text fontSize="md" ml="2" color={color} fontWeight="400">
+					{name.name}
 				</Text>
 			)}
 		</Flex>
 	);
 };
 
-NamePlate.propTypes = {
-	title: PropTypes.string,
-	chosenClassroom: PropTypes.object,
-};
 export default NamePlate;

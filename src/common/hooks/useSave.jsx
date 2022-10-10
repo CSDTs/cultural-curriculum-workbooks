@@ -55,13 +55,17 @@ const useSave = (autosave = true) => {
 			body: JSON.stringify(updatedSaveData),
 		};
 
-		const response = await fetch(`${WORKBOOK_API_HOST}${query}`, alterProps);
-		const data = await response.json();
+		try {
+			const response = await fetch(`${WORKBOOK_API_HOST}${query}`, alterProps);
+			const data = await response.json();
 
-		setIsSaving(false);
-		setIsSaved(response.ok);
+			setIsSaving(false);
+			setIsSaved(response.ok);
 
-		return { data, status: response.status, ok: response.ok };
+			return { data, status: response.status, ok: response.ok };
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	const saveWorkbookDev = async () => {

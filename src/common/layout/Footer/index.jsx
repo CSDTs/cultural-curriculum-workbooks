@@ -48,6 +48,7 @@ const DebugMenu = () => {
 	const saveData = useSelector((state) => state.workbookState.data);
 	const currentUser = useSelector((state) => state.workbookState.user);
 	const workbookData = useSelector((state) => state.workbookState.workbook);
+
 	const dispatch = useDispatch();
 
 	const [autoSave, setAutoSave] = useLocalStorage("autoSave");
@@ -81,6 +82,9 @@ const DebugMenu = () => {
 
 export default function Footer() {
 	const autoSave = useSelector((state) => state.workbookState.workbook.autosave);
+	const reduxUser = useSelector((state) => state.workbookState.user.id);
+	const reduxSaveID = useSelector((state) => state.workbookState.user.save_id);
+	const reduxSaveStatus = useSelector((state) => state.workbookState.save_status);
 	return (
 		<Box bg={useColorModeValue("gray.50", "gray.900")} color={useColorModeValue("gray.700", "gray.200")}>
 			<Stack
@@ -93,7 +97,13 @@ export default function Footer() {
 				justify={{ base: "center", md: "space-between" }}
 				align={{ base: "center", md: "center" }}>
 				<Stack direction="row">
-					<Badge colorScheme={autoSave ? "green" : "red"}>Autosave {autoSave ? "Enabled" : "Disabled"}</Badge>
+					<Badge colorScheme={autoSave ? "green" : "red"}>Autosave {autoSave ? "Enabled" : "Disabled"}</Badge>{" "}
+					<Badge colorScheme={reduxUser ? "green" : "red"}>User {reduxUser ? "Logged In" : "Not Logged In"}</Badge>
+					<Badge colorScheme={reduxSaveID ? "green" : "red"}>Save {reduxSaveID ? "Found" : "Not Found"}</Badge>
+					<Badge colorScheme={reduxSaveStatus ? "green" : "red"}>
+						{" "}
+						{reduxSaveStatus ? "Saved" : "You have unsaved changes"}
+					</Badge>
 				</Stack>
 				{/* <Text>© 2022 Chakra Templates. All rights reserved</Text> */}
 				<Stack direction={"row"} spacing={6}>

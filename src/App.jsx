@@ -10,6 +10,7 @@ import SelectionScreen from "/src/tools/SelectionScreen";
 
 import useLocalStorage from "./common/hooks/useLocalStorage";
 import useSave from "./common/hooks/useSave";
+import { updateSaveStatus } from "./setup/slices/workbookSlice";
 import { getSlug } from "/src/common/services/WorkbookService";
 function updateURL(slug, id) {
 	// if (window.history !== undefined && window.history.pushState !== undefined) {
@@ -49,10 +50,13 @@ function App() {
 
 	useEffect(() => {
 		if (reduxAutoSave)
-			saveWorkbook().then((res) => {
-				if (res.ok && import.meta.env.PROD) updateURL(slug, res.data.id);
-				console.log(res);
-			});
+			saveWorkbook()
+				.then((res) => {
+					if (res.ok && import.meta.env.PROD) updateURL(slug, res.data.id);
+					console.log("app", res);
+					if (res.ok) dispatch(updateSaveStatus(true));
+				})
+				.catch((err) => console.error("app", err));
 	}, [saveData]);
 
 	return (

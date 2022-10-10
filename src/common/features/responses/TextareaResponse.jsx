@@ -43,11 +43,14 @@ const TextareaResponse = ({ points, question, placeholder, children }) => {
 		debounce((val) => {
 			if (reduxAutoSave) {
 				autoSaveResponse(val).then(() => {
-					saveWorkbook().then((res) => {
-						console.log(res);
-						setDidSave(true);
-						setUnsavedChanges(false);
-					});
+					console.log(val, "textarea pending");
+					// saveWorkbook()
+					// 	.then((res) => {
+					// 		console.log("textarea", res);
+					// 		setDidSave(true);
+					// 		setUnsavedChanges(false);
+					// 	})
+					// 	.catch((err) => console.error("textarea", err));
 				});
 			} else {
 				setUnsavedChanges(true);

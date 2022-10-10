@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentUser } from "../../setup/slices/workbookSlice";
+import AuthService from "../services/AuthService";
 import useLocalStorage from "./useLocalStorage";
 import { setUserClassrooms } from "/src/setup/slices/workbookSlice";
 const ROOT_URL = import.meta.env.DEV ? import.meta.env.VITE_ROOT_URL_DEV : "";
@@ -12,14 +13,15 @@ const USER_CLASSROOMS_API_HOST = ROOT_URL + "/api/team/";
 const LOGIN_API_HOST = ROOT_URL + "/accounts/login/";
 const CSRF_API_HOST = ROOT_URL + "/workbooks/csrf/";
 
-function useUser() {
+const useUser = () => {
 	const [id, setId] = useState(null);
 	const dispatch = useDispatch();
 	const [username, setUsername] = useState(null);
 	const [classrooms, setClassrooms] = useState(null);
-
+	const userData = useSelector((state) => state.workbookState.user);
 	const [storedUser, setStoredUser] = useLocalStorage("currentUser");
 	const [selectedClassroom, setSelectedClassroom] = useLocalStorage("currentUser");
+	const { fetchWorkbooks } = AuthService();
 
 	const authenticateCloud = async () => {
 		const address = ROOT_URL + import.meta.env.VITE_USERS_API;
@@ -78,6 +80,10 @@ function useUser() {
 		return authenticateCloud();
 	};
 
+	const authorizeNewUser = async () => {
+		return "yeet";
+	};
+
 	useEffect(() => {
 		authenticate().then((res) => {
 			setId(res.data.id);
@@ -85,12 +91,22 @@ function useUser() {
 			setStoredUser(res.data);
 			dispatch(setCurrentUser(res.data));
 			fetchClassrooms(res.data.id)
-				.then((res) => dispatch(setUserClassrooms(res.data)))
+				.then((res) => {
+					dispatch(setUserClassrooms(res.data));
+					fetchWorkbooks().then((res) => {
+						console.log(res);
+					});
+				})
 				.catch((err) => console.warn("Unable to find / fetch classrooms for " + username, err));
 		});
 	}, []);
 
+	useEffect(() => {
+		setId(userData.id);
+		setUsername(userData.username);
+	}, [userData]);
+
 	return [id, username];
-}
+};
 
 export default useUser;

@@ -28,20 +28,41 @@ import { serializeResponses } from "/src/common/utils/serializeResponses";
 import { setSaveDataId, updateAutoSaveState, updateSaveStatus } from "/src/setup/slices/workbookSlice";
 import { setWorkbookClassroom } from "/src/setup/slices/workbookSlice.js";
 
+import useSave from "../../hooks/useSave";
+import AuthService from "../../services/AuthService";
+import LoginPrompt from "../authentication/LoginPrompt";
 import useLocalStorage from "/src/common/hooks/useLocalStorage";
-
 import useUser from "/src/common/hooks/useUser";
+import { getSlug } from "/src/common/services/WorkbookService";
+function updateURL(slug, id) {
+	// if (window.history !== undefined && window.history.pushState !== undefined) {
+	// 	let updatedPathname = window.location.pathname.replace(/\d+$/, `${id}`);
+	// 	if (updatedPathname === window.location.pathname) window.history.pushState({}, "", `${updatedPathname}${id}`);
+	// 	else window.history.pushState({}, "", updatedPathname);
+	// }
 
-export default function SavePrompt({ title, login, onStart, children }) {
+	window.history.pushState({}, "", `/workbooks/start_${slug}/${id}/` + window.location.search);
+}
+
+export default function SavePrompt({ title, login, onStart, openOnStart, children }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [id, username] = useUser();
 	const [autoSave, setAutoSave] = useLocalStorage("autoSave");
 	const classroomList = useSelector((state) => state.workbookState.user.classroom_list);
+	const reduxAutoSave = useSelector((state) => state.workbookState.workbook.autosave);
+	const reduxUser = useSelector((state) => state.workbookState.user.id);
+	const reduxSaveID = useSelector((state) => state.workbookState.user.save_id);
+	const [isSaving, isSaved, { saveWorkbook }] = useSave(reduxAutoSave);
 	const dispatch = useDispatch();
+	const slug = getSlug();
+	const [firstTime, setFirstTime] = useState(!reduxSaveID);
+	const { fetchWorkbooks } = AuthService();
+	const [previous, setPrevious] = useState(null);
 
 	useEffect(() => {
-		if (onStart) onOpen();
-	}, []);
+		if (openOnStart) onOpen();
+	}, [openOnStart]);
+
 	useEffect(() => {
 		dispatch(updateAutoSaveState(autoSave));
 	}, [autoSave]);
@@ -54,10 +75,27 @@ export default function SavePrompt({ title, login, onStart, children }) {
 		}
 	};
 
+	useEffect(() => {
+		if (firstTime) {
+			fetchWorkbooks().then((res) => {
+				if (res.status === 200 && res.data.length > 0) {
+					setPrevious(res.data.pop().id);
+				}
+			});
+		}
+	}, [firstTime]);
+
 	const saveAndContinue = () => {
-		// window.localStorage.setItem("autoSave", isOptingForAutoSave);
-		onClose();
-		if (import.meta.env.DEV) return;
+		setFirstTime(false);
+		saveWorkbook()
+			.then((res) => {
+				if (res.ok && import.meta.env.PROD) updateURL(slug, res.data.id);
+				console.log("app", res);
+				if (res.ok) dispatch(updateSaveStatus(true));
+				onClose();
+				if (import.meta.env.DEV) return;
+			})
+			.catch((err) => console.error("app", err));
 	};
 
 	const skipForNow = () => {
@@ -69,10 +107,30 @@ export default function SavePrompt({ title, login, onStart, children }) {
 		setAutoSave((current) => !current);
 	};
 
+	const handleContinuePrevious = () => {
+		if (import.meta.env.PROD)
+			window.location.href = window.location.origin + "/workbooks/start_" + slug + "/" + previous + "/";
+	};
+	const handleSkip = () => {
+		setPrevious(null);
+	};
 	return (
 		<>
-			{!onStart && (
+			{!reduxUser && (
+				// <Button onClick={onOpen} size="sm">
+				// 	Save and Continue (First Time)
+				// </Button>
+				<LoginPrompt saveToContinue={true} />
+			)}
+
+			{!reduxAutoSave && firstTime && reduxUser && (
 				<Button onClick={onOpen} size="sm">
+					First Time Save
+				</Button>
+			)}
+
+			{!reduxAutoSave && !firstTime && reduxUser && (
+				<Button onClick={saveAndContinue} size="sm">
 					Save and Continue
 				</Button>
 			)}
@@ -84,7 +142,10 @@ export default function SavePrompt({ title, login, onStart, children }) {
 					<ModalCloseButton />
 					<ModalBody>
 						{!id && <p>You have the ability to save your work if you are logged in.</p>}
-						{id && (
+						{id && previous && (
+							<> You have already started a previous workbook: {previous}. Did you want to continue?</>
+						)}
+						{id && !previous && (
 							<>
 								<Text>Hey {username}! We noticed that this is your first time saving this workbook.</Text>
 
@@ -121,14 +182,28 @@ export default function SavePrompt({ title, login, onStart, children }) {
 							</>
 						)}
 					</ModalBody>
+					{!previous && (
+						<ModalFooter>
+							<Button variant="ghost" onClick={skipForNow} mr={3}>
+								Skip
+							</Button>
 
-					<ModalFooter>
-						<Button variant="ghost" onClick={skipForNow}>
-							Skip for now
-						</Button>
+							<Button colorScheme="blue" onClick={saveAndContinue}>
+								{autoSave ? "Save and continue" : "Continue"}
+							</Button>
+						</ModalFooter>
+					)}
+					{previous && (
+						<ModalFooter>
+							<Button variant="ghost" onClick={handleSkip} mr={3}>
+								No, start a new one
+							</Button>
 
-						<Button onClick={saveAndContinue}>{autoSave ? "Save and continue" : "Continue"}</Button>
-					</ModalFooter>
+							<Button colorScheme="blue" onClick={handleContinuePrevious} isDisabled={import.meta.env.DEV}>
+								Yes, continue
+							</Button>
+						</ModalFooter>
+					)}
 				</ModalContent>
 			</Modal>
 		</>

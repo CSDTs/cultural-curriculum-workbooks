@@ -3,9 +3,11 @@ import { Button, chakra, Menu, MenuButton, MenuDivider, MenuItem, MenuList } fro
 import { useEffect, useState } from "react";
 import { FaRegUser, FaUserAlt } from "react-icons/fa";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import LoginPrompt from "/src/common/features/authentication/LoginPrompt";
 import useUser from "/src/common/hooks/useUser";
 import { authenticate } from "/src/common/services/UserService";
 
+import LogoutPrompt from "../../features/authentication/LogoutPrompt";
 const UserMenu = () => {
 	const [id, username] = useUser();
 
@@ -38,12 +40,13 @@ const UserMenu = () => {
 							My Workbooks
 						</MenuItem>
 						<MenuDivider />
-						<MenuItem
+						<LogoutPrompt />
+						{/* <MenuItem
 							onClick={() => {
 								window.location.href = "/accounts/logout/";
 							}}>
 							Not you? (LOGOUT)
-						</MenuItem>
+						</MenuItem> */}
 					</MenuList>
 				</Menu>
 			)}
@@ -53,7 +56,7 @@ const UserMenu = () => {
 					<Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>
 						Sign Up
 					</Button>
-					<Button
+					{/* <Button
 						display={{ base: "none", md: "inline-flex" }}
 						fontSize={"sm"}
 						fontWeight={600}
@@ -64,7 +67,8 @@ const UserMenu = () => {
 							bg: "gray.300",
 						}}>
 						<FaRegUser /> <chakra.span px={1}>Login</chakra.span>
-					</Button>
+					</Button> */}
+					<LoginPrompt />
 				</>
 			)}
 		</>

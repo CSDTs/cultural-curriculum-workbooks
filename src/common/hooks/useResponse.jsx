@@ -29,6 +29,7 @@ const useResponse = () => {
 		autoSaveResponse: async (val) => {
 			dispatch(updateResponse(val));
 			dispatch(updatePoints());
+			dispatch(updateSaveStatus(false));
 		},
 
 		updateCurrentResponse: async (val) => {

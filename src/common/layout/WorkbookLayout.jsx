@@ -10,8 +10,6 @@ export default function WorkbookLayout({ title, sections, children }) {
 	return (
 		<Box as="section" bg={useColorModeValue("gray.50", "gray.700")} minH="100vh">
 			<SideBar
-				title={title}
-				sections={sections}
 				display={{
 					base: "none",
 					lg: "unset",
