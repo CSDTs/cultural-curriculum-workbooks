@@ -4,6 +4,6 @@ export function serializeResponses(user, data) {
 		classroom: user.selected_classroom.id || null,
 		workbook: 1,
 		data: JSON.stringify(data),
-		progression: data.completion,
+		progression: data.completion || 0,
 	};
 }

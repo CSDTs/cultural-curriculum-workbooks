@@ -22,19 +22,20 @@ const initialState = {
 		available_sections: [],
 		available_points: 0,
 		is_finished: false,
+		autosave: false,
 	},
 	data: {
 		responses: [],
 		optional: [],
 		misc: {},
-		last_saved: "",
 		points_earned: 0,
 		lessons_completed: 0,
 		completion: 0,
 	},
 	save_status: true,
 	is_saving: false,
-	autosave: false,
+	is_using_backup: false,
+	last_saved: "",
 };
 
 export const workbookSlice = createSlice({
@@ -96,8 +97,18 @@ export const workbookSlice = createSlice({
 		},
 		loadConfigSave: (state, action) => {
 			state.user.save_id = action.payload?.workbook_save_id || null;
+
 			Object.assign(state.data, action.payload.data);
 			Object.assign(state.user.selected_classroom, action.payload.meta.classroom);
+			state.workbook.autosave = true;
+			state.last_saved = action.payload.meta.lastSaved;
+		},
+		loadBackupSave: (state, action) => {
+			state.user.save_id = action.payload?.id || null;
+			Object.assign(state.data, JSON.parse(action.payload.data));
+			Object.assign(state.user.selected_classroom, action.payload.classroom);
+			state.is_using_backup = true;
+			state.workbook.autosave = true;
 		},
 
 		setAvailablePoints: (state, action) => {
@@ -114,6 +125,9 @@ export const workbookSlice = createSlice({
 			state.workbook.autosave = action.payload;
 		},
 
+		updateBackupState: (state, action) => {
+			state.is_using_backup = action.payload;
+		},
 		updatePoints: (state) => {
 			const total = state.data.responses.reduce((accum, response) => {
 				if (response) {
@@ -133,7 +147,8 @@ export const workbookSlice = createSlice({
 			}, 0);
 
 			state.data.points_earned = total;
-			state.data.completion = parseInt((total / state.workbook.available_points) * 100);
+			// state.data.completion = parseInt((total / state.workbook.available_points) * 100);
+			state.data.completion = 0;
 		},
 	},
 });
@@ -161,6 +176,8 @@ export const {
 	updateIsSavingStatus,
 	updateAutoSaveState,
 	updatePoints,
+	loadBackupSave,
+	updateBackupState,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

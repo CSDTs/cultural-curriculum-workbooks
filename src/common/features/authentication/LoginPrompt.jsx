@@ -25,6 +25,7 @@ import useUser from "/src/common/hooks/useUser";
 
 import { FaRegUser } from "react-icons/fa";
 import AuthService from "../../services/AuthService";
+import useLocalStorage from "/src/common/hooks/useLocalStorage";
 
 export default function LoginPrompt({ saveToContinue = false }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,6 +40,8 @@ export default function LoginPrompt({ saveToContinue = false }) {
 	const handleUsernameChange = (e) => setUsername(e.target.value);
 	const handlePasswordChange = (e) => setPassword(e.target.value);
 	const { login, fetchClassrooms, fetchWorkbooks } = AuthService();
+
+	const [currentUser] = useLocalStorage("currentUser");
 
 	const dispatch = useDispatch();
 
@@ -66,8 +69,8 @@ export default function LoginPrompt({ saveToContinue = false }) {
 	const reduxUser = useSelector((state) => state.workbookState.user.id);
 
 	useEffect(() => {
-		if (!reduxUser && !saveToContinue) onOpen();
-	}, [reduxUser]);
+		if (!currentUser && !saveToContinue) onOpen();
+	}, [currentUser]);
 
 	return (
 		<>

@@ -30,7 +30,7 @@ export default function LogoutPrompt() {
 	const logoutUser = () => {
 		if (import.meta.env.DEV) {
 			localStorage.removeItem("currentUser");
-			setAutoSave(false);
+			// setAutoSave(false);
 			dispatch(setCurrentUser({ id: null, username: null }));
 			dispatch(updateAutoSaveState(false));
 			onClose();

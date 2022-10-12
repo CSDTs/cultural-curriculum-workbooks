@@ -15,7 +15,7 @@ export default function Debugger() {
 	const reduxAutoSave = useSelector((state) => state.workbookState.workbook.autosave);
 
 	const toggleAutoSave = () => {
-		setAutoSave(!reduxAutoSave);
+		// setAutoSave(!reduxAutoSave);
 		dispatch(updateAutoSaveState(!reduxAutoSave));
 	};
 	return (

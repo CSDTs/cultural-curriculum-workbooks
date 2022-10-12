@@ -1,8 +1,8 @@
 import { Box, Drawer, DrawerContent, DrawerOverlay, useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import Footer from "./Footer";
 
-import NavBar from "./NavBar/NavBar";
 import SideBar from "./SideBar";
+
+import { Footer, NavBar } from "/src/common/layout";
 
 export default function WorkbookLayout({ title, sections, children }) {
 	const sidebar = useDisclosure();

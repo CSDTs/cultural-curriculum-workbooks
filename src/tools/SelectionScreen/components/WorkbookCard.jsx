@@ -31,7 +31,7 @@ export default function WorkbookCard({ name, tags, description, slug }) {
 
 				<Text
 					textAlign={"center"}
-					color={useColorModeValue("gray.700", "gray.400")}
+					color={useColorModeValue("gray.700", "gray.500")}
 					px={3}
 					py={2}
 					fontWeight={"400"}
@@ -41,7 +41,7 @@ export default function WorkbookCard({ name, tags, description, slug }) {
 				<Flex align={"center"} justify={"center"} direction={"row"} mt={6} flexWrap={"wrap"}>
 					{tags &&
 						tags.map((tag) => (
-							<Badge px={2} py={1} mx={2} bg={useColorModeValue("gray.50", "gray.800")} fontWeight={"400"} key={tag}>
+							<Badge px={2} py={1} mx={2} bg={useColorModeValue("gray.50", "gray.700")} fontWeight={"400"} key={tag}>
 								{tag}
 							</Badge>
 						))}
@@ -52,6 +52,7 @@ export default function WorkbookCard({ name, tags, description, slug }) {
 					mt={"auto"}
 					direction={"row"}
 					padding={2}
+					pt={5}
 					justifyContent={"space-between"}
 					alignItems={"center"}>
 					<Button

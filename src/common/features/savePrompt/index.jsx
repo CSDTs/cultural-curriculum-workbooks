@@ -23,7 +23,6 @@ import {
 
 import { checkSaveState } from "/src/common/utils/apiRequests";
 // import { updateURL } from "/src/common/utils/helpers";
-import { serializeResponses } from "/src/common/utils/serializeResponses";
 
 import { setSaveDataId, updateAutoSaveState, updateSaveStatus } from "/src/setup/slices/workbookSlice";
 import { setWorkbookClassroom } from "/src/setup/slices/workbookSlice.js";
@@ -47,25 +46,22 @@ function updateURL(slug, id) {
 export default function SavePrompt({ title, login, onStart, openOnStart, children }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [id, username] = useUser();
-	const [autoSave, setAutoSave] = useLocalStorage("autoSave");
+	// const [autoSave, setAutoSave] = useLocalStorage("autoSave");
 	const classroomList = useSelector((state) => state.workbookState.user.classroom_list);
 	const reduxAutoSave = useSelector((state) => state.workbookState.workbook.autosave);
 	const reduxUser = useSelector((state) => state.workbookState.user.id);
 	const reduxSaveID = useSelector((state) => state.workbookState.user.save_id);
-	const [isSaving, isSaved, { saveWorkbook }] = useSave(reduxAutoSave);
+	// const [isSaving, isSaved, { saveWorkbook }] = useSave(reduxAutoSave);
+	const { saveWorkbook } = useSave();
 	const dispatch = useDispatch();
 	const slug = getSlug();
-	const [firstTime, setFirstTime] = useState(!reduxSaveID);
+	const [firstTime, setFirstTime] = useState(true);
 	const { fetchWorkbooks } = AuthService();
 	const [previous, setPrevious] = useState(null);
 
 	useEffect(() => {
 		if (openOnStart) onOpen();
 	}, [openOnStart]);
-
-	useEffect(() => {
-		dispatch(updateAutoSaveState(autoSave));
-	}, [autoSave]);
 
 	const updateClassroomRedux = (e) => {
 		if (!e.target.value) {
@@ -74,6 +70,10 @@ export default function SavePrompt({ title, login, onStart, openOnStart, childre
 			dispatch(setWorkbookClassroom(JSON.parse(e.target.value)));
 		}
 	};
+
+	useEffect(() => {
+		if (reduxSaveID) setFirstTime(false);
+	}, [reduxSaveID]);
 
 	useEffect(() => {
 		if (firstTime) {
@@ -85,21 +85,18 @@ export default function SavePrompt({ title, login, onStart, openOnStart, childre
 		}
 	}, [firstTime]);
 
+	// useEffect(() => {
+	// 	if (reduxAutoSave) saveWorkbook();
+	// }, [reduxAutoSave]);
+
 	const saveAndContinue = () => {
-		setFirstTime(false);
-		saveWorkbook()
-			.then((res) => {
-				if (res.ok && import.meta.env.PROD) updateURL(slug, res.data.id);
-				console.log("app", res);
-				if (res.ok) dispatch(updateSaveStatus(true));
-				onClose();
-				if (import.meta.env.DEV) return;
-			})
-			.catch((err) => console.error("app", err));
+		dispatch(updateAutoSaveState(true));
+
+		onClose();
 	};
 
 	const skipForNow = () => {
-		setAutoSave(false);
+		dispatch(updateAutoSaveState(false));
 		onClose();
 	};
 
@@ -135,11 +132,11 @@ export default function SavePrompt({ title, login, onStart, openOnStart, childre
 				</Button>
 			)}
 
-			<Modal onClose={onClose} isOpen={isOpen} isCentered>
+			<Modal onClose={onClose} isOpen={isOpen} closeOnOverlayClick={false} isCentered>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>Saving</ModalHeader>
-					<ModalCloseButton />
+					{/* <ModalCloseButton /> */}
 					<ModalBody>
 						{!id && <p>You have the ability to save your work if you are logged in.</p>}
 						{id && previous && (
@@ -172,13 +169,15 @@ export default function SavePrompt({ title, login, onStart, openOnStart, childre
 									</>
 								)}
 
-								<Text my={4}>You can enable autosaving, or you can save manually. </Text>
-								<FormControl display="flex" alignItems="center">
+								<Text my={4}>
+									Saving is handled automatically. Whenever you make a change to a prompt, it will save to the cloud.{" "}
+								</Text>
+								{/* <FormControl display="flex" alignItems="center">
 									<FormLabel htmlFor="enable-autosave" mb="0">
 										Enable autosave?
 									</FormLabel>
 									<Switch id="enable-autosave" onChange={handleChange} isChecked={autoSave} />
-								</FormControl>
+								</FormControl> */}
 							</>
 						)}
 					</ModalBody>
@@ -189,7 +188,7 @@ export default function SavePrompt({ title, login, onStart, openOnStart, childre
 							</Button>
 
 							<Button colorScheme="blue" onClick={saveAndContinue}>
-								{autoSave ? "Save and continue" : "Continue"}
+								Continue
 							</Button>
 						</ModalFooter>
 					)}

@@ -1,5 +1,5 @@
-import Main from "./Main";
+import Footer from "./Footer";
+
 import NavBar from "./NavBar";
-import PageHeader from "./PageHeader";
-import WorkbookLayout from "./WorkbookLayout";
-export { Main, PageHeader, WorkbookLayout, NavBar };
+
+export { NavBar, Footer };

@@ -21,6 +21,10 @@ import { FaBug, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { updateAutoSaveState } from "/src/setup/slices/workbookSlice";
+
+import { useEffect, useState } from "react";
+import { ScaleLoader } from "react-spinners";
+import useSave from "/src/common/hooks/useSave";
 const SocialButton = ({ children, label, href }) => {
 	return (
 		<chakra.button
@@ -51,8 +55,6 @@ const DebugMenu = () => {
 
 	const dispatch = useDispatch();
 
-	const [autoSave, setAutoSave] = useLocalStorage("autoSave");
-
 	const reduxAutoSave = useSelector((state) => state.workbookState.workbook.autosave);
 
 	const toggleAutoSave = () => {
@@ -82,11 +84,46 @@ const DebugMenu = () => {
 
 export default function Footer() {
 	const autoSave = useSelector((state) => state.workbookState.workbook.autosave);
+	const reduxLastSaved = useSelector((state) => state.workbookState.last_saved);
 	const reduxUser = useSelector((state) => state.workbookState.user.id);
 	const reduxSaveID = useSelector((state) => state.workbookState.user.save_id);
 	const reduxSaveStatus = useSelector((state) => state.workbookState.save_status);
+	const reduxIsSaving = useSelector((state) => state.workbookState.is_saving);
+	const saveData = useSelector((state) => state.workbookState.data);
+	// const [response, error, isSaving, isPending, { saveProgress }] = useSave();
+	const { isLoading, isSuccess, isError, saveWorkbook } = useSave(autoSave);
+
+	const [firstTime, setFirstTime] = useState(true);
+
+	const [backup] = useLocalStorage("backup");
+
+	useEffect(() => {
+		if (autoSave && reduxUser) {
+			saveWorkbook();
+		}
+	}, [saveData, firstTime]);
+
+	// useEffect(() => {
+	// 	if (autoSave) {
+	// 		setFirstTime(false);
+	// 	}
+	// }, [autoSave]);
+
+	const badgeColor =
+		!reduxSaveStatus && !isLoading ? "red" : isLoading ? "blue" : isSuccess ? "green" : isError ? "red" : "gray";
+	const textColor =
+		!reduxSaveStatus && !isLoading
+			? "red.500"
+			: isLoading
+			? "cyan.500"
+			: isSuccess
+			? "green.500"
+			: isError
+			? "red.500"
+			: "gray.500";
+
 	return (
-		<Box bg={useColorModeValue("gray.50", "gray.900")} color={useColorModeValue("gray.700", "gray.200")}>
+		<Box bg={useColorModeValue("white", "gray.900")} color={useColorModeValue("gray.700", "gray.200")}>
 			<Stack
 				// maxW={"6xl"}
 				py={4}
@@ -96,25 +133,40 @@ export default function Footer() {
 				mt={"auto"}
 				justify={{ base: "center", md: "space-between" }}
 				align={{ base: "center", md: "center" }}>
-				<Stack direction="row">
-					<Badge colorScheme={autoSave ? "green" : "red"}>Autosave {autoSave ? "Enabled" : "Disabled"}</Badge>{" "}
-					<Badge colorScheme={reduxUser ? "green" : "red"}>User {reduxUser ? "Logged In" : "Not Logged In"}</Badge>
-					<Badge colorScheme={reduxSaveID ? "green" : "red"}>Save {reduxSaveID ? "Found" : "Not Found"}</Badge>
-					<Badge colorScheme={reduxSaveStatus ? "green" : "red"}>
+				<Stack direction="row" align={"center"}>
+					{isLoading && <ScaleLoader color={"rgb(144,205,244)"} height={"18px"} />}
+
+					{/* <Badge colorScheme={badgeColor}>
 						{" "}
-						{reduxSaveStatus ? "Saved" : "You have unsaved changes"}
-					</Badge>
+						{!reduxSaveStatus && !isLoading
+							? "You have unsaved changes"
+							: isLoading
+							? "Saving..."
+							: isSuccess
+							? "Saved"
+							: isError
+							? "Something happened"
+							: "Last saved x min ago"}
+					</Badge> */}
+					{/* <Badge>Autosave {autoSave ? "Enabled" : "Disabled"}</Badge> */}
+					<Text color={textColor}>
+						{" "}
+						{!reduxSaveStatus && !isLoading && !isError
+							? "You have unsaved changes"
+							: isLoading
+							? "Saving..."
+							: isSuccess
+							? "Saved"
+							: isError
+							? "Unable to save: Temporary backup created..."
+							: reduxLastSaved
+							? `Last saved ${reduxLastSaved}`
+							: ""}
+						{backup && !isSuccess && !isLoading && " Will attempt to save backup soon..."}
+					</Text>
 				</Stack>
-				{/* <Text>© 2022 Chakra Templates. All rights reserved</Text> */}
 				<Stack direction={"row"} spacing={6}>
 					<DebugMenu />
-
-					{/* <SocialButton label={"YouTube"} href={"#"}>
-						<FaYoutube />
-					</SocialButton>
-					<SocialButton label={"Instagram"} href={"#"}>
-						<FaInstagram />
-					</SocialButton> */}
 				</Stack>
 			</Stack>
 		</Box>
