@@ -114,7 +114,7 @@ export const workbookSlice = createSlice({
 		loadBackupSave: (state, action) => {
 			const current = JSON.parse(action.payload.data).last;
 			state.user.save_id = action.payload?.id || null;
-			Object.assign(state.data, current);
+			Object.assign(state.data, JSON.parse(action.payload.data));
 			Object.assign(state.user.selected_classroom, action.payload.classroom);
 			state.is_using_backup = true;
 			state.workbook.autosave = true;

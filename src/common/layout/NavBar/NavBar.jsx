@@ -9,11 +9,13 @@ import {
 	IconButton,
 	Image,
 	Stack,
+	Text,
 	useColorMode,
 	useColorModeValue,
 	useDisclosure,
 } from "@chakra-ui/react";
 import { FaRegQuestionCircle } from "react-icons/fa";
+import { MdSchool } from "react-icons/md";
 
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
@@ -41,7 +43,7 @@ const NAV_ITEMS = [
 	},
 ];
 
-const NavBar = () => {
+const NavBar = ({ openSidebar }) => {
 	const { isOpen, onToggle } = useDisclosure();
 	const { colorMode, toggleColorMode } = useColorMode();
 
@@ -59,15 +61,29 @@ const NavBar = () => {
 				borderStyle={"solid"}
 				borderColor={useColorModeValue("gray.200", "gray.900")}
 				align={"center"}>
-				<Flex flex={{ base: 1, md: "auto" }} ml={{ base: -2 }} display={{ base: "flex", md: "none" }}>
+				<Flex flex={{ base: 1, lg: "auto" }} ml={{ base: -2 }} display={{ base: "flex", lg: "none" }} align={"center"}>
 					<IconButton
 						onClick={onToggle}
 						icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
 						variant={"ghost"}
 						aria-label={"Toggle Navigation"}
+						mr={3}
+					/>
+
+					<Divider orientation="vertical" borderColor={useColorModeValue("gray.600", "white")} h={"25px"} mr={3} />
+					<IconButton
+						onClick={openSidebar}
+						icon={
+							<Flex align={"center"} px={2}>
+								<MdSchool w={5} h={5} />
+								<Text ml={2}>Lessons</Text>
+							</Flex>
+						}
+						variant={"ghost"}
+						aria-label={"Toggle Navigation"}
 					/>
 				</Flex>
-				<Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} verticalAlign={"middle"}>
+				<Flex flex={{ base: 1 }} justify={{ base: "center", lg: "start" }} verticalAlign={"middle"}>
 					<Image
 						src={NSF}
 						boxSize={"40px"}
@@ -81,14 +97,14 @@ const NavBar = () => {
 							window.location.href = "/";
 						}}
 					/>
-					<Flex display={{ base: "none", md: "flex" }} ml={10}>
+					<Flex display={{ base: "none", lg: "flex" }} ml={10}>
 						<DesktopNav data={NAV_ITEMS} />
 					</Flex>
 				</Flex>
 
-				<Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6} verticalAlign={"middle"}>
+				<Stack flex={{ base: 1, lg: 0 }} justify={"flex-end"} direction={"row"} spacing={6} verticalAlign={"middle"}>
 					<UserMenu />
-					<Center height="auto" py={"10px"} color={"teal"} display={{ base: "none", md: "inline-flex" }}>
+					<Center height="auto" py={"10px"} color={"teal"} display={{ base: "none", lg: "inline-flex" }}>
 						<Divider orientation="vertical" borderColor={useColorModeValue("gray.600", "white")} />
 					</Center>
 					<Button
@@ -98,7 +114,7 @@ const NavBar = () => {
 						variant={"link"}
 						href={"#"}
 						className="help-step"
-						display={{ base: "none", md: "flex" }}>
+						display={{ base: "none", lg: "flex" }}>
 						<FaRegQuestionCircle />
 					</Button>
 					<Button onClick={toggleColorMode} display={{ base: "none" }}>

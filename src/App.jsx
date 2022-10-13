@@ -28,6 +28,7 @@ function App() {
 		if (typeof config !== "undefined") dispatch(loadConfigSave(config));
 
 		if (import.meta.env.DEV && data) {
+			console.log(data);
 			dispatch(loadBackupSave(data));
 		}
 		if (import.meta.env.PROD && backup) {

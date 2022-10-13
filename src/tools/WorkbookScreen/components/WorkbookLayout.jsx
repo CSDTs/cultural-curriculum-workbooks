@@ -1,4 +1,4 @@
-import { Box, Drawer, DrawerContent, DrawerOverlay, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerContent, DrawerOverlay, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 
 import SideBar from "./SideBar";
 
@@ -32,7 +32,8 @@ export default function WorkbookLayout({ title, sections, children }) {
 				flexDir={"column"}
 				justifyContent={"space-between"}>
 				<Box>
-					<NavBar />
+					<NavBar openSidebar={sidebar.onOpen} />
+
 					<Box as="main" p="4" maxH={{ base: "calc(100vh - 164px)", md: "calc(100vh - 124px)" }} overflowY={"scroll"}>
 						{children}
 					</Box>
