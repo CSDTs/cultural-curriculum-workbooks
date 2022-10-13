@@ -31,6 +31,7 @@ const initialState = {
 		points_earned: 0,
 		lessons_completed: 0,
 		completion: 0,
+		last: 0,
 	},
 	save_status: true,
 	is_saving: false,
@@ -44,6 +45,9 @@ export const workbookSlice = createSlice({
 	reducers: {
 		setSlug: (state, action) => {
 			state.workbook.slug = action.payload.slug;
+		},
+		setLastLesson: (state, action) => {
+			state.data.last = action.payload;
 		},
 		setWorkbookData: (state, action) => {
 			let totalLessons = action.payload.data.reduce((total, section) => {
@@ -96,19 +100,27 @@ export const workbookSlice = createSlice({
 			state.user.save_id = action.payload;
 		},
 		loadConfigSave: (state, action) => {
+			const current = action.payload.data.last ?? 0;
 			state.user.save_id = action.payload?.workbook_save_id || null;
 
 			Object.assign(state.data, action.payload.data);
 			Object.assign(state.user.selected_classroom, action.payload.meta.classroom);
 			state.workbook.autosave = true;
 			state.last_saved = action.payload.meta.lastSaved;
+
+			state.workbook.current_lesson_id = current;
+			state.workbook.current_lesson = state.workbook.available_lessons[current];
 		},
 		loadBackupSave: (state, action) => {
+			const current = JSON.parse(action.payload.data).last;
 			state.user.save_id = action.payload?.id || null;
-			Object.assign(state.data, JSON.parse(action.payload.data));
+			Object.assign(state.data, current);
 			Object.assign(state.user.selected_classroom, action.payload.classroom);
 			state.is_using_backup = true;
 			state.workbook.autosave = true;
+
+			state.workbook.current_lesson_id = current;
+			state.workbook.current_lesson = state.workbook.available_lessons[current];
 		},
 
 		setAvailablePoints: (state, action) => {
@@ -178,6 +190,7 @@ export const {
 	updatePoints,
 	loadBackupSave,
 	updateBackupState,
+	setLastLesson,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

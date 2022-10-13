@@ -19,7 +19,7 @@ const WorkbookNavigation = () => {
 			</Text>
 
 			<span>
-				<Button variant="outline" colorScheme="blue" disabled={startOfWorkbook} onClick={previousLesson}>
+				<Button variant="outline" colorScheme="blue" disabled={startOfWorkbook} onClick={previousLesson} mr={2}>
 					Prev
 				</Button>
 				<Button variant="solid" colorScheme="blue" disabled={endOfWorkbook} onClick={nextLesson}>

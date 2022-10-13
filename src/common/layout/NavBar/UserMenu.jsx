@@ -1,11 +1,10 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Button, chakra, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { FaRegUser, FaUserAlt } from "react-icons/fa";
-import useLocalStorage from "../../hooks/useLocalStorage";
+
+import { FaUserAlt } from "react-icons/fa";
+
 import LoginPrompt from "/src/common/features/authentication/LoginPrompt";
 import useUser from "/src/common/hooks/useUser";
-import { authenticate } from "/src/common/services/UserService";
 
 import LogoutPrompt from "../../features/authentication/LogoutPrompt";
 const UserMenu = () => {

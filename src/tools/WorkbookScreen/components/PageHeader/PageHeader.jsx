@@ -1,8 +1,7 @@
-import { Badge, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
-import { Toolbar } from "/src/common/features/toolbar";
+import { SavePrompt } from "/src/tools/WorkbookScreen/features";
 
-import { useSelector } from "react-redux";
 const PageHeader = ({ title }) => {
 	return (
 		<Flex align={"center"} w="100%" justifyContent={"space-between"}>
@@ -12,7 +11,9 @@ const PageHeader = ({ title }) => {
 				</Heading>
 			</Flex>
 
-			<Toolbar />
+			<Flex aria-label="Toolbar with button groups" justifyContent={"end"}>
+				<SavePrompt />
+			</Flex>
 		</Flex>
 	);
 };

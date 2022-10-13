@@ -7,4 +7,4 @@ function getSlug() {
 	return null;
 }
 
-export { getSlug };
+export default getSlug;

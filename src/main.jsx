@@ -6,13 +6,19 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
+import { extendTheme } from "@chakra-ui/react";
 import { store } from "./setup/store";
-
+const theme = extendTheme({
+	config: {
+		initialColorMode: "dark",
+		useSystemColorMode: false,
+	},
+});
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<ChakraProvider>
+		<ChakraProvider theme={theme}>
 			<BrowserRouter>
 				<Provider store={store}>
 					<QueryClientProvider client={queryClient}>

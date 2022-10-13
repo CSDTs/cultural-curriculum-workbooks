@@ -10,7 +10,7 @@ import { NoResponse } from "/src/common/features/responses";
 
 import { P } from "/src/common/core";
 
-import Collapsible from "/src/common/ui/Collapsible";
+import { Collapsible } from "/src/common/core";
 
 const blockInfo = [
 	{

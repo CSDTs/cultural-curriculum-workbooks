@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "./useLocalStorage";
-import { getSlug } from "/src/common/services/WorkbookService";
+import getSlug from "/src/common/utils/getSlug";
 import { serializeResponses } from "/src/common/utils/serializeResponses";
 import {
 	setSaveDataId,

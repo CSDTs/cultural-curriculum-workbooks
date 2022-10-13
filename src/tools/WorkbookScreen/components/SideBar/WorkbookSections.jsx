@@ -18,7 +18,7 @@ const WorkbookSections = () => {
 						key={section.title}
 						range={{ min: offset, max: (offset += section.lessons.length) }}>
 						{section.lessons.map((lesson) => (
-							<SectionItem key={lesson.title} data={{ lessonID: lessonCount++, ...lesson }} />
+							<SectionItem key={lesson.title} title={lesson.title} idx={lessonCount++} />
 						))}
 					</SectionGrouping>
 				))}

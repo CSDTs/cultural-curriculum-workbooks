@@ -19,54 +19,45 @@ import {
 } from "@chakra-ui/react";
 
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentUser, setUserClassrooms } from "../../../setup/slices/workbookSlice";
-import useUser from "/src/common/hooks/useUser";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../../setup/slices/workbookSlice";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { FaRegUser } from "react-icons/fa";
-import AuthService from "../../services/AuthService";
+
 import useLocalStorage from "/src/common/hooks/useLocalStorage";
 
+import postLogin from "./fetchers/postLogin";
+
+import fetchCsrfToken from "./fetchers/fetchCsrfToken";
+
 export default function LoginPrompt({ saveToContinue = false }) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [show, setShow] = useState(false);
-	const handleClick = () => setShow(!show);
-	const initialRef = useRef(null);
-	const finalRef = useRef(null);
-
-	const [username, setUsername] = useState(null);
-	const [password, setPassword] = useState(null);
-
-	const handleUsernameChange = (e) => setUsername(e.target.value);
-	const handlePasswordChange = (e) => setPassword(e.target.value);
-	const { login, fetchClassrooms, fetchWorkbooks } = AuthService();
-
-	const [currentUser] = useLocalStorage("currentUser");
-
 	const dispatch = useDispatch();
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [currentUser] = useLocalStorage("currentUser");
+	const [show, setShow] = useState(false);
+	const username = useRef(null);
+	const password = useRef(null);
+	const { data: token } = useQuery(["csrftoken"], fetchCsrfToken);
+	const { mutateAsync } = useMutation(postLogin, {
+		onSuccess: (data) => {
+			dispatch(setCurrentUser(data));
+			localStorage.setItem("currentUser", JSON.stringify(data));
+		},
+	});
+
+	const handleClick = () => setShow(!show);
 
 	const loginUser = () => {
 		if (import.meta.env.DEV) {
-			localStorage.setItem("currentUser", JSON.stringify({ id: 12776, username: "localtest" }));
-			dispatch(setCurrentUser({ id: 12776, username: "localtest" }));
-		} else {
-			login(username, password).then((res) => {
-				dispatch(setCurrentUser(res.data));
-				fetchClassrooms(res.data.id)
-					.then((res) => {
-						dispatch(setUserClassrooms(res.data));
-
-						console.log(res);
-					})
-					.catch((err) => {
-						console.warn("Unable to find / fetch classrooms for " + username, err);
-						onClose();
-					});
-			});
+			localStorage.setItem("currentUser", JSON.stringify({ id: 12776, username: username.current.value }));
+			dispatch(setCurrentUser({ id: 12776, username: username.current.value }));
+			return;
 		}
-	};
 
-	const reduxUser = useSelector((state) => state.workbookState.user.id);
+		mutateAsync({ payload: { login: username.current.value, password: password.current.value }, token });
+	};
 
 	useEffect(() => {
 		if (!currentUser && !saveToContinue) onOpen();
@@ -95,7 +86,7 @@ export default function LoginPrompt({ saveToContinue = false }) {
 				</Button>
 			)}
 
-			<Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered>
+			<Modal initialFocusRef={username} isOpen={isOpen} onClose={onClose} isCentered>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>Login to CSDT</ModalHeader>
@@ -104,24 +95,18 @@ export default function LoginPrompt({ saveToContinue = false }) {
 						<Text pb={5}>Hey! You can login to save your progress, or you can skip for now.</Text>
 						<FormControl>
 							<FormLabel htmlFor="username">Username</FormLabel>
-							<Input
-								ref={initialRef}
-								type="text"
-								placeholder="Username"
-								onChange={handleUsernameChange}
-								id="username"
-							/>
+							<Input ref={username} type="text" placeholder="Username" id="username" />
 						</FormControl>
 
 						<FormControl mt={4}>
 							<FormLabel htmlFor="password">Password</FormLabel>
 							<InputGroup size="md">
 								<Input
+									ref={password}
 									pr="4.5rem"
 									type={show ? "text" : "password"}
 									placeholder="Enter password"
 									id="password"
-									onChange={handlePasswordChange}
 								/>
 								<InputRightElement width="4.5rem">
 									<Button h="1.75rem" size="sm" onClick={handleClick}>

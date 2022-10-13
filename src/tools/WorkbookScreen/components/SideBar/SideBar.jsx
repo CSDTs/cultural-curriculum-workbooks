@@ -5,7 +5,7 @@ import NamePlate from "./NamePlate";
 import WorkbookNavigation from "./WorkbookNavigation";
 import WorkbookSections from "./WorkbookSections";
 
-import { WorkbookProgress } from "/src/common/features/progress";
+import { PointTracker } from "/src/tools/WorkbookScreen/features/";
 
 const SideBar = ({ ...additionalStyles }) => {
 	return (
@@ -28,7 +28,7 @@ const SideBar = ({ ...additionalStyles }) => {
 			<Flex direction="column" justifyContent={"space-between"} h="full">
 				<Flex direction="column">
 					<NamePlate />
-					<WorkbookProgress />
+					<PointTracker />
 					<WorkbookSections />
 				</Flex>
 				<WorkbookNavigation />

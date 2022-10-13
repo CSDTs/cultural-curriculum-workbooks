@@ -1,4 +1,4 @@
-import CSnap from "/src/common/features/CSnap";
+import CSnap from "/src/tools/WorkbookScreen/features/CSnap";
 
 import { Button, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";

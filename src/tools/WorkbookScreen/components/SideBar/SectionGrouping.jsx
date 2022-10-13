@@ -1,8 +1,8 @@
 import { Collapse, Icon, useDisclosure } from "@chakra-ui/react";
 import { Fragment, useEffect } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { NavItem } from "/src/common/core";
 import useLesson from "/src/common/hooks/useLesson";
-import NavItem from "/src/common/ui/NavItem";
 
 import PropTypes from "prop-types";
 

@@ -1,8 +1,8 @@
-import { setCurrentLessonData } from "/src/setup/slices/workbookSlice.js";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-const useLesson = (lesson = {}) => {
+import { setCurrentLessonData, setLastLesson } from "/src/setup/slices/workbookSlice.js";
+
+const useLesson = () => {
 	const dispatch = useDispatch();
 	const [param, setParam] = useSearchParams();
 
@@ -12,25 +12,18 @@ const useLesson = (lesson = {}) => {
 
 	const wb = param.get("wb");
 
-	const updateCurrentLesson = () => {
-		if (lesson.lessonID !== currentIdx) {
-			if (import.meta.env.DEV) setParam({ wb: wb, lesson: lesson.lessonID });
-			else setParam({ lesson: lesson.lessonID });
-
-			dispatch(setCurrentLessonData(lesson));
-		}
-	};
 	const selectLesson = (id) => {
 		if (id !== currentIdx) {
 			if (import.meta.env.DEV) setParam({ wb: wb, lesson: id });
 			else setParam({ lesson: id });
 			dispatch(setCurrentLessonData({ lessonID: id, ...availableLessons[id] }));
+			dispatch(setLastLesson(id));
 		}
 	};
+
 	return {
 		current: { id: currentIdx, ...currentData },
 		available: availableLessons,
-		updateCurrentLesson,
 		selectLesson,
 	};
 };

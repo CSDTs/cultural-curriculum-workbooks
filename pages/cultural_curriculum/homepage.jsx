@@ -12,7 +12,7 @@ import Search from "./Filter/Search";
 import AdvancedFilter from "./Filter";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { getClassrooms, getUser } from "/src/common/utils/apiRequests";
+// import { getClassrooms, getUser } from "/src/common/utils/apiRequests";
 import { loadConfigSave, setCurrentUser, setUserClassrooms } from "/src/setup/slices/workbookSlice";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -52,18 +52,18 @@ function App() {
 
 	let localStorageUser = JSON.parse(localStorage.getItem("currentUser")) || "";
 
-	React.useEffect(() => {
-		if (localStorageUser) setUser(localStorageUser, dispatch);
+	// React.useEffect(() => {
+	// 	if (localStorageUser) setUser(localStorageUser, dispatch);
 
-		fetchApplications();
+	// 	fetchApplications();
 
-		getUser()
-			.then((response) => {
-				if (localStorageUser?.username == response.data?.username) return;
-				setUser(response.data, dispatch);
-			})
-			.catch((error) => notifyError(error));
-	}, []);
+	// 	getUser()
+	// 		.then((response) => {
+	// 			if (localStorageUser?.username == response.data?.username) return;
+	// 			setUser(response.data, dispatch);
+	// 		})
+	// 		.catch((error) => notifyError(error));
+	// }, []);
 
 	return (
 		<React.Fragment>

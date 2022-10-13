@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { Loader } from "/src/common/features/contentLoading";
+import { Loader } from "/src/common/core";
 
 import WorkbookCard from "./WorkbookCard";
 

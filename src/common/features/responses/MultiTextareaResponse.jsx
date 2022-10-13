@@ -1,36 +1,24 @@
-import { Box, Heading, SimpleGrid, Text, Textarea } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Textarea } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
 import { debounce } from "lodash";
-import { useCallback, useMemo, useRef, useState } from "react";
-import useResponse from "/src/common/hooks/useResponse";
-import useSave from "/src/common/hooks/useSave";
-const MultiTextareaResponse = ({ points, questions, children }) => {
-	const { checkRequired, autoSaveResponse, getRequired } = useResponse();
+import { useCallback, useRef } from "react";
+import useResponseHook from "../../../tools/WorkbookScreen/hooks/useResponse";
 
+const MultiTextareaResponse = ({ questions, children }) => {
+	const [response, setResponse, { setResponseSaved }] = useResponseHook();
 	const textAreas = useRef([]);
 
-	const [isSaving, isSaved, { saveWorkbook }] = useSave();
-	const [response, setResponse] = useState(getRequired);
-
-	const debounceSave = useMemo(
-		() =>
-			debounce((val) => {
-				autoSaveResponse(val).then(() => {
-					console.log("uploading to cloud");
-					saveWorkbook().then((res) => {
-						console.log(res);
-					});
-				});
-			}, 750),
-		[setResponse]
+	const debounceSave = useCallback(
+		debounce((val) => {
+			setResponse(val);
+		}, 750),
+		[]
 	);
 
 	const handleChange = useCallback(() => {
 		const multiResponse = {};
 		let multiPoints = 0;
-		// setResponse({ question, response: e.target.value, points: e.target.value === "" ? 0 : points });
-		// debounceSave({ question, response: e.target.value, points: e.target.value === "" ? 0 : points });
 
 		textAreas.current.forEach((el, idx) => {
 			multiResponse[idx] = {
@@ -40,7 +28,7 @@ const MultiTextareaResponse = ({ points, questions, children }) => {
 
 			if (el.value) multiPoints += 1;
 		});
-		setResponse({ question: "Creating an AI App", response: multiResponse, points: multiPoints });
+		setResponseSaved(false);
 		debounceSave({ question: "Creating an AI App", response: multiResponse, points: multiPoints });
 	});
 	return (
@@ -56,9 +44,7 @@ const MultiTextareaResponse = ({ points, questions, children }) => {
 						<Textarea
 							placeholder={item.placeholder}
 							onChange={handleChange}
-							value={response?.response?.[i]?.reply}
-							borderColor={response?.response?.[i]?.reply && "rgb(129 252 138)"}
-							boxShadow={response?.response?.[i]?.reply && "rgb(129 252 138) 0px 0px 0px 1px"}
+							defaultValue={response?.[i]?.reply}
 							h={"15rem"}
 							mt={"auto"}
 							ref={(el) => (textAreas.current[i] = el)}
@@ -66,9 +52,6 @@ const MultiTextareaResponse = ({ points, questions, children }) => {
 					</Box>
 				))}
 			</SimpleGrid>
-
-			{isSaving && <Text>{"Saving..."}</Text>}
-			{isSaved && <Text>{"Saved"}</Text>}
 		</>
 	);
 };

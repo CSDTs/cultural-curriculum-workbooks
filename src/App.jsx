@@ -10,10 +10,11 @@ import WorkbookScreen from "/src/tools/WorkbookScreen";
 
 import useLocalStorage from "./common/hooks/useLocalStorage";
 import useSave from "/src/common/hooks/useSave";
-import { getSlug } from "/src/common/services/WorkbookService";
+import getSlug from "/src/common/utils/getSlug";
 
 function App() {
 	const dispatch = useDispatch();
+
 	const [searchParams] = useSearchParams();
 	const [backup] = useLocalStorage("backup");
 	const [data] = useLocalStorage("data");

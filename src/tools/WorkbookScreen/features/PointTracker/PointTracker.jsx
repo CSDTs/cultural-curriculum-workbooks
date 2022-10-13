@@ -1,7 +1,9 @@
 import { Flex, Progress, Text } from "@chakra-ui/react";
 import { FaTrophy } from "react-icons/fa";
-import usePoints from "/src/common/hooks/usePoints";
-export default function WorkbookProgress() {
+
+import usePoints from "./usePoints";
+
+export default function PointTracker() {
 	const [pointsEarned, totalPoints] = usePoints();
 
 	return (
