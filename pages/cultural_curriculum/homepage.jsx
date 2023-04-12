@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 // import Navigation from "#components/layout/Navigation";
 
@@ -12,12 +12,12 @@ import Search from "./Filter/Search";
 import AdvancedFilter from "./Filter";
 
 import { AnimatePresence, motion } from "framer-motion";
-// import { getClassrooms, getUser } from "/src/common/utils/apiRequests";
-import { loadConfigSave, setCurrentUser, setUserClassrooms } from "/src/setup/slices/workbookSlice";
+// import { getClassrooms, getUser } from "@/utils/apiRequests";
+import { loadConfigSave, setCurrentUser, setUserClassrooms } from "@/setup/slices/workbookSlice";
 
+import "@/App.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.scss";
-import "/src/App.css";
 
 const notifyError = (error) => {
 	if (import.meta.env.PROD)
