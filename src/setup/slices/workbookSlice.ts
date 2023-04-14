@@ -51,7 +51,8 @@ export const workbookSlice = createSlice({
 		},
 		setWorkbookData: (state, action) => {
 			let totalLessons = action.payload.data.reduce((total, section) => {
-				return total.concat(section.lessons);
+				let temp = section.lessons.map((lesson) => ({ section: section.title, ...lesson }));
+				return total.concat(temp);
 			}, []);
 			state.workbook.title = action.payload.title;
 			state.workbook.available_sections = action.payload.data;
@@ -69,7 +70,12 @@ export const workbookSlice = createSlice({
 				state.workbook.current_lesson = totalLessons[temp];
 			}
 		},
-
+		// Updated
+		setSavingSucceeded: (state, action) => {
+			state.save_status = true;
+			state.is_saving = false;
+			if (action.payload) state.user.save_id = action.payload;
+		},
 		setAvailableWorkbooksData: (state, action) => {
 			state.workbook.available_workbooks = action.payload;
 		},
@@ -78,7 +84,9 @@ export const workbookSlice = createSlice({
 			state.user.id = action.payload.id;
 			state.user.username = action.payload.username;
 		},
-
+		setWorkbookId: (state, action) => {
+			state.workbook.id = action.payload;
+		},
 		setUserClassrooms: (state, action) => {
 			state.user.classroom_list = action.payload;
 		},
@@ -193,6 +201,8 @@ export const {
 	loadBackupSave,
 	updateBackupState,
 	setLastLesson,
+	setWorkbookId,
+	setSavingSucceeded,
 } = workbookSlice.actions;
 
 export default workbookSlice.reducer;

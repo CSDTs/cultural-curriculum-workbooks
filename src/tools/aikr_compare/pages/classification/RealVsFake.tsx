@@ -1,6 +1,5 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
-
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 const RealVsFake = () => {
 	const question = "But how do you think real vs fake could be applied to help low-income communities?";
 	return (

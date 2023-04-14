@@ -1,6 +1,5 @@
-import { TextareaResponse } from "@/features/Responses";
-
-import { Paragraph, ResponseHeading } from "@/components/common";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 
 const FollowUpCreative = () => {
 	const question = "what do you think artisans could do to expand its capabilities?";

@@ -13,6 +13,7 @@ type CurrentLesson = Lesson & { id: number };
 const useLesson = () => {
 	const dispatch = useDispatch();
 	const [param, setParam] = useSearchParams();
+
 	const { current_lesson_id, current_lesson, available_lessons } = useSelector(
 		(state: RootState) => state.workbookState.workbook
 	);
@@ -24,6 +25,7 @@ const useLesson = () => {
 			if (import.meta.env.DEV) setParam({ wb: wb, lesson: id.toString() });
 			else setParam({ lesson: id.toString() });
 			dispatch(setCurrentLessonData({ lessonID: id, ...(available_lessons[id] as Object) }));
+			window.scrollTo(0, 0);
 		}
 	};
 

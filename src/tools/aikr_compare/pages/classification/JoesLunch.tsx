@@ -1,4 +1,4 @@
-import { NoResponse } from "@/features/Responses";
+import { NoResponse } from "@/components/organisms/responses";
 
 const JoesLunch = () => {
 	const url_string = "./build/index.html" + `?embedded=true&`;

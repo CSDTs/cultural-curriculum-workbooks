@@ -1,8 +1,8 @@
 import { SimpleGrid } from "@chakra-ui/react";
 
-import { NoResponse } from "@/features/Responses";
+import { NoResponse } from "@/components/organisms/responses";
 
-import { Paragraph } from "@/components/common";
+import { Paragraph } from "@/components/atoms";
 
 import FakeImg from "@/assets/aikr/fake_grapes.png";
 import ImageSelect from "@/assets/aikr/image_select.png";

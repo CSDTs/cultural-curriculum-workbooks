@@ -1,6 +1,6 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
-import useResponse from "@/features/Responses/hooks/useResponse";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
+import useResponse from "@/hooks/useResponse";
 
 const FollowUpClassify = () => {
 	const { specificResponse } = useResponse();

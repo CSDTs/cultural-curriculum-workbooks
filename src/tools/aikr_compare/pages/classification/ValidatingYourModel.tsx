@@ -1,7 +1,6 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
-
 import ValidationImg from "@/assets/aikr/validate_model.png";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 
 const ValidatingYourModel = () => {
 	const question = "What do you think the spurious correlation might be in this case? ";

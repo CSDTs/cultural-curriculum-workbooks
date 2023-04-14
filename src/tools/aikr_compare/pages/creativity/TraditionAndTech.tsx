@@ -12,8 +12,8 @@ import Mona from "@/assets/aikr/base/mona_lisa.jpg";
 import Rhianna from "@/assets/aikr/base/rhianna.jpg";
 import Statue from "@/assets/aikr/base/statue_of_liberty.jpg";
 
-import { Paragraph } from "@/components/common";
-import { NoResponse } from "@/features/Responses";
+import { Paragraph } from "@/components/atoms";
+import { NoResponse } from "@/components/organisms/responses";
 
 export default function TraditionAndTech() {
 	return (

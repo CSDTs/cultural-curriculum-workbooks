@@ -1,11 +1,11 @@
-import { Collapsible, Paragraph } from "@/components/common";
-import { NoResponse } from "@/features/Responses";
-
 import createNSTImg from "@/assets/aikr/csnap/createNST.png";
 import setAttributeImg from "@/assets/aikr/csnap/setAttribute.png";
 import setQualityImg from "@/assets/aikr/csnap/setQuality.png";
 import stampNSTImg from "@/assets/aikr/csnap/stampNST.png";
 import useCostumeImg from "@/assets/aikr/csnap/usecostume.png";
+import { Paragraph } from "@/components/atoms";
+import { CodeBlockCollapsible } from "@/components/organisms";
+import { NoResponse } from "@/components/organisms/responses";
 
 const blockInfo = [
 	{
@@ -41,9 +41,9 @@ const BeforeYouStartCreative = () => {
 			</Paragraph>
 
 			{blockInfo.map((item, idx) => (
-				<Collapsible description={item.description} key={idx}>
+				<CodeBlockCollapsible description={item.description} key={idx}>
 					<img src={item.img} className="py-1 cursor-pointer" alt={`CSnap code block ${idx}`} />
-				</Collapsible>
+				</CodeBlockCollapsible>
 			))}
 		</NoResponse>
 	);

@@ -3,7 +3,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 import { Paragraph } from "@/components/atoms";
 import { SectionCard } from "@/components/molecules";
 
-import { NoResponse } from "@/features/Responses";
+import { NoResponse } from "@/components/organisms/responses";
 
 import useLesson from "@/hooks/useLesson";
 

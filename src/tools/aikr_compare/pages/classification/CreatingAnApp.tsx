@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
-import { MultiTextareaResponse } from "@/features/Responses";
-
-import { Paragraph, Select } from "@/components/common";
+import { Paragraph, Select } from "@/components/atoms";
+import { MultiTextareaResponse } from "@/components/organisms/responses";
 import { worldExamples } from "./data";
 
 const CreatingAnApp = () => {

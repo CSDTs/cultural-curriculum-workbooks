@@ -1,7 +1,6 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
-
 import Graph from "@/assets/aikr/graph.png";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 
 const LaborShareOfProfits = () => {
 	const question = `What would you say this graph is trying to show?`;

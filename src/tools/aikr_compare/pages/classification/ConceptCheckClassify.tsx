@@ -1,5 +1,5 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, SimpleGrid } from "@chakra-ui/react";
 
 import AlliA from "@/assets/aikr/alli_a.png";

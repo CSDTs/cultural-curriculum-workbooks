@@ -1,40 +1,59 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import fetchCsrfToken from "@/features/Authentication/fetchers/fetchCsrfToken";
-import postLogin from "@/features/Authentication/fetchers/postLogin";
-import postLogout from "@/features/Authentication/fetchers/postLogout";
+import fetchCsrfToken from "@/fetchers/fetchCsrfToken";
+
 import fetchUserSpecificData from "@/fetchers/fetchUserSpecificData";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import {
-	setCurrentUser,
-	setSaveDataId,
-	setUserClassrooms,
+	loadBackupSave,
+	loadConfigSave,
+	setSavingSucceeded,
+	setWorkbookData,
+	setWorkbookId,
 	updateAutoSaveState,
 	updateIsSavingStatus,
-	updateSaveStatus,
 } from "@/setup/slices/workbookSlice";
 import { RootState } from "@/setup/store";
-import { Lesson, SerializedResponse, User } from "@/types";
+import { Lesson, SerializedResponse, User, Workbook } from "@/types";
 import delay from "@/utils/delay";
 import getSlug from "@/utils/getSlug";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import AVAILABLE_WORKBOOKS from "@/data";
+import fetchBasicData from "@/fetchers/fetchBasicData";
 import postSaveData from "@/fetchers/postSaveData";
 import serializeResponses from "@/utils/serializeResponses";
-import updateURL from "@/utils/updateURL";
+import { useSearchParams } from "react-router-dom";
+// import updateURL from "@/utils/updateURL";
 type CurrentLesson = Lesson & { id: number };
+interface SavedResponse {
+	classroom?: number;
+	id: number;
+	data: string;
+	owner: number;
+	progression: number;
+	workbook: number;
+}
+const updateURL = (slug: string, id: number) => {
+	if (slug && id) window.history.pushState({}, "", `/workbooks/start_${slug}/${id}/` + window.location.search);
+	else throw new Error("Could not update url. Slug or id is required.");
+};
 const useWorkbook = () => {
 	const dispatch = useDispatch();
-
+	const [searchParams] = useSearchParams();
+	const [data] = useLocalStorage("data");
+	const [backup] = useLocalStorage("backup");
 	const saveData = useSelector((state: RootState) => state.workbookState.data);
 	const userData = useSelector((state: RootState) => state.workbookState.user);
 	const workbookData = useSelector((state: RootState) => state.workbookState.workbook);
+
 	const [previous, setPrevious] = useState(null);
 	const isLocal = window.location.origin === import.meta.env.VITE_LOCAL_ROOT;
 	const slug = getSlug();
 	const [localSaveData, setLocalSaveData] = useLocalStorage("data");
 	const [localBackup, setLocalBackup] = useLocalStorage("backup");
+	const address = import.meta.env.DEV ? "https://csdt.org/api/workbooks" : `${window.location.origin}/api/workbooks`;
 
 	const { data: token } = useQuery(["csrftoken"], fetchCsrfToken);
 
@@ -43,6 +62,42 @@ const useWorkbook = () => {
 		isLoading: false,
 		isSuccess: false,
 	});
+	const pointsEarned = useSelector((state: RootState) => state.workbookState.data.points_earned);
+	const lessons = useSelector((state: RootState) => state.workbookState.workbook.available_lessons);
+
+	const totalPoints = lessons.reduce((acc: number, obj: any) => {
+		return acc + (obj.points || 0);
+	}, 0);
+
+	// Fetch current workbooks at api endpoint
+	const availableWorkbooks = useQuery<Workbook[]>(["workbooks", address], () => fetchBasicData<Workbook[]>(address));
+
+	// Fetch current logged in user's workbook saves to retrieve the most current worked on
+	const workbookSaves = useQuery(
+		["workbookSaves"],
+		async () => fetchUserSpecificData(import.meta.env.VITE_WORKBOOK_SAVE_API, userData.id),
+		{
+			enabled: !!userData.id,
+		}
+	);
+
+	const savingMutate = () => dispatch(updateIsSavingStatus(true));
+
+	const savingSuccess = (data: any) => {
+		dispatch(setSavingSucceeded(data.id));
+		updateURL(slug, data.id);
+		localStorage.removeItem("backup");
+	};
+
+	const savingError = (error: any, variables: any) => {
+		const backup = variables.updatedSaveData;
+		backup["classroom"] = userData.selected_classroom;
+
+		setLocalBackup(backup);
+		dispatch(updateIsSavingStatus(false));
+
+		console.error("Save error", error);
+	};
 
 	const {
 		mutateAsync: save,
@@ -50,46 +105,10 @@ const useWorkbook = () => {
 		isSuccess,
 		isError,
 	} = useMutation(postSaveData, {
-		onMutate: () => dispatch(updateIsSavingStatus(true)),
-		onSuccess: (data) => {
-			dispatch(updateSaveStatus(true));
-			dispatch(updateIsSavingStatus(false));
-			updateURL(data.id);
-			dispatch(setSaveDataId(data.id));
-
-			console.log("Saved to cloud: ", data);
-
-			localStorage.removeItem("backup");
-		},
-		onError: (error, variables) => {
-			const backup = variables.updatedSaveData;
-			backup["classroom"] = userData.selected_classroom;
-
-			setLocalBackup(backup);
-			dispatch(updateIsSavingStatus(false));
-
-			console.error("Save error", error);
-		},
+		onMutate: savingMutate,
+		onSuccess: savingSuccess,
+		onError: savingError,
 	});
-	const {
-		data: classroomList,
-		isLoading: isFetchingClassrooms,
-		isError: isFetchingClassroomsError,
-		isSuccess: isFetchingClassroomsSuccess,
-	} = useQuery(["classrooms"], async () => fetchUserSpecificData(import.meta.env.VITE_CLASSROOMS_API, userData.id), {
-		enabled: !!userData.id,
-	});
-	const {
-		data: workbookSaves,
-		isLoading: isFetchingLast,
-		isError: isFetchingError,
-	} = useQuery(
-		["workbookSaves"],
-		async () => fetchUserSpecificData(import.meta.env.VITE_WORKBOOK_SAVE_API, userData.id),
-		{
-			enabled: !!userData.id,
-		}
-	);
 
 	const saveState = {
 		status: useSelector((state: RootState) => state.workbookState.save_status),
@@ -100,12 +119,12 @@ const useWorkbook = () => {
 		isSuccess: isLocal ? devSaveState.isSuccess : isSuccess,
 		isNewProject: userData.id && !userData.save_id,
 		isFirstTime: !userData.save_id,
-		isFetchingPrevious: isFetchingLast,
-		isFetchingPreviousError: isFetchingError,
+		isFetchingPrevious: workbookSaves.isLoading,
+		isFetchingPreviousError: workbookSaves.isError,
 		previous_project: previous,
 	};
 
-	const toggleAutoSave = () => dispatch(updateAutoSaveState(!workbookData.autosave));
+	const setAutoSave = (state: boolean) => dispatch(updateAutoSaveState(state));
 
 	const saveWorkbook = async () => {
 		if (saveState.auto_save && userData.id) {
@@ -114,12 +133,12 @@ const useWorkbook = () => {
 				let updatedSaveData: SerializedResponse = serializeResponses(userData, saveData);
 
 				setDevSaveState({ ...devSaveState, isLoading: true, isSuccess: false });
+				await delay(1000);
 				updatedSaveData = { ...updatedSaveData, id: 99999, classroom: userData?.selected_classroom };
 				dispatch(updateIsSavingStatus(true));
 				setLocalSaveData(updatedSaveData);
-				await delay(1000);
-				dispatch(updateSaveStatus(true));
-				dispatch(updateIsSavingStatus(false));
+
+				dispatch(setSavingSucceeded(null));
 				setDevSaveState({ ...devSaveState, isLoading: false, isSuccess: true });
 
 				return;
@@ -138,12 +157,6 @@ const useWorkbook = () => {
 		}
 	};
 
-	const classroomState = {
-		list: classroomList,
-		isLoading: isFetchingClassrooms,
-		isError: isFetchingClassroomsError,
-		isSuccess: isFetchingClassroomsSuccess,
-	};
 	const launchPreviousSave = () => {
 		if (previous && import.meta.env.PROD)
 			window.location.href = window.location.origin + "/workbooks/start_" + slug + "/" + previous + "/";
@@ -154,19 +167,70 @@ const useWorkbook = () => {
 	};
 
 	useEffect(() => {
-		if (saveState.isFirstTime && workbookSaves && workbookSaves?.length > 0) setPrevious(workbookSaves.pop().id);
-	}, [saveState.isFirstTime, workbookSaves]);
+		if (saveState.isFirstTime && workbookSaves.data && workbookSaves.data?.length > 0 && workbookData.id !== -1) {
+			const currentWorkbookSaves = workbookSaves.data.filter((save: SavedResponse) => {
+				return workbookData.id === save.workbook;
+			});
+			currentWorkbookSaves &&
+				currentWorkbookSaves.length > 0 &&
+				setPrevious(currentWorkbookSaves[currentWorkbookSaves?.length - 1].id);
+		}
+	}, [saveState.isFirstTime, workbookData.id, workbookSaves.data]);
+
+	useEffect(() => {
+		if (availableWorkbooks.data && workbookData.slug) {
+			const current = availableWorkbooks.data.filter((workbook, idx) => {
+				console.log(workbook.slug === workbookData.slug);
+				return workbook.slug === workbookData.slug;
+			});
+
+			dispatch(setWorkbookId(current[0]?.id));
+		}
+	}, [availableWorkbooks.data, workbookData.slug]);
+
+	const setConfigData = (config: any) => {
+		dispatch(loadConfigSave(config));
+	};
+
+	const setCurrentWorkbook = (slug: string) => {
+		const lessonParam = parseInt(searchParams.get("lesson"));
+		if (slug in AVAILABLE_WORKBOOKS)
+			dispatch(setWorkbookData({ initLesson: lessonParam, ...AVAILABLE_WORKBOOKS[slug] }));
+	};
+
+	const checkValidityOfSlug = (slug: string) => {
+		return slug in AVAILABLE_WORKBOOKS;
+	};
+
+	useEffect(() => {
+		if (import.meta.env.DEV && data) {
+			dispatch(loadBackupSave(data));
+		}
+		// TODO: Load last workbook should also check for backup and load data / save previous.
+		// if (import.meta.env.PROD && backup) {
+		// 	dispatch(loadBackupSave(backup));
+		// }
+	}, [slug]);
 
 	return {
 		workbookData,
-		userData,
 		saveData,
-		toggleAutoSave,
+
 		saveState,
 		saveWorkbook,
 		launchPreviousSave,
-		classroomState,
+
 		getCurrentLesson,
+
+		setAutoSave,
+		setPrevious,
+		setConfigData,
+		setCurrentWorkbook,
+		checkValidityOfSlug,
+		availableWorkbooks,
+
+		pointsEarned,
+		totalPoints,
 	};
 };
 

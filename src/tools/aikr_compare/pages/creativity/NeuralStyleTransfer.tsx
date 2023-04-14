@@ -1,13 +1,13 @@
-import CSnap from "@/features/CSnap";
+import CSnap from "@/components/organisms/CSnap";
 
 import { SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { SoftwareCard } from "@/components/ui/Cards";
+import { SoftwareCard } from "@/components/molecules";
 
-import { NoResponse } from "@/features/Responses";
+import { NoResponse } from "@/components/organisms/responses";
 
-import { Paragraph } from "@/components/common";
+import { Paragraph } from "@/components/atoms";
 
 import AdvancedImg from "@/assets/aikr/advanced-art.png";
 import BeginnerImg from "@/assets/aikr/beginner-art.png";

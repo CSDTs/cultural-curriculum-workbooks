@@ -1,9 +1,8 @@
 import { useRef } from "react";
 
+import { Paragraph, Video } from "@/components/atoms";
+import { NoResponse } from "@/components/organisms/responses";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-
-import { Paragraph, Video } from "@/components/common";
-import { NoResponse } from "@/features/Responses";
 
 import DrivingVideo from "@/assets/aikr/drive.mp4";
 import LawyerVideo from "@/assets/aikr/lawyer.mp4";

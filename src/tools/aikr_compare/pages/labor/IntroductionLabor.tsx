@@ -1,7 +1,6 @@
-import { Paragraph, ResponseHeading } from "@/components/common";
-import { TextareaResponse } from "@/features/Responses";
-
 import HomerImg from "@/assets/aikr/intro.png";
+import { Paragraph, ResponseHeading } from "@/components/atoms";
+import { TextareaResponse } from "@/components/organisms/responses";
 
 const IntroductionLabor = () => {
 	const question = `What kinds of jobs might end up with machines replacing people, or other kinds of changes? What sorts of problems should we look for?`;

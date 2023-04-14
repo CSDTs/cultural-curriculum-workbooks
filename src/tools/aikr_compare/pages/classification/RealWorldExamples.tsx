@@ -1,5 +1,5 @@
-import { Paragraph } from "@/components/common";
-import { NoResponse } from "@/features/Responses";
+import { Paragraph } from "@/components/atoms";
+import { NoResponse } from "@/components/organisms/responses";
 
 import { worldExamples } from "./data";
 
