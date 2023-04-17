@@ -99,12 +99,7 @@ const useWorkbook = () => {
 		console.error("Save error", error);
 	};
 
-	const {
-		mutateAsync: save,
-		isLoading,
-		isSuccess,
-		isError,
-	} = useMutation(postSaveData, {
+	const save = useMutation(postSaveData, {
 		onMutate: savingMutate,
 		onSuccess: savingSuccess,
 		onError: savingError,
@@ -114,14 +109,15 @@ const useWorkbook = () => {
 		status: useSelector((state: RootState) => state.workbookState.save_status),
 		last_saved: useSelector((state: RootState) => state.workbookState.last_saved),
 		auto_save: useSelector((state: RootState) => state.workbookState.workbook.autosave),
-		isLoading: isLocal ? devSaveState.isLoading : isLoading,
-		isError: isLocal ? devSaveState.isError : isError,
-		isSuccess: isLocal ? devSaveState.isSuccess : isSuccess,
+		isLoading: isLocal ? devSaveState.isLoading : save.isLoading,
+		isError: isLocal ? devSaveState.isError : save.isError,
+		isSuccess: isLocal ? devSaveState.isSuccess : save.isSuccess,
 		isNewProject: userData.id && !userData.save_id,
 		isFirstTime: !userData.save_id,
 		isFetchingPrevious: workbookSaves.isLoading,
 		isFetchingPreviousError: workbookSaves.isError,
 		previous_project: previous,
+		mut: save,
 	};
 
 	const setAutoSave = (state: boolean) => dispatch(updateAutoSaveState(state));
@@ -149,8 +145,8 @@ const useWorkbook = () => {
 				if (userData.save_id) {
 					updatedSaveData["id"] = userData.save_id;
 				}
-
-				return save({ saveID: userData.save_id, updatedSaveData, token });
+				// setter(save);
+				await save.mutateAsync({ saveID: userData.save_id, updatedSaveData, token });
 			}
 		} else {
 			return;
@@ -180,7 +176,6 @@ const useWorkbook = () => {
 	useEffect(() => {
 		if (availableWorkbooks.data && workbookData.slug) {
 			const current = availableWorkbooks.data.filter((workbook, idx) => {
-				console.log(workbook.slug === workbookData.slug);
 				return workbook.slug === workbookData.slug;
 			});
 
@@ -212,6 +207,10 @@ const useWorkbook = () => {
 		// }
 	}, [slug]);
 
+	const getState = (key?: keyof typeof saveState) => {
+		return (key && saveState[key]) ?? saveState;
+	};
+
 	return {
 		workbookData,
 		saveData,
@@ -231,6 +230,7 @@ const useWorkbook = () => {
 
 		pointsEarned,
 		totalPoints,
+		getState,
 	};
 };
 

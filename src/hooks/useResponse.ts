@@ -18,12 +18,11 @@ const useResponse = () => {
 	};
 
 	let currentResponse = data.responses[index] || "";
-	let currentOptional = data.optional[index] || "";
-	const lessonResponse = useSelector((state) => state.workbookState.data.responses)[index];
+
 	return {
 		response,
 		setResponse,
-		checkRequired: (val) => {
+		checkRequired: (val: any) => {
 			console.log(val);
 			dispatch(updateResponse(val));
 			// dispatch(updateSaveStatus(false));
@@ -34,25 +33,25 @@ const useResponse = () => {
 			dispatch(updatePoints());
 			// dispatch(updateSaveStatus(false));
 		},
-		autoSaveResponse: async (val) => {
+		autoSaveResponse: async (val: any) => {
 			dispatch(updateResponse(val));
 			dispatch(updatePoints());
 			dispatch(updateSaveStatus(false));
 		},
 
-		updateCurrentResponse: async (val) => {
+		updateCurrentResponse: async (val: any) => {
 			dispatch(updateResponse(val));
 			dispatch(updatePoints());
 		},
 		getRequired: currentResponse,
-		specificResponse: (id) => {
+		specificResponse: (id: number) => {
 			return data.responses[id];
 		},
-		fetchResponse: (id) => {
+		fetchResponse: (id: number) => {
 			return responses[id] || "";
 		},
 		hasResponseSaved: () => saveStatus,
-		setResponseSaved: (val) => dispatch(updateSaveStatus(val)),
+		setResponseSaved: (val: any) => dispatch(updateSaveStatus(val)),
 	};
 };
 export default useResponse;

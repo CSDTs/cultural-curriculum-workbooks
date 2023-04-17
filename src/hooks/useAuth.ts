@@ -48,13 +48,13 @@ const useAuth = () => {
 		},
 		onSuccess: (data) => {
 			dispatch(setCurrentUser(data));
-			setLocalUser(JSON.stringify(data));
+			setLocalUser(data);
 
 			setIsLoading(false);
 		},
 		onError: (data) => {
-			dispatch(setCurrentUser(data));
-			setLocalUser(JSON.stringify(data));
+			// dispatch(setCurrentUser(data));
+			localStorage.removeItem("currentUser");
 			setIsLoading(false);
 			setIsError(true);
 		},

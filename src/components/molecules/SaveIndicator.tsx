@@ -1,11 +1,22 @@
 import { Stack, Text } from "@chakra-ui/react";
 import { ScaleLoader } from "react-spinners";
 
+import useAuth from "@/hooks/useAuth";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import useWorkbook from "@/hooks/useWorkbook";
+import { useEffect, useState } from "react";
 const SavingIndicator = () => {
 	const [backup] = useLocalStorage("backup");
-	const { saveState } = useWorkbook();
+	const [status, setStatus] = useState<any>({});
+
+	const { saveData, saveState, saveWorkbook } = useWorkbook();
+	const { currentLoggedInUser } = useAuth();
+
+	useEffect(() => {
+		if (saveState.auto_save && currentLoggedInUser.id) {
+			saveWorkbook();
+		}
+	}, [saveData, saveState.isFirstTime]);
 
 	const textColor =
 		!saveState.status && !saveState.isLoading
