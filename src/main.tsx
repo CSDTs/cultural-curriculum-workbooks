@@ -14,7 +14,12 @@ const theme = extendTheme({
 	},
 });
 const queryClient = new QueryClient();
+localStorage.theme = "dark";
 
+if (localStorage.theme == "light") {
+	localStorage.removeItem("theme");
+	window.location.reload();
+}
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme}>

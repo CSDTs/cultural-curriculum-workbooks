@@ -46,6 +46,7 @@ const SavingIndicator = () => {
 					? `Last saved ${saveState.last_saved}`
 					: ""}
 				{backup && !saveState.isSuccess && !saveState.isLoading && " Will attempt to save backup soon..."}
+				{!currentLoggedInUser.id && "Login to save your progress"}
 			</Text>
 		</div>
 	);
