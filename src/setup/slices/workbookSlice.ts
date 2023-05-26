@@ -81,8 +81,8 @@ export const workbookSlice = createSlice({
 		},
 
 		setCurrentUser: (state, action) => {
-			state.user.id = action.payload.id;
-			state.user.username = action.payload.username;
+			state.user.id = action?.payload?.id ?? null;
+			state.user.username = action?.payload?.username ?? null;
 		},
 		setWorkbookId: (state, action) => {
 			state.workbook.id = action.payload;

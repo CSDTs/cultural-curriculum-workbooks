@@ -1,9 +1,7 @@
 import useLesson from "@/hooks/useLesson";
 import useWorkbook from "@/hooks/useWorkbook";
-
 import { Lesson } from "@/types";
 import { FC, useEffect } from "react";
-
 interface CSnapProps {
 	project: string;
 }
@@ -13,7 +11,7 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 
 	const lesson: Lesson = current;
 
-	const urlPath = import.meta.env.PROD ? "/static/workbooks/" : "" + `${project ? project : lesson?.project}`;
+	const urlPath = (import.meta.env.PROD ? "/static/workbooks/" : "") + `${project ? project : lesson?.project}`;
 
 	let loadProjectXML = (urlPath: string) => {
 		if (lesson?.tags?.includes("csnap") || project) {

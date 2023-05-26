@@ -201,6 +201,10 @@ const useWorkbook = () => {
 		if (import.meta.env.DEV && data) {
 			dispatch(loadBackupSave(data));
 		}
+
+		if (slug && !userData.id && userData.save_id) {
+			setCurrentWorkbook(slug);
+		}
 		// TODO: Load last workbook should also check for backup and load data / save previous.
 		// if (import.meta.env.PROD && backup) {
 		// 	dispatch(loadBackupSave(backup));
