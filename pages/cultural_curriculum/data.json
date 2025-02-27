@@ -2,6 +2,7 @@
 	{
 		"id": 10,
 		"name": "Adinkra",
+		"category": "Teacher",
 		"slug": "adinkra",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/adinkra.jpg",
 		"tags": ["African", "Continuous Paths", "Logarithmic Spirals"],
@@ -10,6 +11,7 @@
 	{
 		"id": 15,
 		"name": "African Fractals",
+		"category": "Teacher",
 		"slug": "africanfractals",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/africanFractals.png",
 		"tags": ["African", "Recursion", "Fractals"],
@@ -18,14 +20,16 @@
 	{
 		"id": 30,
 		"name": "Afrofuturism",
+		"category": "Student",
 		"slug": "afrofuturism",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/afroFuturism.jpg",
-		"tags": ["African American", "Transformational Geometry"],
+		"tags": ["African American", "Transformational Geometry", "Elementary", "Middle"],
 		"applications": ["Afrofuturism"]
 	},
 	{
 		"id": 27,
 		"name": "AI: Keepin' it Real",
+		"category": "Student",
 		"slug": "aikr",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/aikr.png",
 		"tags": ["Sound, Games, and Animations", "AI"],
@@ -38,6 +42,7 @@
 	{
 		"id": 12,
 		"name": "Anishinaabe Arcs",
+		"category": "Teacher",
 		"slug": "anishinaabearcs",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/anishinaabeArcs.png",
 		"tags": ["Native American", "3D"],
@@ -46,6 +51,7 @@
 	{
 		"id": 11,
 		"name": "Barbershop Computing",
+		"category": "Artisian",
 		"slug": "barbershop",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/barbershop.png",
 		"tags": ["African American", "Continuous Paths"],
@@ -213,7 +219,7 @@
 		"name": "Pre-Columbian Pyramids",
 		"slug": "precolumbianpyramids",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/preColumbianPyramids.jpg",
-		"tags": ["3D", "Latinx"],
+		"tags": ["3D", "Latine"],
 		"applications": ["Pre-Columbian Pyramids"]
 	},
 	{
@@ -229,7 +235,7 @@
 		"name": "Rhythm Wheels",
 		"slug": "rhythmwheels",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/rhythmWheels.jpg",
-		"tags": ["Sound, Games, and Animations", "Latinx"],
+		"tags": ["Sound, Games, and Animations", "Latine"],
 		"applications": ["RhythmWheelsSimulator", "Rhythm Wheels"]
 	},
 	{
@@ -282,7 +288,7 @@
 		"name": "Woven Heaven, Tangled Earth",
 		"slug": "whte",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/wovenheaventangledearth.png",
-		"tags": ["Latinx", "Statistics"],
+		"tags": ["Latine", "Statistics"],
 		"applications": ["Woven Heaven, Tangled Earth"]
 	},
 	{

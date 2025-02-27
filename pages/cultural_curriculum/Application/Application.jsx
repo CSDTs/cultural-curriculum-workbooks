@@ -1,5 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 export default function Application(props) {
 	const backgroundURL = (slug) => {
 		return `/culture/${slug}/index.html`;
@@ -11,7 +11,7 @@ export default function Application(props) {
 					src={props.thumbnail}
 					onError={(e) => {
 						e.target.onerror = null;
-						e.target.src = "/src/img/homepage/CSDTlogoApplication.jpg";
+						e.target.src = "@/img/homepage/CSDTlogoApplication.jpg";
 					}}
 					alt=""
 					className={`card-top app-img`}
