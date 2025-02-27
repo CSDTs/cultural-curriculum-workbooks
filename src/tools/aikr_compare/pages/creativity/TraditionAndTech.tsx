@@ -7,7 +7,7 @@ import AdinkraCloth from "@/assets/aikr/create-4.jpeg";
 import KubaCloth from "@/assets/aikr/create-5.jpeg";
 
 import Frederick from "@/assets/aikr/base/frederick_douglass.jpg";
-import Jemison from "@/assets/aikr/base/Jemison.png";
+import Jemison from "@/assets/aikr/base/jemison-img.png";
 import Mona from "@/assets/aikr/base/mona_lisa.jpg";
 import Rhianna from "@/assets/aikr/base/rhianna.jpg";
 import Statue from "@/assets/aikr/base/statue_of_liberty.jpg";
