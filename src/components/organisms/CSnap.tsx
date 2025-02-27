@@ -11,8 +11,9 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 
 	const lesson: Lesson = current;
 
-	const urlPath = (import.meta.env.PROD ? "/static/workbooks/" : "") + `${project ? project : lesson?.project}`;
+	const urlPath = (import.meta.env.PROD ? "/workbooks/" : "") + `${project ? project : lesson?.project}`;
 
+	console.log(urlPath);
 	let loadProjectXML = (urlPath: string) => {
 		if (lesson?.tags?.includes("csnap") || project) {
 			fetch(urlPath)
@@ -47,7 +48,7 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 		}
 	}, [urlPath, project]);
 
-	return <iframe src="/static/csnap_pro/csdt/snap.html" title="CSnap" className="w-full aspect-[1.618] shadow-lg" />;
+	return <iframe src="/csnap_pro/csdt/snap.html" title="CSnap" className="w-full aspect-[1.618] shadow-lg" />;
 };
 
 export default CSnap;

@@ -219,7 +219,7 @@
 		"name": "Pre-Columbian Pyramids",
 		"slug": "precolumbianpyramids",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/preColumbianPyramids.jpg",
-		"tags": ["3D", "Latinx"],
+		"tags": ["3D", "Latine"],
 		"applications": ["Pre-Columbian Pyramids"]
 	},
 	{
@@ -235,7 +235,7 @@
 		"name": "Rhythm Wheels",
 		"slug": "rhythmwheels",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/rhythmWheels.jpg",
-		"tags": ["Sound, Games, and Animations", "Latinx"],
+		"tags": ["Sound, Games, and Animations", "Latine"],
 		"applications": ["RhythmWheelsSimulator", "Rhythm Wheels"]
 	},
 	{
@@ -288,7 +288,7 @@
 		"name": "Woven Heaven, Tangled Earth",
 		"slug": "whte",
 		"thumbnail": "http://127.0.0.1:8000/media/background_thumbnails/wovenheaventangledearth.png",
-		"tags": ["Latinx", "Statistics"],
+		"tags": ["Latine", "Statistics"],
 		"applications": ["Woven Heaven, Tangled Earth"]
 	},
 	{

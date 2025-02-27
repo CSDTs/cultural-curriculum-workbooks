@@ -1,7 +1,7 @@
 import { NoResponse } from "@/components/organisms/responses";
 
 const JoesLunch = () => {
-	const url_string = "./build/index.html" + `?embedded=true&`;
+	const url_string = "/workbooks/build/index.html" + `?embedded=true&`;
 
 	return (
 		<NoResponse>
