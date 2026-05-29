@@ -20,7 +20,7 @@ const SelectionScreen = () => {
 
 	return (
 		<SelectionLayout>
-			<div className="text-center p-5">
+			<div className="p-5 text-center">
 				{!isLoading && (
 					<>
 						<h1 className="text-4xl font-bold text-slate-600 dark:text-white">Welcome to CSDT Workbooks!</h1>
@@ -48,8 +48,8 @@ const SelectionScreen = () => {
 			{(error as Object) && (
 				<Paragraph modifiers={"!text-center"}>
 					If this persists, please contact us at{" "}
-					<a href="mailto:csdtdevelopers@umich.edu" className="font-semibold">
-						csdtdevelopers@umich.edu
+					<a href="mailto:csdt@generativejustice.org" className="font-semibold">
+						csdt@generativejustice.org
 					</a>
 				</Paragraph>
 			)}
