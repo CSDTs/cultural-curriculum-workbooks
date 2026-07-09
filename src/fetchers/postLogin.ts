@@ -12,7 +12,7 @@ async function postLogin({ payload, token }: any) {
 		method: "POST",
 		headers: { "X-CSRFToken": token },
 		credentials: "include",
-		body: new URLSearchParams(`login=${payload.login}&password=${payload.password}`),
+		body: new URLSearchParams({ login: payload.login, password: payload.password }),
 	});
 
 	if (!response.redirected) throw new Error("Incorrect login info.");

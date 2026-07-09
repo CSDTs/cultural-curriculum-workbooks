@@ -17,7 +17,6 @@ import {
 
 import { LoginPrompt } from "@/components/organisms/authentication";
 
-// import useUser from "@/hooks/useUser";
 import getSlug from "@/utils/getSlug";
 
 import { Loader } from "@/components/atoms";

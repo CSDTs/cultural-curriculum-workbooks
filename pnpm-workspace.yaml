@@ -1,0 +1,8 @@
+# Allowlist dependencies whose postinstall build scripts we trust to run.
+# Required because the global pnpm config blocks build scripts by default
+# (supply-chain hardening). These three ship/verify native binaries used by
+# the Vite 3 + SWC build toolchain.
+allowBuilds:
+  '@swc/core': true
+  core-js: true
+  esbuild: true

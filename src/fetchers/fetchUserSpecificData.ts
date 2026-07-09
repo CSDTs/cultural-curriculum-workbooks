@@ -8,18 +8,6 @@ const LOGIN_API_HOST = ROOT_URL + "/accounts/login/";
 const LOGOUT_API_HOST = ROOT_URL + "/accounts/logout/";
 const CSRF_API_HOST = ROOT_URL + "/workbooks/csrf/";
 import axios from "axios";
-const fetchClassrooms = async (id: number) => {
-	const response = await fetch(`${USER_CLASSROOMS_API_HOST}?user=${id}`);
-	const data = await response.json();
-
-	return { data, status: response.status };
-};
-const fetchWorkbooks = async (id: number) => {
-	const response = await fetch(`${WORKBOOK_API_HOST}?user=${id}`);
-	const data = await response.json();
-
-	return { data, status: response.status };
-};
 
 const fetchUserSpecificData = async (host: string, id: number | null) => {
 	// const [_, host, id] = queryKey;

@@ -4,7 +4,6 @@ import Paragraph from "./text/Paragraph";
 import Tag from "./badges/Tag";
 import LinkBtn from "./buttons/LinkBtn";
 
-import IconBtn from "./buttons/IconBtn";
 import Caption from "./text/Caption";
 
 import NavItem from "./nav/NavItem";
@@ -22,7 +21,6 @@ import Select from "./input/Select";
 export {
 	Caption,
 	Header,
-	IconBtn,
 	LinkBtn,
 	Loader,
 	NavItem,

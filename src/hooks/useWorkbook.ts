@@ -25,7 +25,6 @@ import fetchBasicData from "@/fetchers/fetchBasicData";
 import postSaveData from "@/fetchers/postSaveData";
 import serializeResponses from "@/utils/serializeResponses";
 import { useSearchParams } from "react-router-dom";
-// import updateURL from "@/utils/updateURL";
 type CurrentLesson = Lesson & { id: number };
 interface SavedResponse {
 	classroom?: number;
