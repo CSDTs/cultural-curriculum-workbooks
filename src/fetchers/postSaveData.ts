@@ -19,6 +19,7 @@ const postSaveData = async ({ saveID, updatedSaveData, token }: PostSaveDataArgs
 	};
 
 	const response = await fetch(`${WORKBOOK_API_HOST}${query}`, alterProps);
+	if (!response.ok) throw new Error(`Save failed: ${response.status} ${response.statusText}`);
 	return response.json();
 };
 

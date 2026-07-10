@@ -91,6 +91,7 @@ const useWorkbook = () => {
 	const savingError = (error: any, variables: any) => {
 		const backup = variables.updatedSaveData;
 		backup["classroom"] = userData.selected_classroom;
+		backup["slug"] = slug;
 
 		setLocalBackup(backup);
 		dispatch(updateIsSavingStatus(false));
@@ -152,7 +153,7 @@ const useWorkbook = () => {
 					updatedSaveData["id"] = userData.save_id;
 				}
 				// setter(save);
-				await save.mutateAsync({ saveID: userData.save_id, updatedSaveData, token });
+				save.mutate({ saveID: userData.save_id, updatedSaveData, token });
 			}
 		} else {
 			return;
@@ -212,6 +213,10 @@ const useWorkbook = () => {
 		return slug in AVAILABLE_WORKBOOKS;
 	};
 
+	const restoreBackup = () => {
+		if (backup && (!backup.slug || backup.slug === slug)) dispatch(loadBackupSave(backup));
+	};
+
 	useEffect(() => {
 		if (import.meta.env.DEV && data) {
 			dispatch(loadBackupSave(data));
@@ -220,10 +225,6 @@ const useWorkbook = () => {
 		if (slug && !userData.id && userData.save_id) {
 			setCurrentWorkbook(slug);
 		}
-		// TODO: Load last workbook should also check for backup and load data / save previous.
-		// if (import.meta.env.PROD && backup) {
-		// 	dispatch(loadBackupSave(backup));
-		// }
 	}, [slug]);
 
 	const getState = (key?: keyof typeof saveState) => {
@@ -245,6 +246,7 @@ const useWorkbook = () => {
 		setConfigData,
 		setCurrentWorkbook,
 		checkValidityOfSlug,
+		restoreBackup,
 		availableWorkbooks,
 
 		pointsEarned,

@@ -7,17 +7,13 @@ import useWorkbook from "@/hooks/useWorkbook";
 import getSlug from "@/utils/getSlug";
 
 function App() {
-	const { setConfigData, setCurrentWorkbook, checkValidityOfSlug } = useWorkbook();
+	const { setConfigData, setCurrentWorkbook, checkValidityOfSlug, restoreBackup } = useWorkbook();
 	const slug = getSlug();
 
 	useEffect(() => {
 		if (slug) setCurrentWorkbook(slug);
 		if (typeof config !== "undefined") setConfigData(config);
-
-		if (localStorage.getItem("chakra-ui-color-mode") == "light") {
-			localStorage.removeItem("chakra-ui-color-mode");
-			window.location.reload();
-		}
+		if (import.meta.env.PROD) restoreBackup();
 
 		// // Whenever the user explicitly chooses dark mode
 		localStorage.theme = "dark";

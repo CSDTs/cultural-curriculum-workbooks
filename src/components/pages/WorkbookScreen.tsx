@@ -1,6 +1,7 @@
 import { Drawer, DrawerContent, DrawerOverlay, useDisclosure } from "@chakra-ui/react";
 
 import { Loader } from "@/components/atoms";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { Footer, NavBar, SideBar } from "@/components/organisms";
 import useLesson from "@/hooks/useLesson";
 import aikrSlides from "@/tools/aikr_compare/";
@@ -51,9 +52,11 @@ const WorkbookScreen = () => {
 
 						<section className="max-w-6xl py-5">
 							{Slide ? (
-								<Suspense fallback={<Loader />}>
-									<Slide />
-								</Suspense>
+								<ErrorBoundary key={current.id}>
+									<Suspense fallback={<Loader />}>
+										<Slide />
+									</Suspense>
+								</ErrorBoundary>
 							) : (
 								<div>Invalid slide ID</div>
 							)}

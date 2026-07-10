@@ -11,6 +11,8 @@ async function postLogout({ token }: any) {
 		body: JSON.stringify({}),
 	});
 
+	if (!response.ok) throw new Error(`Logout failed: ${response.status} ${response.statusText}`);
+
 	if (response.status === 200) {
 		localStorage.removeItem("currentUser");
 	}

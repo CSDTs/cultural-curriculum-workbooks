@@ -1,6 +1,4 @@
-import { Textarea } from "@chakra-ui/react";
-
-import { ChangeEvent, FC, ReactNode, useCallback } from "react";
+import { ChangeEvent, FC, ReactNode, useEffect, useRef } from "react";
 
 import debounce from "lodash/debounce";
 import useResponse from "../../../hooks/useResponse";
@@ -12,19 +10,16 @@ interface TextareaResponseProps {
 	children: ReactNode;
 }
 const TextareaResponse: FC<TextareaResponseProps> = ({ points, question, placeholder, children }) => {
-	const { response, setResponse, setResponseSaved } = useResponse();
+	const { response, setResponseAt, setResponseSaved, index } = useResponse();
 
-	const debounceSave = useCallback(
-		debounce((val) => {
-			setResponse(val);
-		}, 750),
-		[]
-	);
+	const debounceSave = useRef(debounce((idx: number, val: any) => setResponseAt(idx, val), 750)).current;
 
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setResponseSaved(false);
-		debounceSave({ question, response: e.target.value, points: e.target.value === "" ? 0 : points });
+		debounceSave(index, { question, response: e.target.value, points: e.target.value === "" ? 0 : points });
 	};
+
+	useEffect(() => () => { debounceSave.flush(); }, []);
 
 	return (
 		<>

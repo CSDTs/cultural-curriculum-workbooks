@@ -152,6 +152,9 @@ export const workbookSlice = createSlice({
 		updateResponse: (state, action) => {
 			state.data.responses[state.workbook.current_lesson_id] = action.payload;
 		},
+		updateResponseAt: (state, action) => {
+			state.data.responses[action.payload.index] = action.payload.value;
+		},
 
 		setWorkbookClassroom: (state, action) => {
 			// state.data.classroom = action.payload;
@@ -163,22 +166,33 @@ export const workbookSlice = createSlice({
 			state.user.save_id = action.payload;
 		},
 		loadConfigSave: (state, action) => {
-			const current = action.payload.data.last ?? 0;
+			const payload = action.payload;
+			if (!payload || typeof payload !== "object" || !payload.data || typeof payload.data !== "object") {
+				console.error("loadConfigSave: malformed config payload", payload);
+				return;
+			}
 
-			Object.assign(state.data, action.payload.data);
-			Object.assign(state.user.selected_classroom, action.payload.meta.classroom);
+			const current = Math.min(
+				Math.max(Number(payload.data.last) || 0, 0),
+				Math.max(state.workbook.available_lessons.length - 1, 0)
+			);
+
+			Object.assign(state.data, payload.data);
+			if (payload.meta && typeof payload.meta === "object") {
+				Object.assign(state.user.selected_classroom, payload.meta.classroom);
+				state.last_saved = payload.meta.lastSaved;
+			}
 			state.workbook.autosave = true;
-			state.last_saved = action.payload.meta.lastSaved;
 
 			state.workbook.current_lesson_id = current;
 			state.workbook.current_lesson = state.workbook.available_lessons[current];
 
-			state.user.save_id = action.payload.workbook_save_id;
+			state.user.save_id = payload.workbook_save_id;
 
 			// Django injects the authoritative workbook id into the config global
 			// (as a string, e.g. "1"). Use it directly so saves are attributed correctly
 			// in production without waiting on the async slug-match in useWorkbook.
-			if (action.payload.workbook_id != null) state.workbook.id = Number(action.payload.workbook_id);
+			if (payload.workbook_id != null) state.workbook.id = Number(payload.workbook_id);
 		},
 		loadBackupSave: (state, action) => {
 			let parsedData;
@@ -188,7 +202,7 @@ export const workbookSlice = createSlice({
 				console.error(err);
 				parsedData = state.data;
 			}
-			const current = parsedData.last;
+			const current = Math.min(Number(parsedData.last) || 0, Math.max(state.workbook.available_lessons.length - 1, 0));
 			// state.user.save_id = action.payload?.id || null;
 			Object.assign(state.data, parsedData);
 			Object.assign(state.user.selected_classroom, action.payload.classroom);
@@ -249,6 +263,7 @@ export const {
 	setUserClassrooms,
 	setCurrentLessonData,
 	updateResponse,
+	updateResponseAt,
 	setWorkbookClassroom,
 	loadConfigSave,
 	setSaveDataId,

@@ -1,4 +1,4 @@
-import { updatePoints, updateResponse, updateSaveStatus } from "@/setup/slices/workbookSlice";
+import { updatePoints, updateResponse, updateResponseAt, updateSaveStatus } from "@/setup/slices/workbookSlice";
 import { RootState } from "@/setup/store";
 import { useDispatch, useSelector } from "react-redux";
 const useResponse = () => {
@@ -18,13 +18,20 @@ const useResponse = () => {
 		dispatch(updateSaveStatus(false));
 	};
 
+	const setResponseAt = (idx: number, val: any) => {
+		dispatch(updateResponseAt({ index: idx, value: val }));
+		dispatch(updatePoints());
+		dispatch(updateSaveStatus(false));
+	};
+
 	let currentResponse = data.responses[index] || "";
 
 	return {
 		response,
+		index,
 		setResponse,
+		setResponseAt,
 		checkRequired: (val: any) => {
-			console.log(val);
 			dispatch(updateResponse(val));
 			// dispatch(updateSaveStatus(false));
 			dispatch(updatePoints());

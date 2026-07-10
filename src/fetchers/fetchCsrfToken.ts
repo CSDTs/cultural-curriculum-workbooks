@@ -7,6 +7,7 @@ const fetchCsrfToken = async () => {
 	const response = await fetch(`${CSRF_API_HOST}`, {
 		credentials: "include",
 	});
+	if (!response.ok) throw new Error(`CSRF fetch failed: ${response.status} ${response.statusText}`);
 	const data = await response.json();
 
 	return data.csrfToken;
