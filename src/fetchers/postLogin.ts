@@ -17,7 +17,7 @@ async function postLogin({ payload, token }: any) {
 
 	if (!response.redirected) throw new Error("Incorrect login info.");
 
-	const getUserResponse = await fetch(USER_API_HOST);
+	const getUserResponse = await fetch(USER_API_HOST, { credentials: "include" });
 
 	const userData = await getUserResponse.json();
 	if (userData?.id == null) throw new Error("Accessing from different host.");

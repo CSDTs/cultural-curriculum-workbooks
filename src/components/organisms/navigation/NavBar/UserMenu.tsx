@@ -9,8 +9,12 @@ import { LoginPrompt, LogoutPrompt } from "@/components/organisms/authentication
 import useAuth from "@/hooks/useAuth";
 
 const UserMenu = () => {
-	const { currentLoggedInUser } = useAuth();
+	const { currentLoggedInUser, isAuthenticating } = useAuth();
 	const { id, username } = currentLoggedInUser;
+
+	// Don't paint the logged-out (Sign Up / Login) state until the initial session check
+	// resolves — otherwise it flashes before a logged-in user's name appears.
+	if (isAuthenticating) return null;
 
 	return (
 		<>

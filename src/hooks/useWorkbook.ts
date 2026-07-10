@@ -125,7 +125,7 @@ const useWorkbook = () => {
 		if (saveState.auto_save && userData.id) {
 			// Local testing with vite
 			if (window.location.origin === import.meta.env.VITE_LOCAL_ROOT) {
-				let updatedSaveData: SerializedResponse = serializeResponses(userData, saveData);
+				let updatedSaveData: SerializedResponse = serializeResponses(userData, saveData, workbookData.id);
 
 				setDevSaveState({ ...devSaveState, isLoading: true, isSuccess: false });
 				await delay(1000);
@@ -139,7 +139,14 @@ const useWorkbook = () => {
 				return;
 			} else {
 				//Django
-				const updatedSaveData: SerializedResponse = serializeResponses(userData, saveData);
+				// workbookData.id is resolved asynchronously against the live Django workbook
+				// list (starts at -1, set by the effect below; undefined if the slug has no
+				// matching Django record). Don't POST a save under an unresolved/invalid id —
+				// autosave will retry once it resolves. See "serializeResponses" gotcha in
+				// docs/topics/creating-a-new-workbook.md.
+				if (!workbookData.id || workbookData.id < 0) return;
+
+				const updatedSaveData: SerializedResponse = serializeResponses(userData, saveData, workbookData.id);
 
 				if (userData.save_id) {
 					updatedSaveData["id"] = userData.save_id;
@@ -178,7 +185,10 @@ const useWorkbook = () => {
 				return workbook.slug === workbookData.slug;
 			});
 
-			dispatch(setWorkbookId(current[0]?.id));
+			// Only set the id when the slug actually matches a Django workbook — otherwise
+			// current[0]?.id is undefined and would clobber a valid id (e.g. one already set
+			// from config.workbook_id in production).
+			if (current[0]?.id != null) dispatch(setWorkbookId(current[0].id));
 		}
 	}, [availableWorkbooks.data, workbookData.slug]);
 

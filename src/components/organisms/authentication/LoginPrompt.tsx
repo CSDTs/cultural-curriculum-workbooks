@@ -40,7 +40,7 @@ const LoginPrompt: FC<LoginPromptProps> = ({ isLoginToSave = false, isPreLaunche
 	const username = useRef<HTMLInputElement>(null);
 	const password = useRef<HTMLInputElement>(null);
 
-	const { login, authState, isLoading, isError } = useAuth();
+	const { login, authState, isLoading, isAuthenticating, isError } = useAuth();
 	const handleClick = () => setShow(!show);
 
 	const loginUser = () => {
@@ -53,9 +53,11 @@ const LoginPrompt: FC<LoginPromptProps> = ({ isLoginToSave = false, isPreLaunche
 	};
 
 	useEffect(() => {
-		if (!isLoading && !authState.user.id && !isLoginToSave && isPreLaunched) onOpen();
+		// Wait for the initial session check to finish before auto-opening, so a logged-in
+		// user never sees the modal flash while auth is still resolving.
+		if (!isAuthenticating && !isLoading && !authState.user.id && !isLoginToSave && isPreLaunched) onOpen();
 		if (authState.user.id) onClose();
-	}, [authState]);
+	}, [authState, isAuthenticating]);
 
 	return (
 		<>

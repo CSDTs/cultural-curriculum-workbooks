@@ -174,6 +174,11 @@ export const workbookSlice = createSlice({
 			state.workbook.current_lesson = state.workbook.available_lessons[current];
 
 			state.user.save_id = action.payload.workbook_save_id;
+
+			// Django injects the authoritative workbook id into the config global
+			// (as a string, e.g. "1"). Use it directly so saves are attributed correctly
+			// in production without waiting on the async slug-match in useWorkbook.
+			if (action.payload.workbook_id != null) state.workbook.id = Number(action.payload.workbook_id);
 		},
 		loadBackupSave: (state, action) => {
 			let parsedData;
