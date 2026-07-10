@@ -1,6 +1,60 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface SelectedClassroom {
+	id: number | string | null;
+	name: string;
+}
+
+interface UserState {
+	id: number | null;
+	username: string | null;
+	classroom_list: any[] | null;
+	save_id: number | null;
+	selected_classroom: SelectedClassroom;
+}
+
+interface WorkbookMeta {
+	id: number;
+	slug: string;
+	title: string;
+	current_lesson: Record<string, any>;
+	current_lesson_id: number;
+	available_workbooks: any[];
+	available_lessons: any[];
+	available_sections: any[];
+	available_points: number;
+	is_finished: boolean;
+	autosave: boolean;
+}
+
+export interface ResponseItem {
+	response?: any;
+	points?: number;
+	question?: string;
+	[key: string]: any;
+}
+
+interface WorkbookDataState {
+	responses: (ResponseItem | string)[];
+	optional: any[];
+	misc: Record<string, any>;
+	points_earned: number;
+	lessons_completed: number;
+	completion: number;
+	last: number;
+}
+
+export interface WorkbookState {
+	user: UserState;
+	workbook: WorkbookMeta;
+	data: WorkbookDataState;
+	save_status: boolean;
+	is_saving: boolean;
+	is_using_backup: boolean;
+	last_saved: string;
+}
+
+const initialState: WorkbookState = {
 	user: {
 		id: null,
 		username: "",
@@ -50,10 +104,10 @@ export const workbookSlice = createSlice({
 			state.data.last = action.payload;
 		},
 		setWorkbookData: (state, action) => {
-			let totalLessons = action.payload.data.reduce((total, section) => {
-				let temp = section.lessons.map((lesson) => ({ section: section.title, ...lesson }));
+			let totalLessons = action.payload.data.reduce((total: any[], section: { title: string; lessons: any[] }) => {
+				let temp = section.lessons.map((lesson: any) => ({ section: section.title, ...lesson }));
 				return total.concat(temp);
-			}, []);
+			}, [] as any[]);
 			state.workbook.title = action.payload.title;
 			state.workbook.available_sections = action.payload.data;
 
@@ -160,7 +214,7 @@ export const workbookSlice = createSlice({
 		updatePoints: (state) => {
 			const total = state.data.responses.reduce((accum, response) => {
 				if (response) {
-					if (response.points !== undefined) {
+					if (typeof response == "object" && response.points !== undefined) {
 						return (accum += response.points);
 					}
 
@@ -189,19 +243,12 @@ export const {
 	setCurrentUser,
 	setUserClassrooms,
 	setCurrentLessonData,
-	goToPreviousLesson,
-	goToNextLesson,
 	updateResponse,
-	updateOptionalResponse,
 	setWorkbookClassroom,
 	loadConfigSave,
-	updateEarnedPoints,
 	setSaveDataId,
-	updateMiscResponse,
 	updateSaveStatus,
 	setAvailablePoints,
-	updateWorkbookFinished,
-	updateObjectResponse,
 	updateIsSavingStatus,
 	updateAutoSaveState,
 	updatePoints,

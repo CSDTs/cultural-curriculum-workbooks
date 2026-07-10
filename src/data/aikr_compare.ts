@@ -1,5 +1,4 @@
-const validateSlide = (data) => {
-	console.log(data);
+const validateSlide = (data: unknown) => {
 };
 
 const SECTION_0_AI_LABOR = [

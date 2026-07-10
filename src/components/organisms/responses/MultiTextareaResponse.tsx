@@ -1,6 +1,6 @@
 import { SimpleGrid, Textarea } from "@chakra-ui/react";
 
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { FC, ReactNode, useCallback, useRef } from "react";
 import useResponse from "../../../hooks/useResponse";
 type Question = {

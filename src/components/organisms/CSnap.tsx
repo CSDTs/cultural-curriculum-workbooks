@@ -11,9 +11,9 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 
 	const lesson: Lesson = current;
 
-	const urlPath = (import.meta.env.PROD ? "/workbooks/" : "") + `${project ? project : lesson?.project}`;
+	const workbooksBase = import.meta.env.VITE_WORKBOOKS_BASE || "";
+	const urlPath = (workbooksBase ? workbooksBase + "/" : "") + `${project ? project : lesson?.project}`;
 
-	console.log(urlPath);
 	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 	let loadProjectXML = (urlPath: string) => {
 		if (lesson?.tags?.includes("csnap") || project) {
@@ -54,7 +54,13 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 		};
 	}, [urlPath, project]);
 
-	return <iframe src="/csnap-pro/index.html" title="CSnap" className="w-full aspect-[1.618] shadow-lg" />;
+	return (
+		<iframe
+			src={`${import.meta.env.VITE_CSNAP_BASE_URL}/index.html`}
+			title="CSnap"
+			className="w-full aspect-[1.618] shadow-lg"
+		/>
+	);
 };
 
 export default CSnap;

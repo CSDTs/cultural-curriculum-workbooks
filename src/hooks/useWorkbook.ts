@@ -187,9 +187,15 @@ const useWorkbook = () => {
 	};
 
 	const setCurrentWorkbook = (slug: string) => {
-		const lessonParam = parseInt(searchParams.get("lesson"));
+		const lessonQueryParam = searchParams.get("lesson");
+		const lessonParam = lessonQueryParam ? parseInt(lessonQueryParam) : undefined;
 		if (slug in AVAILABLE_WORKBOOKS)
-			dispatch(setWorkbookData({ initLesson: lessonParam, ...AVAILABLE_WORKBOOKS[slug] }));
+			dispatch(
+				setWorkbookData({
+					initLesson: lessonParam,
+					...AVAILABLE_WORKBOOKS[slug as keyof typeof AVAILABLE_WORKBOOKS],
+				})
+			);
 	};
 
 	const checkValidityOfSlug = (slug: string) => {

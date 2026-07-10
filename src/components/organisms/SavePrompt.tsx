@@ -23,6 +23,11 @@ import { Loader } from "@/components/atoms";
 import useAuth from "@/hooks/useAuth";
 import useWorkbook from "@/hooks/useWorkbook";
 
+interface ClassroomOption {
+	team: string | number;
+	team_name: string;
+}
+
 const SavePrompt: FC = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const slug = getSlug();
@@ -104,7 +109,7 @@ const SavePrompt: FC = () => {
 														id={"classroomSelect"}
 														defaultValue={classrooms.data[0].team}
 														onChange={setSelectedClassroom}>
-														{classrooms.data.map((classroom) => (
+														{classrooms.data.map((classroom: ClassroomOption) => (
 															<option
 																key={classroom.team}
 																value={JSON.stringify({ id: classroom.team, name: classroom.team_name })}>
@@ -130,7 +135,7 @@ const SavePrompt: FC = () => {
 								<Button
 									colorScheme="blue"
 									onClick={handleAccept}
-									isDisabled={saveState.previous_project && import.meta.env.DEV}>
+									isDisabled={!!(saveState.previous_project && import.meta.env.DEV)}>
 									{saveState.previous_project ? "Yes, continue" : "Continue"}
 								</Button>
 							</ModalFooter>

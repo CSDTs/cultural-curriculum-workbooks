@@ -1,8 +1,10 @@
 import { useRef } from "react";
 
-import { Paragraph, Video } from "@/components/atoms";
+import { Paragraph } from "@/components/atoms";
+import Video from "@/components/atoms/Video";
 import { NoResponse } from "@/components/organisms/responses";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { APITypes } from "plyr-react";
 
 import DrivingVideo from "@/assets/aikr/drive.mp4";
 import LawyerVideo from "@/assets/aikr/lawyer.mp4";
@@ -10,14 +12,14 @@ import MusicianVideo from "@/assets/aikr/prompt.mp4";
 import WebVideo from "@/assets/aikr/website.mp4";
 
 const ExamplesOfReplacement = () => {
-	const musicianRef = useRef();
-	const lawyerRef = useRef();
-	const webRef = useRef();
-	const drivingRef = useRef();
+	const musicianRef = useRef<APITypes>(null);
+	const lawyerRef = useRef<APITypes>(null);
+	const webRef = useRef<APITypes>(null);
+	const drivingRef = useRef<APITypes>(null);
 
 	const stopAllPlayback = () => {
 		[musicianRef, lawyerRef, webRef, drivingRef].map((vid) => {
-			vid.current.plyr.stop();
+			vid.current?.plyr.stop();
 		});
 	};
 	return (

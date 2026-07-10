@@ -2,7 +2,7 @@ import { Textarea } from "@chakra-ui/react";
 
 import { ChangeEvent, FC, ReactNode, useCallback } from "react";
 
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import useResponse from "../../../hooks/useResponse";
 
 interface TextareaResponseProps {

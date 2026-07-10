@@ -8,6 +8,9 @@ interface ImportMetaEnv {
 	readonly VITE_LOCAL_ROOT: string;
 	readonly VITE_PROD_ROOT: string;
 	readonly VITE_LOCAL_DJANGO_ROOT: string;
+	readonly VITE_WORKBOOKS_BASE: string;
+	readonly VITE_CSNAP_BASE_URL: string;
+	readonly VITE_JOESLUNCH_BASE_URL: string;
 }
 
 interface ImportMeta {

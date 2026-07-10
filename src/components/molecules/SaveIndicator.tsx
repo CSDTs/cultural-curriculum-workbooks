@@ -29,11 +29,10 @@ const SavingIndicator = () => {
 			? "red.500"
 			: "gray.500";
 	return (
-		<div className="flex flex-row items-center">
+		<div className="flex flex-row items-center gap-2">
 			{saveState.isLoading && <ScaleLoader color={"rgb(144,205,244)"} height={"18px"} />}
 
 			<Text color={textColor}>
-				{" "}
 				{!saveState.status && !saveState.isLoading && !saveState.isError
 					? "You have unsaved changes"
 					: saveState.isLoading
@@ -46,8 +45,8 @@ const SavingIndicator = () => {
 					? `Last saved ${saveState.last_saved}`
 					: ""}
 				{backup && !saveState.isSuccess && !saveState.isLoading && " Will attempt to save backup soon..."}
-				{!currentLoggedInUser.id && "Login to save your progress"}
 			</Text>
+			{!currentLoggedInUser.id && <Text color={textColor}>Login to save your progress</Text>}
 		</div>
 	);
 };
