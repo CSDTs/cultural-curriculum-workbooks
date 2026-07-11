@@ -1,7 +1,7 @@
 import useLesson from "@/hooks/useLesson";
 import useWorkbook from "@/hooks/useWorkbook";
 import { Lesson } from "@/types";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 interface CSnapProps {
 	project: string;
 }
@@ -11,9 +11,10 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 
 	const lesson: Lesson = current;
 
-	const urlPath = (import.meta.env.PROD ? "/workbooks/" : "") + `${project ? project : lesson?.project}`;
+	const workbooksBase = import.meta.env.VITE_WORKBOOKS_BASE || "";
+	const urlPath = (workbooksBase ? workbooksBase + "/" : "") + `${project ? project : lesson?.project}`;
 
-	console.log(urlPath);
+	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 	let loadProjectXML = (urlPath: string) => {
 		if (lesson?.tags?.includes("csnap") || project) {
 			fetch(urlPath)
@@ -26,13 +27,14 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 						let ide = world.children[0];
 						ide.loadCustomXML(data);
 					} else {
-						let checkForWorld = setInterval(function () {
+						intervalRef.current = setInterval(function () {
 							let iframe = document.querySelector("iframe");
 							let world = iframe?.contentWindow?.world;
+							if (typeof world === "undefined" || !world) return;
 							let ide = world.children[0];
 							if (ide != undefined) {
 								ide.loadCustomXML(data);
-								clearInterval(checkForWorld);
+								if (intervalRef.current) clearInterval(intervalRef.current);
 							}
 						}, 1000);
 					}
@@ -46,9 +48,19 @@ const CSnap: FC<CSnapProps> = ({ project }) => {
 		if (lesson?.tags?.includes("csnap") || project) {
 			loadProjectXML(urlPath);
 		}
+
+		return () => {
+			if (intervalRef.current) clearInterval(intervalRef.current);
+		};
 	}, [urlPath, project]);
 
-	return <iframe src="/csnap_pro/csdt/snap.html" title="CSnap" className="w-full aspect-[1.618] shadow-lg" />;
+	return (
+		<iframe
+			src={`${import.meta.env.VITE_CSNAP_BASE_URL}/index.html`}
+			title="CSnap"
+			className="w-full aspect-[1.618] shadow-lg"
+		/>
+	);
 };
 
 export default CSnap;

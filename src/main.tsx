@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import ErrorBoundary from "./components/ErrorBoundary";
 import "./index.css";
 import { store } from "./setup/store";
 const theme = extendTheme({
@@ -13,20 +14,24 @@ const theme = extendTheme({
 		useSystemColorMode: false,
 	},
 });
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: { retry: 2, staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false },
+	},
+});
 localStorage.theme = "dark";
 
-if (localStorage.theme == "light") {
-	localStorage.removeItem("theme");
-	window.location.reload();
-}
-ReactDOM.createRoot(document.getElementById("root")).render(
+if (localStorage.getItem("chakra-ui-color-mode") === "light") localStorage.removeItem("chakra-ui-color-mode");
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme}>
 			<BrowserRouter>
 				<Provider store={store}>
 					<QueryClientProvider client={queryClient}>
-						<App />
+						<ErrorBoundary>
+							<App />
+						</ErrorBoundary>
 					</QueryClientProvider>
 				</Provider>
 			</BrowserRouter>

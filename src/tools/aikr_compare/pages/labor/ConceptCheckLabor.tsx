@@ -13,7 +13,7 @@ const ConceptCheckLabor = () => {
 			<ResponseHeading modifiers="mt-5">Before, you wrote:</ResponseHeading>
 
 			<div className={`mb-5 p-5  ${priorResponse ? "bg-green-500" : "bg-red-500"} bg-opacity-10 font-bold leading-5`}>
-				{priorResponse ? priorResponse.response : "No answer found..."}
+				{priorResponse ? (typeof priorResponse === "object" ? priorResponse.response : undefined) : "No answer found..."}
 			</div>
 
 			<Paragraph modifiers={"my-5"}>Now that you had time to think about it more, &nbsp;{question}</Paragraph>

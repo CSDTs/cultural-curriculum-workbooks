@@ -1,7 +1,19 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Collapse, Flex, Icon, Link, Stack, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-const MobileNavItem = ({ label, children, href }) => {
+interface NavChildItem {
+	label: string;
+	href: string;
+}
+
+interface MobileNavItemProps {
+	label: string;
+	href?: string;
+	children?: NavChildItem[];
+}
+
+const MobileNavItem = ({ label, children, href }: MobileNavItemProps) => {
 	const { isOpen, onToggle } = useDisclosure();
 
 	return (
@@ -38,7 +50,7 @@ const MobileNavItem = ({ label, children, href }) => {
 					borderColor={useColorModeValue("gray.200", "gray.700")}
 					align={"start"}>
 					{children &&
-						children.map((child) => (
+						children.map((child: NavChildItem) => (
 							<Link key={child.label} py={2} href={child.href}>
 								{child.label}
 							</Link>

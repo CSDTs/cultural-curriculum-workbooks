@@ -25,7 +25,6 @@ import fetchBasicData from "@/fetchers/fetchBasicData";
 import postSaveData from "@/fetchers/postSaveData";
 import serializeResponses from "@/utils/serializeResponses";
 import { useSearchParams } from "react-router-dom";
-// import updateURL from "@/utils/updateURL";
 type CurrentLesson = Lesson & { id: number };
 interface SavedResponse {
 	classroom?: number;
@@ -92,6 +91,7 @@ const useWorkbook = () => {
 	const savingError = (error: any, variables: any) => {
 		const backup = variables.updatedSaveData;
 		backup["classroom"] = userData.selected_classroom;
+		backup["slug"] = slug;
 
 		setLocalBackup(backup);
 		dispatch(updateIsSavingStatus(false));
@@ -126,7 +126,7 @@ const useWorkbook = () => {
 		if (saveState.auto_save && userData.id) {
 			// Local testing with vite
 			if (window.location.origin === import.meta.env.VITE_LOCAL_ROOT) {
-				let updatedSaveData: SerializedResponse = serializeResponses(userData, saveData);
+				let updatedSaveData: SerializedResponse = serializeResponses(userData, saveData, workbookData.id);
 
 				setDevSaveState({ ...devSaveState, isLoading: true, isSuccess: false });
 				await delay(1000);
@@ -140,13 +140,20 @@ const useWorkbook = () => {
 				return;
 			} else {
 				//Django
-				const updatedSaveData: SerializedResponse = serializeResponses(userData, saveData);
+				// workbookData.id is resolved asynchronously against the live Django workbook
+				// list (starts at -1, set by the effect below; undefined if the slug has no
+				// matching Django record). Don't POST a save under an unresolved/invalid id —
+				// autosave will retry once it resolves. See "serializeResponses" gotcha in
+				// docs/topics/creating-a-new-workbook.md.
+				if (!workbookData.id || workbookData.id < 0) return;
+
+				const updatedSaveData: SerializedResponse = serializeResponses(userData, saveData, workbookData.id);
 
 				if (userData.save_id) {
 					updatedSaveData["id"] = userData.save_id;
 				}
 				// setter(save);
-				await save.mutateAsync({ saveID: userData.save_id, updatedSaveData, token });
+				save.mutate({ saveID: userData.save_id, updatedSaveData, token });
 			}
 		} else {
 			return;
@@ -179,7 +186,10 @@ const useWorkbook = () => {
 				return workbook.slug === workbookData.slug;
 			});
 
-			dispatch(setWorkbookId(current[0]?.id));
+			// Only set the id when the slug actually matches a Django workbook — otherwise
+			// current[0]?.id is undefined and would clobber a valid id (e.g. one already set
+			// from config.workbook_id in production).
+			if (current[0]?.id != null) dispatch(setWorkbookId(current[0].id));
 		}
 	}, [availableWorkbooks.data, workbookData.slug]);
 
@@ -188,13 +198,23 @@ const useWorkbook = () => {
 	};
 
 	const setCurrentWorkbook = (slug: string) => {
-		const lessonParam = parseInt(searchParams.get("lesson"));
+		const lessonQueryParam = searchParams.get("lesson");
+		const lessonParam = lessonQueryParam ? parseInt(lessonQueryParam) : undefined;
 		if (slug in AVAILABLE_WORKBOOKS)
-			dispatch(setWorkbookData({ initLesson: lessonParam, ...AVAILABLE_WORKBOOKS[slug] }));
+			dispatch(
+				setWorkbookData({
+					initLesson: lessonParam,
+					...AVAILABLE_WORKBOOKS[slug as keyof typeof AVAILABLE_WORKBOOKS],
+				})
+			);
 	};
 
 	const checkValidityOfSlug = (slug: string) => {
 		return slug in AVAILABLE_WORKBOOKS;
+	};
+
+	const restoreBackup = () => {
+		if (backup && (!backup.slug || backup.slug === slug)) dispatch(loadBackupSave(backup));
 	};
 
 	useEffect(() => {
@@ -205,10 +225,6 @@ const useWorkbook = () => {
 		if (slug && !userData.id && userData.save_id) {
 			setCurrentWorkbook(slug);
 		}
-		// TODO: Load last workbook should also check for backup and load data / save previous.
-		// if (import.meta.env.PROD && backup) {
-		// 	dispatch(loadBackupSave(backup));
-		// }
 	}, [slug]);
 
 	const getState = (key?: keyof typeof saveState) => {
@@ -230,6 +246,7 @@ const useWorkbook = () => {
 		setConfigData,
 		setCurrentWorkbook,
 		checkValidityOfSlug,
+		restoreBackup,
 		availableWorkbooks,
 
 		pointsEarned,

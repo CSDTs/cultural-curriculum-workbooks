@@ -45,7 +45,7 @@ const NAV_ITEMS = [
 ];
 
 interface NavBarProps {
-	openSidebar: MouseEventHandler;
+	openSidebar?: MouseEventHandler;
 }
 const NavBar: FC<NavBarProps> = ({ openSidebar }) => {
 	const { isOpen, onToggle } = useDisclosure();
@@ -68,7 +68,7 @@ const NavBar: FC<NavBarProps> = ({ openSidebar }) => {
 						onClick={openSidebar}
 						icon={
 							<Flex align={"center"} px={2}>
-								<MdSchool w={5} h={5} />
+								<MdSchool size={20} />
 								<Text ml={2}>Lessons</Text>
 							</Flex>
 						}

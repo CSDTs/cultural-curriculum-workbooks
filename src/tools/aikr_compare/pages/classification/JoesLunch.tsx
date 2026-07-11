@@ -1,7 +1,7 @@
 import { NoResponse } from "@/components/organisms/responses";
 
 const JoesLunch = () => {
-	const url_string = "/workbooks/build/index.html" + `?embedded=true&`;
+	const url_string = `${import.meta.env.VITE_JOESLUNCH_BASE_URL}/index.html?embedded=true&`;
 
 	return (
 		<NoResponse>

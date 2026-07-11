@@ -1,6 +1,60 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface SelectedClassroom {
+	id: number | string | null;
+	name: string;
+}
+
+interface UserState {
+	id: number | null;
+	username: string | null;
+	classroom_list: any[] | null;
+	save_id: number | null;
+	selected_classroom: SelectedClassroom;
+}
+
+interface WorkbookMeta {
+	id: number;
+	slug: string;
+	title: string;
+	current_lesson: Record<string, any>;
+	current_lesson_id: number;
+	available_workbooks: any[];
+	available_lessons: any[];
+	available_sections: any[];
+	available_points: number;
+	is_finished: boolean;
+	autosave: boolean;
+}
+
+export interface ResponseItem {
+	response?: any;
+	points?: number;
+	question?: string;
+	[key: string]: any;
+}
+
+interface WorkbookDataState {
+	responses: (ResponseItem | string)[];
+	optional: any[];
+	misc: Record<string, any>;
+	points_earned: number;
+	lessons_completed: number;
+	completion: number;
+	last: number;
+}
+
+export interface WorkbookState {
+	user: UserState;
+	workbook: WorkbookMeta;
+	data: WorkbookDataState;
+	save_status: boolean;
+	is_saving: boolean;
+	is_using_backup: boolean;
+	last_saved: string;
+}
+
+const initialState: WorkbookState = {
 	user: {
 		id: null,
 		username: "",
@@ -50,10 +104,10 @@ export const workbookSlice = createSlice({
 			state.data.last = action.payload;
 		},
 		setWorkbookData: (state, action) => {
-			let totalLessons = action.payload.data.reduce((total, section) => {
-				let temp = section.lessons.map((lesson) => ({ section: section.title, ...lesson }));
+			let totalLessons = action.payload.data.reduce((total: any[], section: { title: string; lessons: any[] }) => {
+				let temp = section.lessons.map((lesson: any) => ({ section: section.title, ...lesson }));
 				return total.concat(temp);
-			}, []);
+			}, [] as any[]);
 			state.workbook.title = action.payload.title;
 			state.workbook.available_sections = action.payload.data;
 
@@ -98,6 +152,9 @@ export const workbookSlice = createSlice({
 		updateResponse: (state, action) => {
 			state.data.responses[state.workbook.current_lesson_id] = action.payload;
 		},
+		updateResponseAt: (state, action) => {
+			state.data.responses[action.payload.index] = action.payload.value;
+		},
 
 		setWorkbookClassroom: (state, action) => {
 			// state.data.classroom = action.payload;
@@ -109,22 +166,45 @@ export const workbookSlice = createSlice({
 			state.user.save_id = action.payload;
 		},
 		loadConfigSave: (state, action) => {
-			const current = action.payload.data.last ?? 0;
+			const payload = action.payload;
+			if (!payload || typeof payload !== "object" || !payload.data || typeof payload.data !== "object") {
+				console.error("loadConfigSave: malformed config payload", payload);
+				return;
+			}
 
-			Object.assign(state.data, action.payload.data);
-			Object.assign(state.user.selected_classroom, action.payload.meta.classroom);
+			const current = Math.min(
+				Math.max(Number(payload.data.last) || 0, 0),
+				Math.max(state.workbook.available_lessons.length - 1, 0)
+			);
+
+			Object.assign(state.data, payload.data);
+			if (payload.meta && typeof payload.meta === "object") {
+				Object.assign(state.user.selected_classroom, payload.meta.classroom);
+				state.last_saved = payload.meta.lastSaved;
+			}
 			state.workbook.autosave = true;
-			state.last_saved = action.payload.meta.lastSaved;
 
 			state.workbook.current_lesson_id = current;
 			state.workbook.current_lesson = state.workbook.available_lessons[current];
 
-			state.user.save_id = action.payload.workbook_save_id;
+			state.user.save_id = payload.workbook_save_id;
+
+			// Django injects the authoritative workbook id into the config global
+			// (as a string, e.g. "1"). Use it directly so saves are attributed correctly
+			// in production without waiting on the async slug-match in useWorkbook.
+			if (payload.workbook_id != null) state.workbook.id = Number(payload.workbook_id);
 		},
 		loadBackupSave: (state, action) => {
-			const current = JSON.parse(action.payload.data).last;
+			let parsedData;
+			try {
+				parsedData = JSON.parse(action.payload.data);
+			} catch (err) {
+				console.error(err);
+				parsedData = state.data;
+			}
+			const current = Math.min(Number(parsedData.last) || 0, Math.max(state.workbook.available_lessons.length - 1, 0));
 			// state.user.save_id = action.payload?.id || null;
-			Object.assign(state.data, JSON.parse(action.payload.data));
+			Object.assign(state.data, parsedData);
 			Object.assign(state.user.selected_classroom, action.payload.classroom);
 			state.is_using_backup = true;
 			state.workbook.autosave = true;
@@ -153,7 +233,7 @@ export const workbookSlice = createSlice({
 		updatePoints: (state) => {
 			const total = state.data.responses.reduce((accum, response) => {
 				if (response) {
-					if (response.points !== undefined) {
+					if (typeof response == "object" && response.points !== undefined) {
 						return (accum += response.points);
 					}
 
@@ -182,19 +262,13 @@ export const {
 	setCurrentUser,
 	setUserClassrooms,
 	setCurrentLessonData,
-	goToPreviousLesson,
-	goToNextLesson,
 	updateResponse,
-	updateOptionalResponse,
+	updateResponseAt,
 	setWorkbookClassroom,
 	loadConfigSave,
-	updateEarnedPoints,
 	setSaveDataId,
-	updateMiscResponse,
 	updateSaveStatus,
 	setAvailablePoints,
-	updateWorkbookFinished,
-	updateObjectResponse,
 	updateIsSavingStatus,
 	updateAutoSaveState,
 	updatePoints,

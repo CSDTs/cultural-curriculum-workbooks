@@ -9,18 +9,21 @@ import { Workbook } from "@/types";
 /**
  * Workbook selection screen, pulls from workbook api, plans to use later on when we have more workbooks available...
  */
+const GRID_COLS: Record<number, string> = {
+	1: "grid-cols-1 md:grid-cols-1 lg:grid-cols-1",
+	2: "grid-cols-1 md:grid-cols-2 lg:grid-cols-2",
+	3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+};
+
 const SelectionScreen = () => {
 	const { availableWorkbooks } = useWorkbook();
 	const { isLoading, data, error } = availableWorkbooks;
 
-	let gridCols = `grid-cols-1 md:grid-cols-${Math.min(data?.length || 0, 2)} lg:grid-cols-${Math.min(
-		data?.length || 0,
-		3
-	)}`;
+	const gridCols = GRID_COLS[Math.min(data?.length || 1, 3)];
 
 	return (
 		<SelectionLayout>
-			<div className="text-center p-5">
+			<div className="p-5 text-center">
 				{!isLoading && (
 					<>
 						<h1 className="text-4xl font-bold text-slate-600 dark:text-white">Welcome to CSDT Workbooks!</h1>
@@ -48,8 +51,8 @@ const SelectionScreen = () => {
 			{(error as Object) && (
 				<Paragraph modifiers={"!text-center"}>
 					If this persists, please contact us at{" "}
-					<a href="mailto:csdtdevelopers@umich.edu" className="font-semibold">
-						csdtdevelopers@umich.edu
+					<a href="mailto:csdt@generativejustice.org" className="font-semibold">
+						csdt@generativejustice.org
 					</a>
 				</Paragraph>
 			)}

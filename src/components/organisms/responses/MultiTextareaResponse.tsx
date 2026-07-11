@@ -1,7 +1,7 @@
 import { SimpleGrid, Textarea } from "@chakra-ui/react";
 
-import { debounce } from "lodash";
-import { FC, ReactNode, useCallback, useRef } from "react";
+import debounce from "lodash/debounce";
+import { FC, ReactNode, useCallback, useEffect, useRef } from "react";
 import useResponse from "../../../hooks/useResponse";
 type Question = {
 	question: string;
@@ -19,15 +19,10 @@ interface MyObject {
 }
 
 const MultiTextareaResponse: FC<MultiTextareaResponseProps> = ({ questions, children }) => {
-	const { response, setResponse, setResponseSaved } = useResponse();
+	const { response, setResponseAt, setResponseSaved, index } = useResponse();
 	const textAreas = useRef<HTMLTextAreaElement[]>([]);
 
-	const debounceSave = useCallback(
-		debounce((val) => {
-			setResponse(val);
-		}, 750),
-		[]
-	);
+	const debounceSave = useRef(debounce((idx: number, val: any) => setResponseAt(idx, val), 750)).current;
 
 	const handleChange = useCallback(() => {
 		const responses = new Map<MyMapKey, MyMapValue>();
@@ -49,8 +44,10 @@ const MultiTextareaResponse: FC<MultiTextareaResponseProps> = ({ questions, chil
 		}, {});
 
 		setResponseSaved(false);
-		debounceSave({ question: "Creating an AI App", response: multiResponse, points: multiPoints });
-	}, []);
+		debounceSave(index, { question: "Creating an AI App", response: multiResponse, points: multiPoints });
+	}, [index]);
+
+	useEffect(() => () => { debounceSave.flush(); }, []);
 	return (
 		<>
 			{children}

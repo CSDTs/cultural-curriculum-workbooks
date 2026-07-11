@@ -1,4 +1,4 @@
-# !/usr/bin/env bash 
+#!/usr/bin/env bash
 
 CSS_FILE=$(find dist/assets -type f -name "index.*.css")
 JS_FILE=$(find dist/assets -type f -name "index.*.js")

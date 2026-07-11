@@ -15,7 +15,7 @@ const SectionCard: FC<SectionCardProps> = ({ title, image, question, handleOnCli
 				<img
 					className="w-full h-72 object-cover object-center group-hover:border-t-2 group-hover:border-gray-900 group-hover:duration-75"
 					src={image}
-					alt="avatar"
+					alt={title ?? question}
 				/>
 
 				<div className="flex items-center px-6 py-3 bg-gray-900">

@@ -38,6 +38,9 @@ const useAuth = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isError, setIsError] = useState<boolean>(false);
+	// True until the initial on-load session check resolves — lets the UI avoid flashing the
+	// login modal before we know whether the user is already logged in.
+	const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true);
 
 	const { data: token } = useQuery(["csrftoken"], fetchCsrfToken);
 
@@ -106,9 +109,10 @@ const useAuth = () => {
 		}
 	};
 
-	// Two scenarios: Testing through vite locally, or through django online via dev or prod server.
+	// Two scenarios: testing through Vite locally (no Django session — use the cached user),
+	// or served/embedded by Django (derive the user from the session cookie).
 	const authenticate = async () => {
-		// Option 1: Stored user in local storage and testing via Vite.
+		// Option 1: standalone Vite dev server — use the localStorage-cached user.
 		if (window.location.origin === import.meta.env.VITE_LOCAL_ROOT) {
 			if (localUser) {
 				setAuthState({ isAuthenticated: true, user: localUser });
@@ -118,26 +122,25 @@ const useAuth = () => {
 					msg: `Testing locally with '${localUser?.username}' account in vite`,
 				} as AuthResponse;
 			}
+			return;
 		}
 
-		//Option 2: Inside Django application
-		if (
-			window.location.origin === import.meta.env.VITE_LOCAL_DJANGO_ROOT ||
-			window.location.origin === import.meta.env.VITE_PROD_ROOT
-		) {
-			try {
-				const address = import.meta.env.VITE_USERS_API;
-				const response = await fetch(address);
-				const data = await response.json();
+		// Option 2: served by Django (any other origin — csdt.org, a staging host,
+		// localhost vs 127.0.0.1, etc.). Ask the backend who the session cookie belongs to.
+		// Do NOT gate on an exact origin string: that silently breaks session restoration on
+		// refresh whenever the real serving origin differs from the hardcoded env values.
+		try {
+			const address = import.meta.env.VITE_USERS_API;
+			const response = await fetch(address, { credentials: "include" });
+			const data = await response.json();
 
-				if (data?.id == null) throw new Error("User is not logged in");
+			if (data?.id == null) throw new Error("User is not logged in");
 
-				setAuthState({ isAuthenticated: true, user: data });
+			setAuthState({ isAuthenticated: true, user: data });
 
-				return { data, msg: `'${data?.username}' has been authenticated.` } as AuthResponse;
-			} catch (err) {
-				return err;
-			}
+			return { data, msg: `'${data?.username}' has been authenticated.` } as AuthResponse;
+		} catch (err) {
+			return err;
 		}
 	};
 
@@ -149,16 +152,19 @@ const useAuth = () => {
 		});
 	}, [currentLoggedInUser]);
 
-	//On app load, authenticate the user
+	//On app load, restore the logged-in user (from the Django session, or the local cache).
 	useEffect(() => {
-		authenticate().then((res: any) => {
-			dispatch(setCurrentUser(res.data));
-		});
+		authenticate()
+			.then((res: any) => {
+				if (res?.data?.id != null) dispatch(setCurrentUser(res.data));
+			})
+			.finally(() => setIsAuthenticating(false));
 	}, []);
 
 	return {
 		authenticate,
 		isLoading,
+		isAuthenticating,
 		isError,
 		login,
 		authState,

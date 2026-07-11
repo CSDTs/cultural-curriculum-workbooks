@@ -1,33 +1,52 @@
-import commonjs from "@rollup/plugin-commonjs";
+import { cpSync } from "fs";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { defineConfig, splitVendorChunkPlugin } from "vite";
-const { resolve } = require("path");
+import { defineConfig } from "vite";
+
+// Public sub-directories to keep OUT of the production build. These are large,
+// vendored, and served separately by the Django platform (see VITE_CSNAP_BASE_URL),
+// so copying them into dist/ only bloats the deploy artifact. Dev is unaffected —
+// Vite still serves them live from public/.
+const EXCLUDE_FROM_BUILD = ["csnap-pro"];
+
+// Replaces Vite's default public/ copy (disabled via build.copyPublicDir) with a
+// filtered copy that omits EXCLUDE_FROM_BUILD, so the excluded folders are never
+// copied at all (not copied-then-deleted).
+function copyPublicExcept() {
+	let outDir = "dist";
+	return {
+		name: "copy-public-except",
+		apply: "build",
+		configResolved(config) {
+			outDir = config.build.outDir;
+		},
+		closeBundle() {
+			const publicDir = path.resolve(__dirname, "public");
+			const dest = path.resolve(__dirname, outDir);
+			const excluded = EXCLUDE_FROM_BUILD.map((name) => path.resolve(publicDir, name));
+			cpSync(publicDir, dest, {
+				recursive: true,
+				filter: (src) => !excluded.some((dir) => src === dir || src.startsWith(dir + path.sep)),
+			});
+		},
+	};
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react()],
+	plugins: [react(), copyPublicExcept()],
 	base: "./",
 	envDir: "./src",
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src/"),
-			// components: `${path.resolve(__dirname, "./src/components/")}`,
-			// features: `${path.resolve(__dirname, "./src/features/")}`,
-			// hooks: `${path.resolve(__dirname, "./src/hooks/")}`,
-			// public: `${path.resolve(__dirname, "./public/")}`,
-			// pages: path.resolve(__dirname, "./src/pages"),
-			// assets: path.resolve(__dirname, "./src/assets"),
-			// types: `${path.resolve(__dirname, "./src/@types")}`,
 		},
 	},
 	build: {
+		copyPublicDir: false,
 		chunkSizeWarningLimit: 2000,
 		rollupOptions: {
-			input: {
-				main: resolve(__dirname, "index.html"),
-				nested: resolve(__dirname, "/pages/cultural_curriculum/index.html"),
-			},
+			input: { main: path.resolve(__dirname, "index.html") },
 		},
 	},
 });

@@ -1,5 +1,7 @@
 import { Drawer, DrawerContent, DrawerOverlay, useDisclosure } from "@chakra-ui/react";
 
+import { Loader } from "@/components/atoms";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { Footer, NavBar, SideBar } from "@/components/organisms";
 import useLesson from "@/hooks/useLesson";
 import aikrSlides from "@/tools/aikr_compare/";
@@ -8,10 +10,10 @@ import PageHeader from "@/components/organisms/PageHeader";
 import useAuth from "@/hooks/useAuth";
 import useWorkbook from "@/hooks/useWorkbook";
 import getSlug from "@/utils/getSlug";
-import { ReactElement, useEffect } from "react";
+import { ComponentType, Suspense, useEffect } from "react";
 
 interface AvailablePages {
-	[key: string]: ReactElement[];
+	[key: string]: ComponentType[];
 }
 
 /** Main workbook layout.  */
@@ -26,7 +28,7 @@ const WorkbookScreen = () => {
 		aikr_compare: aikrSlides,
 	};
 
-	const componentToRender = availablePages[slug][current.id] || <div>Invalid slide ID</div>;
+	const Slide = availablePages[slug]?.[current.id];
 
 	useEffect(() => {
 		if (!authState.isAuthenticated) setCurrentWorkbook(slug);
@@ -48,7 +50,17 @@ const WorkbookScreen = () => {
 
 						<hr className="w-3/4 my-3 border-gray-900 border-opacity-20 dark:border-gray-50 dark:border-opacity-10" />
 
-						<section className="max-w-6xl py-5">{componentToRender}</section>
+						<section className="max-w-6xl py-5">
+							{Slide ? (
+								<ErrorBoundary key={current.id}>
+									<Suspense fallback={<Loader />}>
+										<Slide />
+									</Suspense>
+								</ErrorBoundary>
+							) : (
+								<div>Invalid slide ID</div>
+							)}
+						</section>
 					</main>
 				</div>
 				<Footer />

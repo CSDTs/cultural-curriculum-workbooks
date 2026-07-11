@@ -1,4 +1,4 @@
-import { updatePoints, updateResponse, updateSaveStatus } from "@/setup/slices/workbookSlice";
+import { updatePoints, updateResponse, updateResponseAt, updateSaveStatus } from "@/setup/slices/workbookSlice";
 import { RootState } from "@/setup/store";
 import { useDispatch, useSelector } from "react-redux";
 const useResponse = () => {
@@ -9,10 +9,17 @@ const useResponse = () => {
 	const responses = useSelector((state: RootState) => state.workbookState.data.responses);
 	// const index = useSelector((state) => state.workbookState.workbook.current_lesson_id);
 	const saveStatus = useSelector((state: RootState) => state.workbookState.save_status);
-	const response = responses[index]?.response || "";
+	const currentEntry = responses[index];
+	const response = (typeof currentEntry === "object" && currentEntry?.response) || "";
 
-	const setResponse = (val) => {
+	const setResponse = (val: any) => {
 		dispatch(updateResponse(val));
+		dispatch(updatePoints());
+		dispatch(updateSaveStatus(false));
+	};
+
+	const setResponseAt = (idx: number, val: any) => {
+		dispatch(updateResponseAt({ index: idx, value: val }));
 		dispatch(updatePoints());
 		dispatch(updateSaveStatus(false));
 	};
@@ -21,9 +28,10 @@ const useResponse = () => {
 
 	return {
 		response,
+		index,
 		setResponse,
+		setResponseAt,
 		checkRequired: (val: any) => {
-			console.log(val);
 			dispatch(updateResponse(val));
 			// dispatch(updateSaveStatus(false));
 			dispatch(updatePoints());

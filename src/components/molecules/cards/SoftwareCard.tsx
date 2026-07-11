@@ -1,6 +1,14 @@
 import { Box, chakra, Image } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
-export default function SoftwareCard({ title, image, handleOnClick, children }) {
+interface SoftwareCardProps {
+	title: string;
+	image: string;
+	handleOnClick?: () => void;
+	children?: ReactNode;
+}
+
+export default function SoftwareCard({ title, image, handleOnClick, children }: SoftwareCardProps) {
 	return (
 		<Box role={"group"} h={"100%"} onClick={handleOnClick}>
 			<Box

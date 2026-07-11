@@ -21,7 +21,7 @@ const SectionGrouping: FC<SectionGroupingProps> = ({ title, range, children }) =
 		<>
 			<NavItem onClick={onToggle} modifiers="text-lg">
 				{title}
-				<Icon ml="auto" as={MdKeyboardArrowRight} transform={isOpen && "rotate(90deg)"} />
+				<Icon ml="auto" as={MdKeyboardArrowRight} transform={isOpen ? "rotate(90deg)" : undefined} />
 			</NavItem>
 			<Collapse in={isOpen}>{children}</Collapse>
 		</>
